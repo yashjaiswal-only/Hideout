@@ -4,8 +4,6 @@ import './App.css';
 import { Main, Signin, Signup ,Auth} from './Pages';
 import { AuthProvider } from './contexts/AuthContext';
 function App() {
-  console.log(import.meta.env.VITE_FIREBASE_API_KEY);
-  console.log('heii;')
   return (
     <BrowserRouter>
     <AuthProvider>

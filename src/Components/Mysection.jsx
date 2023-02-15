@@ -7,7 +7,7 @@ const Container=styled.div`
   min-height:20vh;
   border-radius:15px;
   margin:0.5rem;
-  display: flex;
+  display: ${props=>(props.width>600)?'flex':'none'};
   flex-direction: column;
   align-items: center;
   background-color: white;
@@ -63,21 +63,24 @@ const Button=styled.button`
     color:white;
     background-color: blue;
 `
-const Mysection = () => {
+const Mysection = ({width}) => {
+
   return (
-    <Container>
+    <>
+    <Container width={width}>
       <Up >
         <CoverImg src={cover} />    
         <Image src={pic}/>
       </Up>
       <Down>
-        <Span name>Yash Jaiswal </Span>
-        <Span>389 friends</Span>
+        <Span name={1}>Yash Jaiswal </Span>
+        <Span >389 friends</Span>
         <Button>
             My Profile
         </Button>
       </Down>
     </Container>
+    </>
   )
 }
 

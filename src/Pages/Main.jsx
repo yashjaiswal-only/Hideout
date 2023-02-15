@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 import styled from 'styled-components';
 import {Topbar} from '../Components'
+import Block from '../Components/Block';
 import ChatList from '../Components/ChatList';
 import Feed from '../Components/Feed';
-import Notification from '../Components/Notification';
+import Notification from '../Components/NotificationList';
 import Right from '../Components/Right';
 import Sidebar from '../Components/Sidebar';
 import {mobile} from '../responsive'
@@ -18,9 +19,11 @@ const Content=styled.div`
     background-color: #e1f2f7;
 `
 const Display=styled.div`
-    width:80%;
+    width:55%;
     margin-left:20%;
+    margin-right:25%;
     display: flex;
+    align-items: center;
     justify-content: space-around;
     ${mobile({
       width:'85%',
@@ -30,26 +33,20 @@ const Display=styled.div`
 `
 const Main = () => {
   let width = window.innerWidth;
-  const [notification,setNotification]=useState(true);
-  const [chatlist,setChatlist]=useState(true);
-  const toggleNotification=(val)=>{
-    setNotification(val)
-    setChatlist(false)
-  }
-  const toggleChat=(val)=>{
-    setChatlist(val)
-    setNotification(false);
-  }
+  const [list,setList]=useState('');
+  const showList=(val)=>setList(val);
+  
   return (
     <Container>
       <Topbar/>
       <Content>
-           <Sidebar togNot={toggleNotification} togChat={toggleChat} />
-           <Notification on={notification} togNot={toggleNotification}/>
-           <ChatList on={chatlist} togChat={toggleChat}/>
+           <Sidebar showList={showList} width={width}/>
+           <Block list={list} showList={showList}/>
+           {width>600 && <Right/>}
+
            <Display>
               <Feed/> 
-            {width>500 &&  <Right/>}
+            {/* {width>600 &&  <Right/>} */}
            </Display>
       </Content>
     </Container>

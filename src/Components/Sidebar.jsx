@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import Mysection from './Mysection'
 import SideMenu from './SideMenu'
@@ -19,14 +19,15 @@ const Container=styled.div`
     
 `
 
-const Sidebar = ({togChat,togNot}) => {
-  let width = window.innerWidth;
+const Sidebar = ({showList,width}) => {
+  // let width = window.innerWidth;
+  useEffect(()=>{
+  },[width])
+  
   return (
     <Container>
-      { width>500 &&
-      <Mysection />
-      }
-      <SideMenu togChat={togChat} togNot={togNot}/>
+      <Mysection width={width}/>
+      <SideMenu showList={showList}/>
     </Container>
   )
 }

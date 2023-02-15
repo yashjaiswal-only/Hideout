@@ -70,15 +70,15 @@ const Logo=styled.img`
     object-fit:cover;
     width:90%;
 `
-const SideMenu = ({togChat,togNot}) => {
+const SideMenu = ({showList}) => {
     let width = window.innerWidth;  
   return (
     <Container>
-        {width<500 && <Option><Logo src={logosm}/></Option>}
+        {width<600 && <Option><Logo src={logosm}/></Option>}
         <Option><div><DynamicFeedIcon sx={{color:'gray' }}/><span>My Posts</span></div></Option>
         <Option><div><DataThresholdingIcon sx={{color:'gray' }}/><span>Activity</span></div></Option>
-        <Option onClick={()=>togChat(true)}><div><TelegramIcon sx={{color:'gray' }}/><span>Chats</span></div></Option>
-        <Option onClick={()=>togNot(true)}><div><NotificationsNoneIcon sx={{color:'gray' }}/><span>Notification</span></div></Option>
+        <Option onClick={()=>showList('chats')}><div><TelegramIcon sx={{color:'gray' }}/><span>Chats</span></div></Option>
+        <Option onClick={()=>showList('notifications')}><div><NotificationsNoneIcon sx={{color:'gray' }}/><span>Notifications</span></div></Option>
         <Option><div><SettingsIcon sx={{color:'gray' }}/><span>Settings</span></div></Option>
         <Option><div><ConnectWithoutContactIcon sx={{color:'gray' }}/><span>Contact Us</span></div></Option>
         <Option><div><RateReviewIcon sx={{color:'gray' }}/><span>Feedback </span></div></Option>

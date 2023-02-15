@@ -1,37 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
-import ClearIcon from '@mui/icons-material/Clear';
 import pic from '../Data/pic.png'
 
-const Component=styled.div`
-    height:${props=>props.on==true?'85vh':'0'};
-    background-color: white;
-    /* background:none; */
-    width:${props=>props.on==true?'25%':'0'};
-    position:absolute;
-    left:${props=>props.on==true?'20%':'5%'};
-    top:10%;
-    position:fixed;
-    z-index:8;
-    border-radius:15px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: white;
-    -webkit-box-shadow: 0px 0px 5px 3px rgba(214,214,214,1);
-    -moz-box-shadow: 0px 0px 5px 3px rgba(214,214,214,1);
-    box-shadow: 0px 0px 5px 3px rgba(214,214,214,1);
-    transition: left 1s ease,height 0.5s linear,width 0.5s linear;  
-`
-const Top=styled.div`
-    width:90%;
-    height:6%;
-    margin:0.6rem 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-weight:700;
-`
+
 const Wrapper=styled.div`
     width:95%;
     height:90%;
@@ -40,8 +11,17 @@ const Wrapper=styled.div`
     flex-direction: column;
     align-items: center;
     &::-webkit-scrollbar {
-        width: 1px;
-        color:red;
+      width: 0.3rem;               /* width of the entire scrollbar */
+    }
+
+    &::-webkit-scrollbar-track {
+      background: outset;        /* color of the tracking area */
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: #b6b6e4;    /* color of the scroll thumb */
+      border-radius: 50px;       /* roundness of the scroll thumb */
+      border: 1px solid white;  /* creates padding around scroll thumb */
     }
     
 `
@@ -86,10 +66,8 @@ const Divider=styled.hr`
     margin:0;
     opacity:0.2;
 `
-const ChatList = ({on,togChat}) => {
+const ChatList = () => {
   return (
-    <Component on={on}>
-      <Top><span>Chats</span><ClearIcon onClick={()=>togChat(false)} style={{cursor:'pointer'}}/></Top>
       <Wrapper>
             <ListItem>
                 <Image src={pic}/>
@@ -165,7 +143,6 @@ const ChatList = ({on,togChat}) => {
             <Divider/>
       
       </Wrapper>
-    </Component>
   )
 }
 

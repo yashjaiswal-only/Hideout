@@ -5,7 +5,7 @@ import Post from './Post'
 import {mobile} from '../responsive'
 
 const Container=styled.div`
-    width: 70%;
+    width: 100%;
     display: flex;
     flex-direction:column;
     align-items: center;

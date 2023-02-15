@@ -1,0 +1,2 @@
+process.env.REACT_APP_SOME_VALUE changes to import.meta.env.VITE_SOME_VALUE
+require is not work in vite use import

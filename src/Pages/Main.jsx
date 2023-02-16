@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import {Topbar} from '../Components'
 import Block from '../Components/Block';
 import ChatList from '../Components/ChatList';
+import Chats from '../Components/Chats';
 import Feed from '../Components/Feed';
 import Notification from '../Components/NotificationList';
 import Right from '../Components/Right';
@@ -36,14 +37,17 @@ const Main = () => {
   const [list,setList]=useState('');
   const showList=(val)=>setList(val);
   
+  const [count,setCount]=useState(0);
+  const updateCount=(val)=>setCount(val);
+  console.log(count)
   return (
     <Container>
       <Topbar/>
       <Content>
            <Sidebar showList={showList} width={width}/>
-           <Block list={list} showList={showList}/>
+           <Block list={list} showList={showList} updateCount={updateCount}/>
            {width>600 && <Right/>}
-
+            <Chats updateCount={updateCount} count={count} />
            <Display>
               <Feed/> 
             {/* {width>600 &&  <Right/>} */}

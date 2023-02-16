@@ -31,8 +31,7 @@ const ListItem=styled.div`
     align-items: center;
     margin:0.5rem 0;
     width:100%;
-    /* border-top:1px solid gray;
-    border-bottom:1px solid gray; */
+    cursor:pointer;
 `
 const Image=styled.img`
     width:3rem;
@@ -66,10 +65,10 @@ const Divider=styled.hr`
     margin:0;
     opacity:0.2;
 `
-const ChatList = () => {
+const ChatList = ({updateCount}) => {
   return (
       <Wrapper>
-            <ListItem>
+            <ListItem onClick={()=>updateCount(1)}>
                 <Image src={pic}/>
                 <Text><span>Sunny Graham</span>
                 <div><p> he voted for  amazon Rainforest</p>

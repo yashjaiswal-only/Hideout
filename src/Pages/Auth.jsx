@@ -1,4 +1,6 @@
-import React from 'react'
+import React, { useRef, useState } from 'react'
+import { Link } from 'react-router-dom'
+import { useAuth } from '../contexts/AuthContext';
 import styled from 'styled-components';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
@@ -180,6 +182,88 @@ const SubmitBtn=styled.button`
 `
 const Auth = () => {
     const navigate=useNavigate();
+
+  const emailRef=useRef();
+  const passwordRef=useRef();
+  const passwordConfirmRef = useRef();
+  const {signup, signin, signInWithGoogle, signInWithFacebook, currentUser} = useAuth();
+  const [error, setError]= useState('');
+  const [loading, setLoading]= useState(false);
+
+  async function handleSubmitLogin(e){
+    e.preventDefault();
+
+    try{
+      setError('')
+      setLoading(true)
+      const log = await signin(emailRef.current.value,passwordRef.current.value)
+      if(log){
+        setLoading(false)
+        navigate('/home')
+      }
+    }catch(error){
+      setError('Failed to sign in!! Please try again')
+    }
+    setLoading(false)
+
+  }
+
+  async function handleSubmitSignUp(e){
+    e.preventDefault();
+
+    if(passwordConfirmRef.current.value!==passwordRef.current.value){
+      return setError('Passwords do not match')
+    }
+    try {
+      setError('')
+      setLoading(true)
+      const log = await signup(emailRef.current.value,passwordRef.current.value)
+      if(log){
+        setLoading(false)
+        navigate('/home')
+      }
+    } catch (error) {
+      console.log(error);
+      setError('Failed to sign up!! Please try again')
+    }
+    setLoading(false)
+  }
+
+  async function googleSignin(e){
+    e.preventDefault()
+    setError('')
+    setLoading(true)
+    signInWithGoogle()
+    .then(()=>{
+        console.log("signedin")
+        setLoading(false)
+        navigate('/home');
+    })
+    .catch(()=>{
+        console.log("first00")
+        setLoading(false)
+        setError('Failed to sign in!! Please try again')
+    })
+    console.log("first")
+  }
+
+  async function fbSignin(e){
+    e.preventDefault()
+    try{
+      setError('')
+      setLoading(true)
+      const log = await signInWithFacebook()
+      if(log){
+        setLoading(false);
+        navigate('/home');
+      }
+    }catch(error){
+      setError('Failed to sign in!! Please try again')
+    }
+    setLoading(false)
+  }
+
+
   return (
     <Container>
         <ContainerBgImg src={bgimg}/>
@@ -194,11 +278,11 @@ const Auth = () => {
                             Welcome Back, Please login to your account
                         </Message>
                          <ButtonGroup>
-                            <Button color="white">
+                            <Button color="white" onClick={googleSignin}>
                                 <ButtonImg src="https://www.freepnglogos.com/uploads/google-logo-png/google-logo-png-suite-everything-you-need-know-about-google-newest-0.png"/>
                                 Login with google
                             </Button>
-                            <Button color="blue">
+                            <Button color="blue" onClick={fbSignin}>
                                 <ButtonImg src="https://www.freepnglogos.com/uploads/logo-facebook-png/logo-facebook-facebook-logo-transparent-png-pictures-icons-and-0.png" />
                                 Login with facebook
                             </Button>
@@ -210,14 +294,14 @@ const Auth = () => {
                             <Label>
                                 Email Address
                             </Label>
-                            <Input type="email">
+                            <Input type="email" ref={emailRef}>
                             </Input>
                             </InputGrp>
                             <InputGrp>
                             <Label>
                                 Password
                             </Label>
-                            <Input type="password">
+                            <Input type="password" ref={passwordRef}>
                             </Input>
                             </InputGrp>
                             <Bottom>
@@ -227,7 +311,7 @@ const Auth = () => {
                             </Rem>
                             <Forgot>Forgot Password?</Forgot>
                             </Bottom>
-                            <SubmitBtn onClick={()=>navigate('/home')}>Login</SubmitBtn>
+                            <SubmitBtn onClick={handleSubmitLogin}>Login</SubmitBtn>
                             <Bottom signup>
                                 New Here? <a href="#register" style={{textDecoration:"none" ,color:"blue",margin:"0rem 1rem"}}> Create Account</a>
                             </Bottom>
@@ -242,11 +326,11 @@ const Auth = () => {
                             Welcome to Octochat, Please Create your account
                         </Message>
                          <ButtonGroup>
-                            <Button color="white">
+                            <Button color="white" onClick={googleSignin}>
                                 <ButtonImg src="https://www.freepnglogos.com/uploads/google-logo-png/google-logo-png-suite-everything-you-need-know-about-google-newest-0.png"/>
                                 Sign Up with google
                             </Button>
-                            <Button color="blue">
+                            <Button color="blue" onClick={fbSignin}>
                                 <ButtonImg src="https://www.freepnglogos.com/uploads/logo-facebook-png/logo-facebook-facebook-logo-transparent-png-pictures-icons-and-0.png" />
                                 Sign Up with facebook
                             </Button>
@@ -258,14 +342,19 @@ const Auth = () => {
                             <Label>
                                 Email Address
                             </Label>
-                            <Input type="email">
+                            <Input type="email" ref={emailRef}>
                             </Input>
                             </InputGrp>
                             <InputGrp>
                             <Label>
                                 Password
                             </Label>
-                            <Input type="password">
+                            <Input type="password" ref={passwordRef}>
+                            </Input>
+                            <Label>
+                                Confirm Password
+                            </Label>
+                            <Input type="password" ref={passwordConfirmRef}>
                             </Input>
                             </InputGrp>
                             <Bottom>
@@ -273,7 +362,7 @@ const Auth = () => {
                                 <input type="checkbox"/> Remember Me 
                             </Rem>
                             </Bottom>
-                            <SubmitBtn>Sign Up</SubmitBtn>
+                            <SubmitBtn onClick={handleSubmitSignUp}>Sign Up</SubmitBtn>
                             <Bottom signup>
                                 Already had an account? <a href="#login" 
                                 style={{textDecoration:"none" ,color:"blue",margin:"0rem 1rem"}}> Login Here</a>

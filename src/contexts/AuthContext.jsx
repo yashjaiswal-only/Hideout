@@ -1,7 +1,9 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import { GoogleProvider, FacebookProvider } from '../config/firebase-config'
-import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, FacebookAuthProvider } from 'firebase/auth';
+import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, FacebookAuthProvider, signOut } from 'firebase/auth';
+import { useNavigate } from 'react-router-dom';
 const AuthContext= createContext();
+import axios from 'axios'
 
 export const useAuth =()=>{
     return useContext(AuthContext);
@@ -9,31 +11,75 @@ export const useAuth =()=>{
 
 export const AuthProvider = ({children}) => {
     const [currentUser , setCurrentUser ] = useState();
+    const [authorizedUser, setAuthorizedUser] = useState(false || sessionStorage.getItem('accessToken'));
+
     const auth = getAuth();
     auth.languageCode='it';
     const signup = (email,password)=>{
         createUserWithEmailAndPassword(auth,email,password)
-        // .then((userCredential)=>{
-        //     //Signed up 
-        //     // console.log(userCredential)
-        //     const user = userCredential.user;
-        //     const accessToken = user.accessToken;
-        // })
-        // .catch((error)=>{
-        //     const errorCode = error.code;
-        //     const errorMessage = error.message;
-        //     console.log(errorMessage)
-        //     console.log(errorCode)
-        // })
+        .then((userCredential)=>{
+            //Signed up
+            // console.log(userCredential)
+            const user = userCredential.user;
+            if(user){
+                setCurrentUser(user);
+                user.getIdToken()
+                .then((tkn)=>{
+                    sessionStorage.setItem('accessToken',tkn);
+                    setAuthorizedUser(true);
+                })
+            }
+            // const accessToken = user.accessToken;
+        })
+        .catch((error)=>{
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.log(errorMessage)
+            console.log(errorCode)
+        })
     }
     const signInWithGoogle = ()=>{
         signInWithPopup(auth,GoogleProvider)
         .then((result)=>{
             // This gives you a Google Access Token. You can use it to access the Google API.
             const credential = GoogleAuthProvider.credentialFromResult(result);
-            const token = credential.accessToken;
             // The signed-in user info.
             const user = result.user;
+            const details = {
+                uid: user.uid,
+                token: user.accessToken
+            };
+            console.log(user);
+            if(user){
+                setCurrentUser(details);
+                user.getIdToken()
+                .then(async (tkn)=>{
+                    sessionStorage.setItem('accessToken',tkn);
+                    setAuthorizedUser(true);
+                    const checkuser = await axios.get(import.meta.env.VITE_API+"user/checkuser",{
+                        headers:{
+                            'Authorization': `Bearer ${tkn}`
+                        }
+                    });
+                    if(checkuser.User == 0){
+                        const createUser = await axios.post(import.meta.env.VITE_API+"user/create",{
+                            headers:{
+                                'Authorization': `Bearer ${tkn}`
+                            }
+                        })
+                        console.log(createUser);
+                    }
+                    else{
+                        console.log("Account already exists");
+                        return;
+                    }
+                })
+                return;
+            }
+            
+            // console.log("user");
+            // console.log(user);
+
             // ...
         }).catch((error) => {
             // Handle Errors here.
@@ -43,8 +89,11 @@ export const AuthProvider = ({children}) => {
             const email = error.customData.email;
             // The AuthCredential type that was used.
             const credential = GoogleAuthProvider.credentialFromError(error);
+            return 0;
             // ...
-          });
+        });
+        
+        
     }
 
     const signInWithFacebook = ()=>{
@@ -57,6 +106,14 @@ export const AuthProvider = ({children}) => {
             const credential = FacebookAuthProvider.credentialFromResult(result);
             const accessToken = credential.accessToken;
 
+            if(user){
+                setCurrentUser(user);
+                user.getIdToken()
+                .then((tkn)=>{
+                    sessionStorage.setItem('accessToken',tkn);
+                    setAuthorizedUser(true);
+                })
+            }
             // IdP data available using getAdditionalUserInfo(result)
             // ...
         })
@@ -75,34 +132,59 @@ export const AuthProvider = ({children}) => {
 
     const signin = (email,password)=>{
         signInWithEmailAndPassword(auth,email,password)
-        // .then((userCredential) => {
-        //     // Signed in 
-        //     const user = userCredential.user;
-        //     const accessToken=user.accessToken;
-        //     return accessToken;
-        //     // ...
-        //   })
-        //   .catch((error) => {
-        //     const errorCode = error.code;
-        //     const errorMessage = error.message;
-        //     console.log(errorMessage)
-        //     console.log(errorCode)
-        //     return errorCode;
-        //   });
-    }
-    useEffect(()=>{
-        const stopAuthListener = onAuthStateChanged(auth,(user)=>{
-            setCurrentUser(user)
-        })
+        .then((userCredential) => {
+            // Signed in 
+            const user = userCredential.user;
+            const accessToken=user.accessToken;
 
-        return stopAuthListener
-    },[])
+            if(user){
+                setCurrentUser(user);
+                user.getIdToken()
+                .then((tkn)=>{
+                    sessionStorage.setItem('accessToken',tkn);
+                    setAuthorizedUser(true);
+                })
+            }
+
+            return accessToken;
+            // ...
+          })
+          .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.log(errorMessage)
+            console.log(errorCode)
+            return errorCode;
+          });
+    }
+
+    const signout = () => {
+        signOut(auth)
+        .then(()=>{
+            sessionStorage.clear();
+            setAuthorizedUser(false);
+            alert('Logged Out Successfully');
+        }).catch((error) => {
+        // An error happened.
+        alert(error);
+        });
+    }
+
+    // useEffect(()=>{
+    //     const stopAuthListener = onAuthStateChanged(auth,(user)=>{
+    //         setCurrentUser(user)
+    //     })
+
+    //     return stopAuthListener
+    // },[])
     const value = {
         currentUser,
         signup,
         signin,
         signInWithGoogle,
-        signInWithFacebook
+        signInWithFacebook,
+        signout,
+        authorizedUser
     }
   return (
     <AuthContext.Provider value={value}>

@@ -28,11 +28,11 @@ const Container=styled.div`
 
 const Options=styled.div`
     width:90%;
-    height:45%;
+    height:55%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    
+    position: relative;
 `
 const Left=styled.div`
     width:70%;
@@ -46,15 +46,15 @@ const Option=styled.div`
     height:80%;
     border-radius:10px;
     padding:0.2rem;
-    /* margin:0 0.4rem; */
+    margin:0rem 0.4rem;
     display: flex;
     align-items: center;   
     font-size:0.8rem;
     color:#655f5f;
-    overflow:hidden;
     ${mobile({
       height:'60%',
-      fontSize:'0.4rem'
+      fontSize:'0.4rem',
+      padding:'0 0.2rem'
     })}
    
 `
@@ -101,9 +101,10 @@ const Input=styled.input`
     /* padding:0 1rem; */
 `
 const Image=styled.img`
-  width:7%;
+  width:10%;
   aspect-ratio:1/1;
   border-radius:50%;
+  margin:4px;
   ${mobile({
     width:'10%'
   })}

@@ -2,16 +2,13 @@ import React, { useState } from 'react'
 import styled from 'styled-components';
 import {Topbar} from '../Components'
 import Block from '../Components/Block';
-import ChatList from '../Components/ChatList';
-import Chats from '../Components/Chats';
+import ChatBox from '../Components/ChatBox';
 import Feed from '../Components/Feed';
-import Notification from '../Components/NotificationList';
 import Right from '../Components/Right';
 import Sidebar from '../Components/Sidebar';
 import {mobile} from '../responsive'
 const Container=styled.div`
     width: 100%;
-    
 `
 const Content=styled.div`
     width: 100%;
@@ -32,6 +29,9 @@ const Display=styled.div`
       justifyContent:'center'
     })}
 `
+const Chats=styled.div`
+  background-color: black;
+`
 const Main = () => {
   let width = window.innerWidth;
   const [list,setList]=useState('');
@@ -46,12 +46,15 @@ const Main = () => {
       <Content>
            <Sidebar showList={showList} width={width}/>
            <Block list={list} showList={showList} updateCount={updateCount}/>
-           {width>600 && <Right/>}
-            <Chats updateCount={updateCount} count={count} />
+            {width>600 && <Right/>}
+            <Chats>
+              {/* <ChatBox count={1}/>
+              <ChatBox count={0}/>
+              <ChatBox count={2}/> */}
+            </Chats>
            <Display>
               <Feed/> 
-            {/* {width>600 &&  <Right/>} */}
-           </Display>
+            </Display>
       </Content>
     </Container>
   )

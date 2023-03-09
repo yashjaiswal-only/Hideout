@@ -3,27 +3,30 @@ import styled from 'styled-components'
 import ClearIcon from '@mui/icons-material/Clear';
 import AttachmentIcon from '@mui/icons-material/Attachment';
 import MicIcon from '@mui/icons-material/Mic';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import SendIcon from '@mui/icons-material/Send';
 import { useEffect, useState } from 'react';
 const Component=styled.div`
     height:70vh;
-    width:80%;
-    bottom:0.2rem;
-    right:0.2rem;
+    width:25%;
+    bottom:${props=>props.down?'-60vh':'0.2rem'};
+    /* bottom:-60vh; */
+    right:${props=>`${props.count*25}%`};
     position:fixed;
     z-index:8;
     border-radius:15px;
     display: flex;
     flex-direction:row-reverse;
+    /* background-color: black; */
     @media  (max-width:600px){
       
     }
 `
 const Wrapper=styled.div`
-    margin:0 0.5rem ;
-    width:30%;
+    margin:0 0.2rem ;
+    width:100%;
     height:100%;
-    /* background-color: black; */
     border:1px solid black;
     border-radius:15px;
     display: flex;
@@ -47,7 +50,7 @@ const Image=styled.img`
     border:3px solid green;
 `
 const Name=styled.div`
-    width:60%;
+    width:50%;
     font-weight:700;
 
     >p{
@@ -59,7 +62,19 @@ const Name=styled.div`
     }
 `
 const Options=styled.div`
-    width:10%;
+    width:20%;
+    display: flex;
+    flex-direction:row-reverse;
+`
+const Option=styled.span`
+    border-radius:50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor:pointer;
+    &:hover{
+        background-color: #d0dfec;
+    }
 `
 const Middle=styled.div`
     height:80%;
@@ -84,44 +99,44 @@ const Message=styled.input`
     outline:none;
     background-color: #e9f1f1;
 `
-const Icon=styled.span`
+const Icon=styled.span` 
     width:10%;
 `
-const Chats = ({count}) => {
+const ChatBox = ({count}) => {
     const [message,setMessage]=useState('')
+    const [down,setDown]=useState(false)
     const onChange=(e)=>{
         setMessage(e.target.value);
         console.log(e.target.value)
     }
-    useEffect(()=>{
-        console.log('count')
-        console.log(count);
-    },[count])
   return (
-    <Component>
-        {count>0 && 
-            <Wrapper>
-                <Top>
-                    <Image src={pic}/>
-                    <Name>
-                        <p>Yash Jaiswal</p>
-                        <span>Online</span>
-                    </Name>
-                    <Options><ClearIcon/></Options>
-                </Top>
-                <Middle></Middle>
-                <Bottom>
-                    <AttachmentIcon sx={{color:'gray'}}/>
-                    <Message type='text' onChange={onChange} />
-                    <Icon>
-                        {message.length?<SendIcon sx={{color:'green',fontSize:"2rem"}} />:<MicIcon sx={{color:'green',fontSize:"2rem"}} />}
-                    </Icon>
-                </Bottom>
-            </Wrapper> 
-        }
-     
+    <Component count={count} down={down}>
+    <Wrapper>
+        <Top>
+            <Image src={pic}/>
+            <Name>
+                <p>Yash Jaiswal</p>
+                <span>Online</span>
+            </Name>
+            <Options>
+                <Option><ClearIcon/></Option>
+                <Option onClick={()=>{down?setDown(false):setDown(true)}}>
+                {!down?<KeyboardArrowDownIcon />:<KeyboardArrowUpIcon/>}
+                </Option>
+                </Options>
+        </Top>
+        <Middle></Middle>
+        <Bottom>
+            <AttachmentIcon sx={{color:'gray'}}/>
+            <Message type='text' onChange={onChange} />
+            <Icon>
+                {message.length?<SendIcon sx={{color:'green',fontSize:"2rem"}} />:<MicIcon sx={{color:'green',fontSize:"2rem"}} />}
+            </Icon>
+        </Bottom>
+    </Wrapper> 
     </Component>
+
   )
 }
 
-export default Chats
+export default ChatBox

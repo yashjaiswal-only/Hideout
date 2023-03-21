@@ -233,20 +233,19 @@ const Auth = () => {
     e.preventDefault()
     setError('')
     setLoading(true)
-    signInWithGoogle()
-    .then(()=>{
+    try{
+        await signInWithGoogle();
         console.log("signedin")
         setLoading(false)
-        navigate('/home');
-    })
-    .catch(()=>{
+        navigate('/home')
+    }catch(error){
         console.log("first00")
         setLoading(false)
         setError('Failed to sign in!! Please try again')
-    })
+    }
     console.log("first")
   }
-
+  
   async function fbSignin(e){
     e.preventDefault()
     try{

@@ -4,6 +4,7 @@ import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider, onAuthStat
 import { useNavigate } from 'react-router-dom';
 const AuthContext= createContext();
 import axios from 'axios'
+import { async } from '@firebase/util';
 
 export const useAuth =()=>{
     return useContext(AuthContext);
@@ -38,8 +39,8 @@ export const AuthProvider = ({children}) => {
             console.log(errorCode)
         })
     }
-    const signInWithGoogle = ()=>{
-        signInWithPopup(auth,GoogleProvider)
+    const signInWithGoogle = async()=>{
+        await signInWithPopup(auth,GoogleProvider)
         .then((result)=>{
             // This gives you a Google Access Token. You can use it to access the Google API.
             const credential = GoogleAuthProvider.credentialFromResult(result);
@@ -76,7 +77,7 @@ export const AuthProvider = ({children}) => {
                 })
                 return;
             }
-            
+
             // console.log("user");
             // console.log(user);
 

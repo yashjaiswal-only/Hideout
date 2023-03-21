@@ -48,9 +48,9 @@ const Main = () => {
            <Block list={list} showList={showList} updateCount={updateCount}/>
             {width>600 && <Right/>}
             <Chats>
-              <ChatBox count={1}/>
+              {/* <ChatBox count={1}/>
               <ChatBox count={0}/>
-              <ChatBox count={2}/>
+              <ChatBox count={2}/> */}
             </Chats>
            <Display>
               <Feed/> 

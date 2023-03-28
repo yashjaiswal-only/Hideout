@@ -7,13 +7,17 @@ import TextField from '@mui/material/TextField';
 import { Navigate, useNavigate } from 'react-router-dom';
 import bgimg from '../Data/containerbg.jpg';
 import Welcome from '../Components/Welcome'
-import { tab } from '../responsive';
+import { mobile, tab } from '../responsive';
 const Container=styled.div`
     width: 100%;
-    height:100vh;
     display: flex;
     justify-content: center;
+    padding:5rem 7rem;
     align-items: center;
+    background-image:url(${bgimg});
+    ${mobile({
+        padding:'2rem'
+    })}
 `
 const ContainerBgImg=styled.img`
     position:absolute;
@@ -22,8 +26,6 @@ const ContainerBgImg=styled.img`
     opacity:0.5;
 `
 const Wrapper=styled.div`
-    width:80%;
-    height:80%;
     z-index:3;
     background-color: #fff;
     display: flex;
@@ -34,24 +36,32 @@ const Wrapper=styled.div`
 `
 const Left=styled.div`
     background-color: white;
-    width:50%;
+    flex:1;
     display: flex;justify-content: center;align-items: center;
+    width:50%;
+    height:max-content;
+    ${tab({
+        width:'100%',
+        padding:'3rem 0'
+    })}
 `
 const Right=styled.div`
-    /* width:50%; */
+    flex:1;
     background-color: #fff;
     display: flex;
     align-items: center;
     flex-direction: column;
     justify-content: center;
-   
+   padding:1rem;
 `
 const Slider=styled.div`
     height:90%;
     width:80%;
     text-align: center;
     overflow: hidden;
-    
+    ${mobile({
+        width:'90%'
+    })}
 `
 const Slides=styled.div`
     display: flex;
@@ -82,7 +92,6 @@ const Login=styled.div`
     align-items: center;
     height:100%;
     width:100%;
-
     display: flex;
     flex-direction:column ;
     justify-content: space-between;
@@ -115,6 +124,9 @@ const Message=styled.span`
     text-align:${props=>props.center?"center":"left"};
     font-size:${props=>props.center?"1rem":"1.5rem"};
     color:gray;
+    ${tab({
+        margin:'1rem 0'
+    })}
 `
 const ButtonGroup=styled.div`
     width:100%;
@@ -138,7 +150,10 @@ const InputGrp=styled.div`
     width:100%;
     display: flex;
     flex-direction:${props=>props.last?"row":"column"};
-    /* background-color: black; */
+    ${tab({
+        margin:'1rem auto',
+        width:'80%'
+    })}
 `
 const Label=styled.span`
     /* width:100%; */
@@ -157,6 +172,7 @@ const Input=styled.input`
     &:focus {
         border-color: green;
     }
+    
 `
 const Bottom=styled.div`
     display: flex;
@@ -164,16 +180,24 @@ const Bottom=styled.div`
     justify-content: ${props=>props.signup?"center":"space-between"};
     font-size:0.8rem;
     font-weight:700;
+    ${tab({
+        width:'70%',
+        margin:'1rem auto',
+        fontSize:'1rem'
+    })}
 `
 const Rem=styled.div`
     display: flex;
-   
 `
 const Forgot=styled.div``
 const Terms=styled.div`
     width:100%;
     text-align:left;
     font-size:0.8rem;
+    margin-bottom:1rem;
+    ${tab({
+        fontSize:'1rem',
+    })}
 `
 const SubmitBtn=styled.button`
     padding:0.2rem 1rem;
@@ -274,7 +298,7 @@ const Auth = () => {
 
   return (
     <Container>
-        <ContainerBgImg src={bgimg}/>
+        {/* <ContainerBgImg src={bgimg}/> */}
         <Wrapper>
             <Left>
                 <Slider>
@@ -298,6 +322,7 @@ const Auth = () => {
                          <Message center>
                             - OR -
                          </Message>
+
                             <InputGrp>
                             <Label>
                                 Email Address
@@ -305,6 +330,7 @@ const Auth = () => {
                             <Input type="email" ref={emailRef}>
                             </Input>
                             </InputGrp>
+
                             <InputGrp>
                             <Label>
                                 Password
@@ -312,6 +338,7 @@ const Auth = () => {
                             <Input type="password" ref={passwordRef}>
                             </Input>
                             </InputGrp>
+
                             <Bottom>
                             <Rem >
                                 <input type="checkbox"/> Remember Me 
@@ -327,6 +354,7 @@ const Auth = () => {
                             & <span style={{color:"blue"}}>Privacy Policy</span>
                             </Terms>
                     </Login>
+
 
                     <Register id="register">
                     <Logo>OCTOCHAT</Logo>

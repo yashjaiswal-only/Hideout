@@ -17,7 +17,7 @@ const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
 const images = [
   {
-    label: 'Experience the extraordinary with our brand',
+    label: 'Experience the extraordinary with us',
     imgPath:SocialMedia,
   },
   {
@@ -62,10 +62,12 @@ function SwipeableTextMobileStepper() {
         display: 'flex',
         alignItems: 'center',
         bgcolor: 'none',
-        background:'none'
+        background:'none',
       }}
     >
       <Typography sx={{ fontFamily:'Georgia, serif',fontSize:'1.5rem',
+      padding:'0.5rem',
+      textAlign:'center',
       font: 'bold 1.5rem Poppins, sans-serif',
       backgroundImage: 'linear-gradient(60deg, #E21143, #FFB03A)',
       backgroundClip: 'text',

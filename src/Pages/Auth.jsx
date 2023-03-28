@@ -9,14 +9,15 @@ import bgimg from '../Data/containerbg.jpg';
 import Welcome from '../Components/Welcome'
 import { mobile, tab } from '../responsive';
 const Container=styled.div`
-    width: 100%;
+    width: 100vw;
     display: flex;
     justify-content: center;
     padding:5rem 7rem;
     align-items: center;
     background-image:url(${bgimg});
-    ${mobile({
-        padding:'2rem'
+    ${tab({
+        padding:'2rem',
+        flexDirection:'column'
     })}
 `
 const ContainerBgImg=styled.img`
@@ -26,11 +27,18 @@ const ContainerBgImg=styled.img`
     opacity:0.5;
 `
 const Wrapper=styled.div`
-    z-index:3;
+    /* z-index:3;
     background-color: #fff;
     display: flex;
-    justify-content: space-between;
     ${tab({
+        flexDirection:'column'
+    })} */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image:url(${bgimg});
+    ${mobile({
+        padding:'2rem',
         flexDirection:'column'
     })}
 `
@@ -39,7 +47,7 @@ const Left=styled.div`
     flex:1;
     display: flex;justify-content: center;align-items: center;
     width:50%;
-    height:max-content;
+    height:100%;
     ${tab({
         width:'100%',
         padding:'3rem 0'
@@ -65,7 +73,8 @@ const Slider=styled.div`
 `
 const Slides=styled.div`
     display: flex;
-    height:100%;
+    height:max-content;
+    width:100%;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
@@ -94,7 +103,7 @@ const Login=styled.div`
     width:100%;
     display: flex;
     flex-direction:column ;
-    justify-content: space-between;
+    /* justify-content: space-between; */
 `
 const Register=styled.div`
     scroll-snap-align: start;
@@ -131,7 +140,11 @@ const Message=styled.span`
 const ButtonGroup=styled.div`
     width:100%;
     display: flex;
-
+    ${mobile({
+        flexDirection:'column',
+        alignItems:'center',
+        justifyContent:'space-between'
+    })}
 `
 const Button=styled.button`
     display: flex;  justify-content: space-between; align-items: center;
@@ -140,6 +153,9 @@ const Button=styled.button`
     background-color: ${props=>props.color};
     color:${props=>props.color=="blue"?"white":"black"};
     margin:auto;
+    ${mobile({
+        margin:'1rem 0'
+    })}
 `
 const ButtonImg=styled.img`
     width:1rem;
@@ -151,8 +167,12 @@ const InputGrp=styled.div`
     display: flex;
     flex-direction:${props=>props.last?"row":"column"};
     ${tab({
-        margin:'1rem auto',
+        margin:'1rem 0',
         width:'80%'
+    })}
+    ${mobile({
+        // margin:'1rem 0'
+        width:'50%'
     })}
 `
 const Label=styled.span`
@@ -185,6 +205,10 @@ const Bottom=styled.div`
         margin:'1rem auto',
         fontSize:'1rem'
     })}
+    ${mobile({
+        margin:'1rem 0',
+        fontSize:'0.8rem'
+    })}
 `
 const Rem=styled.div`
     display: flex;
@@ -196,6 +220,9 @@ const Terms=styled.div`
     font-size:0.8rem;
     margin-bottom:1rem;
     ${tab({
+        fontSize:'1rem',
+    })}
+    ${mobile({
         fontSize:'1rem',
     })}
 `
@@ -299,122 +326,125 @@ const Auth = () => {
   return (
     <Container>
         {/* <ContainerBgImg src={bgimg}/> */}
-        <Wrapper>
-            <Left>
-                <Slider>
-                    <Slides>
+        {/* <Wrapper> */}
 
-                    <Login id="login">
-                        <Logo>OCTOCHAT</Logo>
-                        <Message>
-                            Welcome Back, Please login to your account
-                        </Message>
-                         <ButtonGroup>
-                            <Button color="white" onClick={googleSignin}>
-                                <ButtonImg src="https://www.freepnglogos.com/uploads/google-logo-png/google-logo-png-suite-everything-you-need-know-about-google-newest-0.png"/>
-                                Login with google
-                            </Button>
-                            <Button color="blue" onClick={fbSignin}>
-                                <ButtonImg src="https://www.freepnglogos.com/uploads/logo-facebook-png/logo-facebook-facebook-logo-transparent-png-pictures-icons-and-0.png" />
-                                Login with facebook
-                            </Button>
-                         </ButtonGroup>
-                         <Message center>
-                            - OR -
-                         </Message>
+        <Left>
 
-                            <InputGrp>
-                            <Label>
-                                Email Address
-                            </Label>
-                            <Input type="email" ref={emailRef}>
-                            </Input>
-                            </InputGrp>
+        <Slider>
+            <Slides>
 
-                            <InputGrp>
-                            <Label>
-                                Password
-                            </Label>
-                            <Input type="password" ref={passwordRef}>
-                            </Input>
-                            </InputGrp>
+            <Login id="login">
+                <Logo>OCTOCHAT</Logo>
+                <Message>
+                    Welcome Back, Please login to your account
+                </Message>
+                    <ButtonGroup>
+                    <Button color="white" onClick={googleSignin}>
+                        <ButtonImg src="https://www.freepnglogos.com/uploads/google-logo-png/google-logo-png-suite-everything-you-need-know-about-google-newest-0.png"/>
+                        Login with google
+                    </Button>
+                    <Button color="blue" onClick={fbSignin}>
+                        <ButtonImg src="https://www.freepnglogos.com/uploads/logo-facebook-png/logo-facebook-facebook-logo-transparent-png-pictures-icons-and-0.png" />
+                        Login with facebook
+                    </Button>
+                    </ButtonGroup>
+                    <Message center>
+                    - OR -
+                    </Message>
 
-                            <Bottom>
-                            <Rem >
-                                <input type="checkbox"/> Remember Me 
-                                {/* <Label>Remember Me</Label> */}
-                            </Rem>
-                            <Forgot>Forgot Password?</Forgot>
-                            </Bottom>
-                            <SubmitBtn onClick={handleSubmitLogin}>Login</SubmitBtn>
-                            <Bottom signup>
-                                New Here? <a href="#register" style={{textDecoration:"none" ,color:"blue",margin:"0rem 1rem"}}> Create Account</a>
-                            </Bottom>
-                            <Terms>By signing up , you agree to OctoChat's <span style={{color:"blue"}}>Terms & Conditions</span>
-                            & <span style={{color:"blue"}}>Privacy Policy</span>
-                            </Terms>
-                    </Login>
+                    <InputGrp>
+                    <Label>
+                        Email Address
+                    </Label>
+                    <Input type="email" ref={emailRef}>
+                    </Input>
+                    </InputGrp>
+
+                    <InputGrp>
+                    <Label>
+                        Password
+                    </Label>
+                    <Input type="password" ref={passwordRef}>
+                    </Input>
+                    </InputGrp>
+
+                    <Bottom>
+                    <Rem >
+                        <input type="checkbox"/> Remember Me 
+                    </Rem>
+                    <Forgot>Forgot Password?</Forgot>
+                    </Bottom>
+                    <SubmitBtn onClick={handleSubmitLogin}>Login</SubmitBtn>
+                    <Bottom signup>
+                        New Here? <a href="#register" style={{textDecoration:"none" ,color:"blue",margin:"0rem 1rem"}}> Create Account</a>
+                    </Bottom>
+                    <Terms>By signing up , you agree to OctoChat's <span style={{color:"blue"}}>Terms & Conditions</span>
+                    & <span style={{color:"blue"}}>Privacy Policy</span>
+                    </Terms>
+            </Login>
 
 
-                    <Register id="register">
-                    <Logo>OCTOCHAT</Logo>
-                        <Message>
-                            Welcome to Octochat, Please Create your account
-                        </Message>
-                         <ButtonGroup>
-                            <Button color="white" onClick={googleSignin}>
-                                <ButtonImg src="https://www.freepnglogos.com/uploads/google-logo-png/google-logo-png-suite-everything-you-need-know-about-google-newest-0.png"/>
-                                Sign Up with google
-                            </Button>
-                            <Button color="blue" onClick={fbSignin}>
-                                <ButtonImg src="https://www.freepnglogos.com/uploads/logo-facebook-png/logo-facebook-facebook-logo-transparent-png-pictures-icons-and-0.png" />
-                                Sign Up with facebook
-                            </Button>
-                         </ButtonGroup>
-                         <Message center>
-                            - OR -
-                         </Message>
-                            <InputGrp>
-                            <Label>
-                                Email Address
-                            </Label>
-                            <Input type="email" ref={emailRef}>
-                            </Input>
-                            </InputGrp>
-                            <InputGrp>
-                            <Label>
-                                Password
-                            </Label>
-                            <Input type="password" ref={passwordRef}>
-                            </Input>
-                            <Label>
-                                Confirm Password
-                            </Label>
-                            <Input type="password" ref={passwordConfirmRef}>
-                            </Input>
-                            </InputGrp>
-                            <Bottom>
-                            <Rem >
-                                <input type="checkbox"/> Remember Me 
-                            </Rem>
-                            </Bottom>
-                            <SubmitBtn onClick={handleSubmitSignUp}>Sign Up</SubmitBtn>
-                            <Bottom signup>
-                                Already had an account? <a href="#login" 
-                                style={{textDecoration:"none" ,color:"blue",margin:"0rem 1rem"}}> Login Here</a>
-                            </Bottom>
-                            <Terms>By signing up , you agree to OctoChat's <span style={{color:"blue"}}>Terms & Conditions</span>
-                            & <span style={{color:"blue"}}>Privacy Policy</span>
-                            </Terms>
-                    </Register>
+            <Register id="register">
+            <Logo>OCTOCHAT</Logo>
+                <Message>
+                    Welcome to Octochat, Please Create your account
+                </Message>
+                    <ButtonGroup>
+                    <Button color="white" onClick={googleSignin}>
+                        <ButtonImg src="https://www.freepnglogos.com/uploads/google-logo-png/google-logo-png-suite-everything-you-need-know-about-google-newest-0.png"/>
+                        Sign Up with google
+                    </Button>
+                    <Button color="blue" onClick={fbSignin}>
+                        <ButtonImg src="https://www.freepnglogos.com/uploads/logo-facebook-png/logo-facebook-facebook-logo-transparent-png-pictures-icons-and-0.png" />
+                        Sign Up with facebook
+                    </Button>
+                    </ButtonGroup>
+                    <Message center>
+                    - OR -
+                    </Message>
+                    <InputGrp>
+                    <Label>
+                        Email Address
+                    </Label>
+                    <Input type="email" ref={emailRef}>
+                    </Input>
+                    </InputGrp>
+                    <InputGrp>
+                    <Label>
+                        Password
+                    </Label>
+                    <Input type="password" ref={passwordRef}>
+                    </Input>
+                    <Label>
+                        Confirm Password
+                    </Label>
+                    <Input type="password" ref={passwordConfirmRef}>
+                    </Input>
+                    </InputGrp>
+                    <Bottom>
+                    <Rem >
+                        <input type="checkbox"/> Remember Me 
+                    </Rem>
+                    </Bottom>
+                    <SubmitBtn onClick={handleSubmitSignUp}>Sign Up</SubmitBtn>
+                    <Bottom signup>
+                        Already had an account? <a href="#login" 
+                        style={{textDecoration:"none" ,color:"blue",margin:"0rem 1rem"}}> Login Here</a>
+                    </Bottom>
+                    <Terms>By signing up , you agree to OctoChat's <span style={{color:"blue"}}>Terms & Conditions</span>
+                    & <span style={{color:"blue"}}>Privacy Policy</span>
+                    </Terms>
+            </Register>
 
-                    </Slides>
-                </Slider>
-            </Left>
-            <Right>
-                <Welcome/>
-            </Right>
-        </Wrapper>
+            </Slides>
+        </Slider>
+        </Left>
+        <Right>
+
+        <Welcome/>
+        </Right>
+        {/* </Wrapper> */}
+        
     </Container>
   )
 }

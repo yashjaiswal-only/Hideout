@@ -1,15 +1,12 @@
 import React, { useRef, useState } from 'react'
-import { Link } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext';
 import styled from 'styled-components';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import bgimg from '../Data/containerbg.jpg';
 import Welcome from '../Components/Welcome'
 import { mobile, tab } from '../responsive';
 const Container=styled.div`
-    width: 100vw;
+    width: 100%;
     display: flex;
     justify-content: center;
     padding:5rem 7rem;
@@ -19,12 +16,6 @@ const Container=styled.div`
         padding:'2rem',
         flexDirection:'column'
     })}
-`
-const ContainerBgImg=styled.img`
-    position:absolute;
-    width:100%;
-    height:100%;
-    opacity:0.5;
 `
 const Wrapper=styled.div`
     /* z-index:3;
@@ -47,7 +38,7 @@ const Left=styled.div`
     flex:1;
     display: flex;justify-content: center;align-items: center;
     width:50%;
-    height:100%;
+    height:80vh;
     ${tab({
         width:'100%',
         padding:'3rem 0'
@@ -60,7 +51,12 @@ const Right=styled.div`
     align-items: center;
     flex-direction: column;
     justify-content: center;
+    width:50%;
+    height:80vh;
    padding:1rem;
+   ${tab({
+    width:'100%'
+   })}
 `
 const Slider=styled.div`
     height:90%;
@@ -75,6 +71,7 @@ const Slides=styled.div`
     display: flex;
     height:max-content;
     width:100%;
+    height:100%;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
@@ -96,14 +93,12 @@ const Login=styled.div`
     scroll-snap-align: start;
     flex-shrink: 0;
     transition: transform 0.5s;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     height:100%;
     width:100%;
     display: flex;
     flex-direction:column ;
-    /* justify-content: space-between; */
+    align-items: center;
+    justify-content: space-between;
 `
 const Register=styled.div`
     scroll-snap-align: start;
@@ -154,7 +149,10 @@ const Button=styled.button`
     color:${props=>props.color=="blue"?"white":"black"};
     margin:auto;
     ${mobile({
-        margin:'1rem 0'
+        margin:'0.5rem 0',
+        fontSize:'1rem',
+        // padding:'1rem',
+        width:'60%'
     })}
 `
 const ButtonImg=styled.img`
@@ -172,7 +170,7 @@ const InputGrp=styled.div`
     })}
     ${mobile({
         // margin:'1rem 0'
-        width:'50%'
+        width:'80%'
     })}
 `
 const Label=styled.span`
@@ -207,7 +205,7 @@ const Bottom=styled.div`
     })}
     ${mobile({
         margin:'1rem 0',
-        fontSize:'0.8rem'
+        fontSize:'1rem'
     })}
 `
 const Rem=styled.div`
@@ -325,7 +323,6 @@ const Auth = () => {
 
   return (
     <Container>
-        {/* <ContainerBgImg src={bgimg}/> */}
         {/* <Wrapper> */}
 
         <Left>

@@ -6,7 +6,8 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { Navigate, useNavigate } from 'react-router-dom';
 import bgimg from '../Data/containerbg.jpg';
-
+import Welcome from '../Components/Welcome'
+import { tab } from '../responsive';
 const Container=styled.div`
     width: 100%;
     height:100vh;
@@ -27,6 +28,9 @@ const Wrapper=styled.div`
     background-color: #fff;
     display: flex;
     justify-content: space-between;
+    ${tab({
+        flexDirection:'column'
+    })}
 `
 const Left=styled.div`
     background-color: white;
@@ -34,9 +38,13 @@ const Left=styled.div`
     display: flex;justify-content: center;align-items: center;
 `
 const Right=styled.div`
-    width:50%;
-    background: linear-gradient(-60deg, #2ae88a 0%, #08aeea 100%) border-box;
-
+    /* width:50%; */
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+   
 `
 const Slider=styled.div`
     height:90%;
@@ -159,6 +167,7 @@ const Bottom=styled.div`
 `
 const Rem=styled.div`
     display: flex;
+   
 `
 const Forgot=styled.div``
 const Terms=styled.div`
@@ -375,7 +384,7 @@ const Auth = () => {
                 </Slider>
             </Left>
             <Right>
-                
+                <Welcome/>
             </Right>
         </Wrapper>
     </Container>

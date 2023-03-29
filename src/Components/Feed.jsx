@@ -9,7 +9,6 @@ const Container=styled.div`
     display: flex;
     flex-direction:column;
     align-items: center;
-    
     ${mobile({
       width:'100%'
     })}
@@ -20,8 +19,8 @@ const Feed = () => {
     <Container>
       <Create/>
        <Post/>
-      <Post/>
-      <Post/>
+      {/* <Post/> 
+      <Post/> */}
     </Container>  
   )
 }

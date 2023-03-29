@@ -8,77 +8,71 @@ import ShareOutlinedIcon from '@mui/icons-material/ShareOutlined';
 import SendIcon from '@mui/icons-material/Send';
 import pic from '../Data/pic.png';
 import picture from '../Data/pexels-maria-loznevaya-15237253.jpg'
-import { mobile } from '../responsive';
+import { mobile,tab } from '../responsive';
 const Container=styled.div`
     width:90%;
-    /* min-height:35rem; */
     margin:0.5rem 0rem;
-    position:relative;
+    padding:0.5rem 1rem;
     border-radius:10px;
     background-color: white;
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* justify-content: space-around; */
     -webkit-box-shadow: 0px 0px 5px 3px rgba(214,214,214,1);
     -moz-box-shadow: 0px 0px 5px 3px rgba(214,214,214,1);
     box-shadow: 0px 0px 5px 3px rgba(214,214,214,1);
+    ${mobile({
+      // padding:'0.5rem 1rem'
+    })}
 `
 const Details=styled.div`
-    width:95%;
-    height:2.5rem;
-    margin:0.3rem;
+    width:100%;
+    height:60px;
     display: flex;
     align-items: center;
     ${mobile({
-      height:'2rem'
+      // height:'2rem'
     })}
 `
-const Image=styled.img`
-  width:6%;
-  aspect-ratio:1/1;
-  border-radius:50%;
-  ${mobile({
-      width:'8%'
-  })}
-`
 const Avatar=styled.img`
-  width:7%;
+  width:50px;
   aspect-ratio:1/1;
   border-radius:50%;
   ${mobile({
-      width:'12%'
+      // width:'12%'
   })}
 `
 const Entry=styled.div`
-    margin:0rem 0.6rem;
+    margin:0rem 10px;
     display: flex; justify-content: center; flex-direction: column;
 `
 const Name=styled.span`
     margin:0;
-    font-size:1rem;
+    font-size:1.2rem;
     color:black;
     font-weight:600;
+    line-height:normal;
     ${mobile({
-      fontSize:'0.8rem',
+      // fontSize:'0.8rem',
     })}
 `
 const Date=styled.span`
     margin:0;
-    font-size:0.7rem;
+    font-size:0.8rem;
     color:gray;
-    font-weight:400;
+    font-weight:600;
+    line-height:normal;
     ${mobile({
-      fontSize:'0.6rem',
+      // fontSize:'0.6rem',
     })}
 `
 const Caption=styled.div`
-    width:95%;
-    font-size:0.8rem;
+    width:100%;
+    font-size:1rem;
     font-weight:600;
     text-align:justify;
     ${mobile({
-      fontSize:'0.6rem'
+      // fontSize:'0.6rem'
     })}
     >span{
         font-weight:700;
@@ -87,11 +81,14 @@ const Caption=styled.div`
     }
 `
 const Picture=styled.img`
-    width:95%;
+    width:100%;
     height:25rem;
     margin: 0.5rem 0;
     object-fit:fill;
-    border-radius:15px;
+    /* border-radius:15px; */
+    ${tab({
+      height:'20rem'
+    })}
     ${mobile({
       height:'15rem'
     })}
@@ -136,13 +133,12 @@ const Action=styled.div`
       width:'30%'
     })}
 `
-
 const InputBox=styled.div`
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
-  width:95%;
-  min-height:3rem;
+  width:100%;
+  /* min-height:50px; */
   background-color: #e1f2f7;
   border-radius:25px;
   margin:0.4rem 0;
@@ -150,13 +146,22 @@ const InputBox=styled.div`
       minHeight:'1.5rem'
   })}
 `
-const Input=styled.input`
-    width:70%;
-    height:90%;
+const Image=styled.img`
+  width:40px;
+  aspect-ratio:1/1;
+  border-radius:50%;
+  margin:0.4rem;
+  ${mobile({
+      width:'8%'
+  })}
+`
+const Input=styled.textarea`
+    width:80%;
+    height:max-content;
     background-color: inherit;   
     border:none;
     outline:none;
-    font-size:1rem;
+    font-size:1.2rem;
     ${mobile({
       fontSize:'0.6rem'
     })}
@@ -176,15 +181,15 @@ const Post = () => {
             <Date>7 Feb at 11:27pm</Date>
         </Entry>
       </Details>
-
       <Caption>
-        {wholeCap?cap:cap.slice(0,100)}
+        {wholeCap?cap:cap.slice(0,150)}
          {!wholeCap?<span onClick={()=>setWholeCap(true)}>...see more</span>:<span onClick={()=>setWholeCap(false)}>...see less</span>}
       </Caption>
 
+      
       <Picture  src={picture}/>
       
-      <Actions>
+     <Actions>
           <Action like={like} onClick={()=>{setLike(~like)}}>
             {like?<FavoriteIcon sx={{color:'red',fontSize:`${width<500?'1rem':'2rem'}`}}/>
             :<FavoriteBorderIcon sx={{fontSize:`${width<500?'1rem':'2rem'}` }} />}1.5k Likes
@@ -193,9 +198,15 @@ const Post = () => {
           <Action><ShareOutlinedIcon sx={{fontSize:`${width<500?'1rem':'2rem'}` }}/>Share</Action>
       </Actions>
       
-        <InputBox>
+         <InputBox contenteditable="true">
           <Image comment src={pic}/>
           <Input  placeholder="Write a Comment.." />
+          {/* <span 
+            class="input" 
+            role="textbox" 
+            contenteditable>
+              99
+          </span> */}
           <SendIcon sx={{color:'#6464d8',fontSize:`${width<500?'1rem':'2rem'}`}}/>
         </InputBox>
 

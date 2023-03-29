@@ -65,10 +65,10 @@ const Divider=styled.hr`
     margin:0;
     opacity:0.2;
 `
-const ChatList = ({updateCount}) => {
+const ChatList = () => {
   return (
       <Wrapper>
-            <ListItem onClick={()=>updateCount(1)}>
+            <ListItem>
                 <Image src={pic}/>
                 <Text><span>Sunny Graham</span>
                 <div><p> he voted for  amazon Rainforest</p>

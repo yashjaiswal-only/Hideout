@@ -41,7 +41,7 @@ const Top=styled.div`
     justify-content: space-between;
     font-weight:700;
 `
-const Block = ({list,showList,updateCount}) => {
+const Block = ({list,showList}) => {
     const [title,setTitle]=useState('');
     useEffect(()=>{
         if(list!=''){
@@ -54,7 +54,7 @@ const Block = ({list,showList,updateCount}) => {
       <Top><span>{title!=='' && title}</span>
       <ClearIcon onClick={()=>showList('')} style={{cursor:'pointer'}}/>
       </Top>
-      {list==='chats'?<ChatList updateCount={updateCount}/>:""}
+      {list==='chats'?<ChatList/>:""}
       {list==='notifications'?<NotificationList/>:""}
     </Component>
 

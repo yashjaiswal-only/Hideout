@@ -50,7 +50,6 @@ function SwipeableTextMobileStepper() {
 
   const handleStepChange = (step) => {
     setActiveStep(step);
-    console.log(step)
   };
 
   return (

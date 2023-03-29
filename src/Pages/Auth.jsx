@@ -76,9 +76,10 @@ const Slides=styled.div`
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
+    /* overflow-y:hidden; */
     &::-webkit-scrollbar {
-        width: 10px;
-        height: 4px;
+        width: 2px;
+        height: 2px;
     }
     &::-webkit-scrollbar-thumb {
     background: #2ae88a;
@@ -148,6 +149,7 @@ const Button=styled.button`
     background-color: ${props=>props.color};
     color:${props=>props.color=="blue"?"white":"black"};
     margin:auto;
+    cursor: pointer;
     ${mobile({
         margin:'0.5rem 0',
         fontSize:'1rem',
@@ -198,6 +200,7 @@ const Bottom=styled.div`
     justify-content: ${props=>props.signup?"center":"space-between"};
     font-size:0.8rem;
     font-weight:700;
+    cursor: pointer;
     ${tab({
         width:'70%',
         margin:'1rem auto',

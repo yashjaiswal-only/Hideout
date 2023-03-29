@@ -50,7 +50,7 @@ export const AuthProvider = ({children}) => {
                 uid: user.uid,
                 token: user.accessToken
             };
-            console.log(user);
+            console.log(user.accessToken);
             if(user){
                 setCurrentUser(details);
                 user.getIdToken()

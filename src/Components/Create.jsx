@@ -5,7 +5,7 @@ import PermMediaIcon from '@mui/icons-material/PermMedia';
 import PollIcon from '@mui/icons-material/Poll';
 import SendIcon from '@mui/icons-material/Send';
 import pic from '../Data/pic.png';
-import {mobile} from '../responsive'
+import {mobile, tab} from '../responsive'
 
 const Container=styled.div`
     width:90%;
@@ -25,7 +25,6 @@ const Container=styled.div`
       margin:'0.6rem 0'
     })}
 `
-
 const Options=styled.div`
     width:90%;
     height:55%;
@@ -33,28 +32,31 @@ const Options=styled.div`
     justify-content: space-between;
     align-items: center;
     position: relative;
+    padding:1rem 0;
 `
 const Left=styled.div`
-    width:70%;
-    height:80%;
+    width:90%;
+    /* height:0%; */
+    background-color: yellow;
     display: flex;
     justify-content: space-between;
     align-items: center;
 `
 const Option=styled.div`
     border:0.1rem solid gray ;
-    height:80%;
     border-radius:10px;
-    padding:0.2rem;
-    margin:0rem 0.4rem;
+    padding:0.5rem;
     display: flex;
     align-items: center;   
-    font-size:0.8rem;
+    font-size:1rem;
     color:#655f5f;
+    font-weight:600;
+    ${tab({
+      fontSize:'0.6rem',
+      padding:'0.2rem'
+    })}
     ${mobile({
-      height:'60%',
-      fontSize:'0.4rem',
-      padding:'0 0.2rem'
+      fontSize:'0.6rem',
     })}
    
 `
@@ -77,7 +79,6 @@ const Right=styled.div`
     }
     
 `
-
 const InputBox=styled.div`
   display: flex;
   justify-content: space-around;
@@ -89,16 +90,14 @@ const InputBox=styled.div`
 `
 const Input=styled.input`
     width:80%;
-    /* height:100%; */
     background-color: #e1f2f7;   
     border:none;
     outline:none;
     font-size:1.2rem;
     ${mobile({
-      fontSize:'0.6rem',
+      fontSize:'0.8rem',
       width:'70%'
     })}
-    /* padding:0 1rem; */
 `
 const Image=styled.img`
   width:10%;
@@ -110,26 +109,25 @@ const Image=styled.img`
   })}
 `
 const Create = () => {
-  let width = window.innerWidth;
   return (
     <Container>
       <InputBox>
-      <Image src={pic}/>
-      <Input  placeholder="What in your mind , Yash ?" />
-      <SendIcon sx={{color:'#6464d8'}}/>
+        <Image src={pic}/>
+        <Input  placeholder="What in your mind , Yash ?" />
+        <SendIcon sx={{color:'#6464d8'}}/>
       </InputBox>
       <Options>
-        <Left>
-        <Option><VideoCameraFrontIcon sx={{width:`${width>500?'2rem':'0.6rem'}`}}/>GoLive</Option>
-        <Option><PermMediaIcon sx={{width:`${width>500?'2rem':'0.6rem'}`}}/>Image/Video</Option>
-        <Option><PollIcon sx={{width:`${width>500?'2rem':'0.6rem'}`}}/>Poll/Activity</Option>
-        </Left>
-        <Right>
+          {/* <Left> */}
+            <Option><VideoCameraFrontIcon />GoLive</Option>
+            <Option><PermMediaIcon />Image/Video</Option>
+            <Option><PollIcon />Poll/Activity</Option>
+          {/* </Left> */}
+        {/* <Right>
             <select>
               <option default>Public</option>
               <option>Private</option>
             </select>
-        </Right>
+        </Right> */}
       </Options>
       
     </Container>

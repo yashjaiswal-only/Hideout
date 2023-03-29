@@ -69,12 +69,15 @@ const Option=styled.div`
 const Logo=styled.img`
     object-fit:cover;
     width:90%;
+    display: none;
+    ${mobile({
+        display:'block'
+    })}
 `
 const SideMenu = ({showList}) => {
-    let width = window.innerWidth;  
   return (
     <Container>
-        {width<600 && <Option><Logo src={logosm}/></Option>}
+        <Option><Logo src={logosm}/></Option>
         <Option><div><DynamicFeedIcon sx={{color:'gray' }}/><span>My Posts</span></div></Option>
         <Option><div><DataThresholdingIcon sx={{color:'gray' }}/><span>Activity</span></div></Option>
         <Option onClick={()=>showList('chats')}><div><TelegramIcon sx={{color:'gray' }}/><span>Chats</span></div></Option>

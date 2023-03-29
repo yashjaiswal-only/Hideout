@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { mobile } from '../responsive'
 
 const Container=styled.div`
     width: 25%;
@@ -9,13 +10,16 @@ const Container=styled.div`
     position: fixed;
     right:0;
     height:90vh;
+    ${mobile({
+      display:'none'
+    })}
 `
 const Wrapper=styled.div`
     width:100%;
     height:100%;
     overflow-y:auto;
     overflow-x:hidden;
-    direction: rtl;
+    direction: rtl; 
     &::-webkit-scrollbar {
       width: 0.3rem;               /* width of the entire scrollbar */
     }
@@ -37,7 +41,7 @@ const Block=styled.div`
     margin:1rem;
     border-radius:15px;
     background-color: white;
-  -webkit-box-shadow: 0px 0px 5px 3px rgba(214,214,214,1);
+    -webkit-box-shadow: 0px 0px 5px 3px rgba(214,214,214,1);
     -moz-box-shadow: 0px 0px 5px 3px rgba(214,214,214,1);
     box-shadow: 0px 0px 5px 3px rgba(214,214,214,1);
 `
@@ -45,8 +49,6 @@ const Right = () => {
   return (
     <Container>
       <Wrapper>
-        <Block/>
-        <Block/>
         <Block/>
         <Block/>
         <Block/>

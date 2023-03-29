@@ -8,7 +8,6 @@ const Container=styled.div`
     height:100vh;
     left:0;
     position:fixed;
-    /* background-color: #ddf6e7; */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -19,14 +18,11 @@ const Container=styled.div`
     
 `
 
-const Sidebar = ({showList,width}) => {
-  // let width = window.innerWidth;
-  useEffect(()=>{
-  },[width])
+const Sidebar = ({showList}) => {
   
   return (
     <Container>
-      <Mysection width={width}/>
+      <Mysection/>
       <SideMenu showList={showList}/>
     </Container>
   )

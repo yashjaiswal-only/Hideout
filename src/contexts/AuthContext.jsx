@@ -16,18 +16,39 @@ export const AuthProvider = ({children}) => {
 
     const auth = getAuth();
     auth.languageCode='it';
-    const signup = (email,password)=>{
-        createUserWithEmailAndPassword(auth,email,password)
-        .then((userCredential)=>{
+    const signup = async(email,password)=>{
+        // console.log(email)
+        // console.log(password)
+        await createUserWithEmailAndPassword(auth,email,password)
+        .then(async(userCredential)=>{
             //Signed up
-            // console.log(userCredential)
+            console.log(userCredential)
             const user = userCredential.user;
             if(user){
                 setCurrentUser(user);
-                user.getIdToken()
-                .then((tkn)=>{
+                await user.getIdToken()
+                .then(async(tkn)=>{
                     sessionStorage.setItem('accessToken',tkn);
                     setAuthorizedUser(true);
+                    const checkuser = await axios.get(import.meta.env.VITE_API+"user/checkuser",{
+                        headers:{
+                            'Authorization': `Bearer ${tkn}`
+                        }
+                    });
+                    console.log(checkuser)
+                    if(checkuser.data.User == 0){
+                        console.log("new user here")
+                        const createUser = await axios.get(import.meta.env.VITE_API+"user/create",{
+                            headers:{
+                                'Authorization': `Bearer ${tkn}`
+                            }
+                        })
+                        console.log(createUser);
+                    }
+                    else{
+                        console.log("Account already exists");
+                        return;
+                    }
                 })
             }
             // const accessToken = user.accessToken;
@@ -50,7 +71,7 @@ export const AuthProvider = ({children}) => {
                 uid: user.uid,
                 token: user.accessToken
             };
-            console.log(user.accessToken);
+            console.log(user);
             if(user){
                 setCurrentUser(details);
                 user.getIdToken()
@@ -62,8 +83,9 @@ export const AuthProvider = ({children}) => {
                             'Authorization': `Bearer ${tkn}`
                         }
                     });
-                    if(checkuser.User == 0){
-                        const createUser = await axios.post(import.meta.env.VITE_API+"user/create",{
+                    console.log(checkuser)
+                    if(checkuser.data.User == 0){
+                        const createUser = await axios.get(import.meta.env.VITE_API+"user/create",{
                             headers:{
                                 'Authorization': `Bearer ${tkn}`
                             }
@@ -97,8 +119,8 @@ export const AuthProvider = ({children}) => {
         
     }
 
-    const signInWithFacebook = ()=>{
-        signInWithPopup(auth, FacebookProvider)
+    const signInWithFacebook = async()=>{
+        await signInWithPopup(auth, FacebookProvider)
         .then((result) => {
             // The signed-in user info.
             const user = result.user;
@@ -110,9 +132,26 @@ export const AuthProvider = ({children}) => {
             if(user){
                 setCurrentUser(user);
                 user.getIdToken()
-                .then((tkn)=>{
+                .then(async(tkn)=>{
                     sessionStorage.setItem('accessToken',tkn);
                     setAuthorizedUser(true);
+                    const checkuser = await axios.get(import.meta.env.VITE_API+"user/checkuser",{
+                        headers:{
+                            'Authorization': `Bearer ${tkn}`
+                        }
+                    });
+                    if(checkuser.data.User == 0){
+                        const createUser = await axios.get(import.meta.env.VITE_API+"user/create",{
+                            headers:{
+                                'Authorization': `Bearer ${tkn}`
+                            }
+                        })
+                        console.log(createUser);
+                    }
+                    else{
+                        console.log("Account already exists");
+                        return;
+                    }
                 })
             }
             // IdP data available using getAdditionalUserInfo(result)
@@ -131,8 +170,8 @@ export const AuthProvider = ({children}) => {
         });
     }
 
-    const signin = (email,password)=>{
-        signInWithEmailAndPassword(auth,email,password)
+    const signin = async(email,password)=>{
+        await signInWithEmailAndPassword(auth,email,password)
         .then((userCredential) => {
             // Signed in 
             const user = userCredential.user;
@@ -159,8 +198,8 @@ export const AuthProvider = ({children}) => {
           });
     }
 
-    const signout = () => {
-        signOut(auth)
+    const signout = async() => {
+        await signOut(auth)
         .then(()=>{
             sessionStorage.clear();
             setAuthorizedUser(false);

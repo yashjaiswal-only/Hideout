@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import { GoogleProvider, FacebookProvider } from '../config/firebase-config'
 import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, FacebookAuthProvider, signOut } from 'firebase/auth';
-import { useNavigate } from 'react-router-dom';
 const AuthContext= createContext();
 import axios from 'axios'
 import { async } from '@firebase/util';
@@ -31,11 +30,7 @@ export const AuthProvider = ({children}) => {
                 .then(async(tkn)=>{
                     sessionStorage.setItem('accessToken',tkn);
                     setAuthorizedUser(true);
-                    const checkuser = await axios.get(import.meta.env.VITE_API+"user/checkuser",{
-                        headers:{
-                            'Authorization': `Bearer ${tkn}`
-                        }
-                    });
+                    const checkuser = checkUser();
                     console.log(checkuser)
                     if(checkuser.data.User == 0){
                         console.log("new user here")
@@ -172,12 +167,14 @@ export const AuthProvider = ({children}) => {
     }
 
     const signin = async(email,password)=>{
+        // console.log(email)
+        // console.log(password)
         await signInWithEmailAndPassword(auth,email,password)
         .then((userCredential) => {
             // Signed in 
             const user = userCredential.user;
             const accessToken=user.accessToken;
-
+            console.log(user)
             if(user){
                 setCurrentUser(user);
                 user.getIdToken()

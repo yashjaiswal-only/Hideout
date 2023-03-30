@@ -1,10 +1,8 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import { GoogleProvider, FacebookProvider } from '../config/firebase-config'
 import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, FacebookAuthProvider, signOut } from 'firebase/auth';
-import { useNavigate } from 'react-router-dom';
 const AuthContext= createContext();
 import axios from 'axios'
-import { async } from '@firebase/util';
 
 export const useAuth =()=>{
     return useContext(AuthContext);
@@ -171,12 +169,14 @@ export const AuthProvider = ({children}) => {
     }
 
     const signin = async(email,password)=>{
+        // console.log(email)
+        // console.log(password)
         await signInWithEmailAndPassword(auth,email,password)
         .then((userCredential) => {
             // Signed in 
             const user = userCredential.user;
             const accessToken=user.accessToken;
-
+            console.log(user)
             if(user){
                 setCurrentUser(user);
                 user.getIdToken()

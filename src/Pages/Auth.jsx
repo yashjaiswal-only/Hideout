@@ -247,6 +247,8 @@ const Auth = () => {
   const emailRef=useRef();
   const passwordRef=useRef();
   const passwordConfirmRef = useRef();
+  const emailLoginRef = useRef();
+  const passwordLoginRef= useRef();
   const {signup, signin, signInWithGoogle, signInWithFacebook, currentUser} = useAuth();
   const [error, setError]= useState('');
   const [loading, setLoading]= useState(false);
@@ -257,7 +259,7 @@ const Auth = () => {
     try{
       setError('')
       setLoading(true)
-      const log = await signin(emailRef.current.value,passwordRef.current.value)
+      const log = await signin(emailLoginRef.current.value,passwordLoginRef.current.value)
       if(log){
         setLoading(false)
         navigate('/home')
@@ -278,6 +280,8 @@ const Auth = () => {
     try {
       setError('')
       setLoading(true)
+      console.log(emailRef.current.value)
+      console.log(passwordRef.current.value)
       const log = await signup(emailRef.current.value,passwordRef.current.value)
       if(log){
         setLoading(false)
@@ -356,7 +360,7 @@ const Auth = () => {
                     <Label>
                         Email Address
                     </Label>
-                    <Input type="email" ref={emailRef}>
+                    <Input type="email" ref={emailLoginRef}>
                     </Input>
                     </InputGrp>
 
@@ -364,7 +368,7 @@ const Auth = () => {
                     <Label>
                         Password
                     </Label>
-                    <Input type="password" ref={passwordRef}>
+                    <Input type="password" ref={passwordLoginRef}>
                     </Input>
                     </InputGrp>
 

@@ -28,8 +28,9 @@ import styled from 'styled-components';
 import pic from '../Data/pic.png'
 import hideout from '../Data/hideout.png'
 import {mobile} from '../responsive'
+import { useNavigate } from 'react-router-dom';
 const Navbar=styled.div`
-    width: 100%;
+    width: inherit;
     height:3rem;
     background-color:white;
     position: fixed;
@@ -104,7 +105,7 @@ const Topbar = () => {
   // ---------profilemenu--------------------
   
   
-
+  const navigate=useNavigate();
   return (
     <Navbar>  
       <Logo><img src={hideout}/></Logo>
@@ -170,7 +171,7 @@ const Topbar = () => {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <MenuItem onClick={handleClose}>
+        <MenuItem onClick={()=>navigate('/profile')}>
           <Avatar /> Profile
         </MenuItem>
         <MenuItem onClick={handleClose}>

@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 const AuthContext= createContext();
 import axios from 'axios'
 import { async } from '@firebase/util';
+import { checkUser } from '../ApiCalls/User';
 
 export const useAuth =()=>{
     return useContext(AuthContext);
@@ -62,7 +63,7 @@ export const AuthProvider = ({children}) => {
     }
     const signInWithGoogle = async()=>{
         await signInWithPopup(auth,GoogleProvider)
-        .then((result)=>{
+        .then(async(result)=>{
             // This gives you a Google Access Token. You can use it to access the Google API.
             const credential = GoogleAuthProvider.credentialFromResult(result);
             // The signed-in user info.
@@ -74,36 +75,36 @@ export const AuthProvider = ({children}) => {
             console.log(user);
             if(user){
                 setCurrentUser(details);
-                user.getIdToken()
+                await user.getIdToken()
                 .then(async (tkn)=>{
                     sessionStorage.setItem('accessToken',tkn);
                     setAuthorizedUser(true);
-                    const checkuser = await axios.get(import.meta.env.VITE_API+"user/checkuser",{
-                        headers:{
-                            'Authorization': `Bearer ${tkn}`
-                        }
-                    });
+                    console.log('checking user')
+                    const checkuser =await checkUser();
                     console.log(checkuser)
-                    if(checkuser.data.User == 0){
-                        const createUser = await axios.get(import.meta.env.VITE_API+"user/create",{
-                            headers:{
-                                'Authorization': `Bearer ${tkn}`
-                            }
-                        })
-                        console.log(createUser);
-                    }
-                    else{
-                        console.log("Account already exists");
-                        return;
-                    }
+                    console.log('checked user')
+                    // if(checkuser.data.User == 0){
+                    //     const createUser = await axios.get(import.meta.env.VITE_API+"user/create",{
+                    //         headers:{
+                    //             'Authorization': `Bearer ${tkn}`
+                    //         }
+                    //     })
+                    //     console.log(createUser);
+                    // }
+                    // else{
+                    //     console.log("Account already exists");
+                    //     return;
+                    // }
                 })
-                return;
+                .catch(err=>{
+                    console.log('error at sign in')
+                    console.log(err)
+                })
             }
 
-            // console.log("user");
+            console.log("user");
             // console.log(user);
 
-            // ...
         }).catch((error) => {
             // Handle Errors here.
             const errorCode = error.code;

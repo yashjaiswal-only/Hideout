@@ -4,6 +4,7 @@ import './App.css';
 import { Main, Signin, Signup ,Auth} from './Pages';
 import { AuthProvider } from './contexts/AuthContext';
 import Profile from './Pages/Profile';
+import Friends from './Pages/Friends';
 function App() {
   return (
     <BrowserRouter>
@@ -14,6 +15,7 @@ function App() {
               <Route path='/' element={<Auth/>}/>
               <Route path='/home' element={<Main/>}/>
               <Route path='/profile' element={<Profile/>}/>
+              <Route path='/friends' element={<Friends/>}/>
               <Route path='/signup' element={<Signup/>}/>
               <Route path='/signin' element={<Signin/>}/>
             </Routes>

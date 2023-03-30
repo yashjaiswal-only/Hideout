@@ -298,13 +298,12 @@ const Auth = () => {
         await signInWithGoogle();
         console.log("signedin")
         setLoading(false)
-        navigate('/home')
+        // navigate('/home')
     }catch(error){
         console.log("first00")
         setLoading(false)
         setError('Failed to sign in!! Please try again')
     }
-    console.log("first")
   }
   
   async function fbSignin(e){

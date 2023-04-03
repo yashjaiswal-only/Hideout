@@ -5,6 +5,7 @@ import { Main, Signin, Signup ,Auth} from './Pages';
 import { AuthProvider } from './contexts/AuthContext';
 import Profile from './Pages/Profile';
 import Friends from './Pages/Friends';
+import CreateProfile from './Pages/CreateProfile';
 function App() {
   return (
     <BrowserRouter>
@@ -16,8 +17,9 @@ function App() {
               <Route path='/home' element={<Main/>}/>
               <Route path='/profile' element={<Profile/>}/>
               <Route path='/friends' element={<Friends/>}/>
-              <Route path='/signup' element={<Signup/>}/>
-              <Route path='/signin' element={<Signin/>}/>
+              <Route path='/create-profile' element={<CreateProfile/>}/>
+              {/* <Route path='/signup' element={<Signup/>}/> */}
+              {/* <Route path='/signin' element={<Signin/>}/> */}
             </Routes>
         
       </div>

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useTheme } from '@mui/material/styles';
-import Box from '@mui/material/Box';
+import {Box} from '@mui/material';
 import MobileStepper from '@mui/material/MobileStepper';
 import Paper from '@mui/material/Paper'; 
 import Typography from '@mui/material/Typography';

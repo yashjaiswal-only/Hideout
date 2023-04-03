@@ -1,6 +1,6 @@
 import React from 'react'
 import {mobile, tab} from '../responsive'
-import Box from '@mui/material/Box';
+import {Box} from '@mui/material';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import styled from 'styled-components';

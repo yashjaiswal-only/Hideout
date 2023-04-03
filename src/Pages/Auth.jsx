@@ -260,9 +260,14 @@ const Auth = () => {
       setError('')
       setLoading(true)
       const log = await signin(emailLoginRef.current.value,passwordLoginRef.current.value)
-      if(log){
+      console.log(log)
+      if(log.status){
         setLoading(false)
-        navigate('/home')
+        // navigate('/home')
+        console.log("login successful")
+      }
+      else{
+        //display log.error
       }
     }catch(error){
       setError('Failed to sign in!! Please try again')
@@ -283,9 +288,14 @@ const Auth = () => {
       console.log(emailRef.current.value)
       console.log(passwordRef.current.value)
       const log = await signup(emailRef.current.value,passwordRef.current.value)
-      if(log){
+      console.log(log)
+      if(log.status){
         setLoading(false)
-        navigate('/home')
+        // navigate('/home')
+        console.log("login successful")
+      }
+      else{
+        //display log.error
       }
     } catch (error) {
       console.log(error);
@@ -299,10 +309,16 @@ const Auth = () => {
     setError('')
     setLoading(true)
     try{
-        await signInWithGoogle();
-        console.log("signedin")
+        const log = await signInWithGoogle();
+        console.log(log)
+      if(log.status){
         setLoading(false)
         // navigate('/home')
+        console.log("login successful")
+      }
+      else{
+        //display log.error
+      }
     }catch(error){
         console.log("first00")
         setLoading(false)
@@ -316,9 +332,14 @@ const Auth = () => {
       setError('')
       setLoading(true)
       const log = await signInWithFacebook()
-      if(log){
-        setLoading(false);
-        navigate('/home');
+      console.log(log)
+      if(log.status){
+        setLoading(false)
+        // navigate('/home')
+        console.log("login successful")
+      }
+      else{
+        //display log.error
       }
     }catch(error){
       setError('Failed to sign in!! Please try again')

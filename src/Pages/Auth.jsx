@@ -344,13 +344,15 @@ const Auth = () => {
       setLoading(true)
       const log = await signInWithFacebook()
       console.log(log)
+      dispatch(endLoading());
       if(log.status){
-        setLoading(false)
-        // navigate('/home')
+        if(log.found)        navigate('/home');
+        else navigate('/create-profile');
         console.log("login successful")
       }
       else{
-        //display log.error
+        console.log("error at sigin with google")
+        setError(log.error)
       }
     }catch(error){
       setError('Failed to sign in!! Please try again')

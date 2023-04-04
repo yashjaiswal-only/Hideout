@@ -30,7 +30,7 @@ export const AuthProvider = ({ children }) => {
                     .then(async (tkn) => {
                         setAuthorizedUser(true);
                         const checkuser = await checkUser(tkn);
-                        if (checkuser.data.User == 0) {
+                        if (checkuser.data.User == -1) {
                             const createuser = await createUser(tkn)
                             // console.log(createuser);
                             returnval = {
@@ -83,23 +83,24 @@ export const AuthProvider = ({ children }) => {
                 await user.getIdToken()
                     .then(async (tkn) => {
                         setAuthorizedUser(true);
-                        // console.log('checking user')
                         const checkuser = await checkUser(tkn);
-
-                        // console.log(checkuser)   
-                        // console.log('checked user')
-                        if (checkuser.data.User == 0) {
+                        if (checkuser.data.User == -1) {//email not found
                             const createuser = await createUser(tkn)
-                            // console.log(createuser);
                             returnval = {
                                 status: 1,
                                 email: createuser.data.email,
                                 found:0
                             }
                         }
-                        else {
-                            // console.log("Account already exists");
+                        else if(checkuser.data.User==0){//name not found
                             returnval = {
+                                status: 1,
+                                email: checkuser.data.email,
+                                found:0,
+                            }
+                        }
+                        else {
+                            returnval = {   //name and email found
                                 status: 1,
                                 email: checkuser.data.email,
                                 found:1,
@@ -143,36 +144,39 @@ export const AuthProvider = ({ children }) => {
                 const accessToken = credential.accessToken;
 
                 await user.getIdToken()
-                    .then(async (tkn) => {
-                        // sessionStorage.setItem('accessToken', tkn);
-                        setAuthorizedUser(true);
-                        const checkuser = await checkUser();
-                        if (checkuser.data.User == 0) {
-                            const createuser = await createUser(tkn)
-                            // console.log(createuser);
-                            returnval = {
-                                status: 1,
-                                email: createuser.data.email,
-                            }
-                        }
-                        else {
-                            // console.log("Account already exists");
-                            returnval = {
-                                status: 1,
-                                email: checkuser.data.email,
-                            }
-                        }
-                    })
-                    .catch(err => {
+                .then(async (tkn) => {
+                    setAuthorizedUser(true);
+                    const checkuser = await checkUser(tkn);
+                    if (checkuser.data.User == -1) {//email not found
+                        const createuser = await createUser(tkn)
                         returnval = {
-                            status: 0,
-                            error: "Error in signing in! Please check your internet connection and Try Again",
+                            status: 1,
+                            email: createuser.data.email,
+                            found:0
                         }
-                    })
-
-                // }
-                // IdP data available using getAdditionalUserInfo(result)
-                // ...
+                    }
+                    else if(checkuser.data.User==0){//name not found
+                        returnval = {
+                            status: 1,
+                            email: checkuser.data.email,
+                            found:0,
+                        }
+                    }
+                    else {
+                        returnval = {   //name and email found
+                            status: 1,
+                            email: checkuser.data.email,
+                            found:1,
+                        }
+                    }
+                    dispatch(addUser({email:returnval.email,token:tkn}));
+                })
+                .catch(err => {
+                    returnval = {
+                        status: 0,
+                        error: "Error in signing in! Please check your internet connection and Try Again",
+                    }
+                })
             })
             .catch((error) => {
                 // Handle Errors here.
@@ -203,7 +207,7 @@ export const AuthProvider = ({ children }) => {
                     .then(async (tkn) => {
                         setAuthorizedUser(true);
                         const checkuser = await checkUser(tkn);
-                        if (checkuser.data.User == 0) {
+                        if (checkuser.data.User == -1) {//email not found
                             const createuser = await createUser(tkn)
                             returnval = {
                                 status: 1,
@@ -211,8 +215,15 @@ export const AuthProvider = ({ children }) => {
                                 found:0
                             }
                         }
-                        else {
+                        else if(checkuser.data.User==0){//name not found
                             returnval = {
+                                status: 1,
+                                email: checkuser.data.email,
+                                found:0,
+                            }
+                        }
+                        else {
+                            returnval = {   //name and email found
                                 status: 1,
                                 email: checkuser.data.email,
                                 found:1,

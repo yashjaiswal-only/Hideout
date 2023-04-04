@@ -207,6 +207,7 @@ export const AuthProvider = ({ children }) => {
                     .then(async (tkn) => {
                         setAuthorizedUser(true);
                         const checkuser = await checkUser(tkn);
+                        console.log(checkuser)
                         if (checkuser.data.User == -1) {//email not found
                             const createuser = await createUser(tkn)
                             returnval = {

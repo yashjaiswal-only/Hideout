@@ -240,10 +240,10 @@ const Profile = () => {
           }
         </Skills>
         <Links>
-          <span><i class="fa-brands fa-linkedin-in"></i> LinkedIn</span>
-          <span><i class="fa-brands fa-github"></i> Github</span>
-          <span><i class="fa-solid fa-pen-to-square"></i> Resume</span>
-          <span><i class="fa-solid fa-briefcase"></i> Portfolio</span>
+          <span><i className="fa-brands fa-linkedin-in"></i> LinkedIn</span>
+          <span><i className="fa-brands fa-github"></i> Github</span>
+          <span><i className="fa-solid fa-pen-to-square"></i> Resume</span>
+          <span><i className="fa-solid fa-briefcase"></i> Portfolio</span>
         </Links>
             <h1>Work Experience</h1>
         <WorkList>

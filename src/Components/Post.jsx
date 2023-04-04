@@ -202,7 +202,7 @@ const Post = () => {
           <Image comment src={pic}/>
           <Input  placeholder="Write a Comment.." />
           {/* <span 
-            class="input" 
+            className="input" 
             role="textbox" 
             contenteditable>
               99

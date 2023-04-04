@@ -58,3 +58,52 @@ export const createUser=async(token)=>{
     }
     return returnval;
 }
+
+export const updateUser=async(token,data)=>{
+    const config={
+        headers:{
+            'Authorization': `Bearer ${token}`
+        },
+        // data:data
+    }
+    // console.log(config)
+    let returnval;
+    try {
+        await axiosInstance.put("/user/updatd   e",data,config)
+        .then(res=>{
+            returnval=res;
+        })
+        .catch(err=>{
+            console.log('error in updating account')
+            returnval={error:'Error at creating profile'};
+        })
+                
+    } catch (error) {
+        console.log('there seems a error')
+        returnval={error:'Error at creating profile'};
+    }
+    return returnval;
+}
+export const getUserDetails=async(token)=>{
+    const config={
+        headers:{
+            'Authorization': `Bearer ${token}`
+        },
+    }
+    console.log(config)
+    let returnval;
+    try {
+        await axiosInstance.get("/user/getUserDetails",config)
+        .then(res=>{
+            returnval=res;
+        })
+        .catch(err=>{
+            console.log('error in updating account')
+            returnval=err;
+        })
+            
+    } catch (error) {
+        console.log('there seems a error')
+    }
+    return returnval;
+}

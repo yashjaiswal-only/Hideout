@@ -5,6 +5,9 @@ import { useNavigate } from 'react-router-dom';
 import bgimg from '../Data/containerbg.jpg';
 import Welcome from '../Components/Welcome'
 import { mobile, tab } from '../responsive';
+import { useDispatch, useSelector } from 'react-redux';
+import Loader from '../Components/Loader';
+import { endLoading, removeUser, startLoading } from '../Redux/UserRedux';
 const Container=styled.div`
     width: 100%;
     display: flex;
@@ -250,79 +253,87 @@ const Auth = () => {
   const emailLoginRef = useRef();
   const passwordLoginRef= useRef();
   const {signup, signin, signInWithGoogle, signInWithFacebook, currentUser} = useAuth();
-  const [error, setError]= useState('');
-  const [loading, setLoading]= useState(false);
-
+  const [error, setError]= useState(null);
+  const [loadin, setLoading]= useState(false);
+  const loading=useSelector(state=>state.loading)
+  const dispatch=useDispatch();
+    // dispatch(removeUser())
+    // dispatch(endLoading())
   async function handleSubmitLogin(e){
     e.preventDefault();
-
     try{
       setError('')
-      setLoading(true)
+      dispatch(startLoading());
       const log = await signin(emailLoginRef.current.value,passwordLoginRef.current.value)
       console.log(log)
+      dispatch(endLoading());
       if(log.status){
         setLoading(false)
-        // navigate('/home')
+        if(log.found)        navigate('/home');
+        else navigate('/create-profile');
         console.log("login successful")
       }
       else{
-        //display log.error
+        console.log("error at login")
+        setError(log.error)
       }
     }catch(error){
       setError('Failed to sign in!! Please try again')
     }
-    setLoading(false)
-
   }
 
   async function handleSubmitSignUp(e){
     e.preventDefault();
 
     if(passwordConfirmRef.current.value!==passwordRef.current.value){
-      return setError('Passwords do not match')
+        setError('Passwords do not match')
+        return ;
+    }
+    if(passwordConfirmRef.current.value.length<6){
+        setError('Password should be atleast 6 characters')
+        return ;
     }
     try {
-      setError('')
-      setLoading(true)
-      console.log(emailRef.current.value)
-      console.log(passwordRef.current.value)
+      setError(null)
+      dispatch(startLoading())
+    //   console.log(emailRef.current.value)
+    //   console.log(passwordRef.current.value)
       const log = await signup(emailRef.current.value,passwordRef.current.value)
       console.log(log)
+      dispatch(endLoading());
       if(log.status){
-        setLoading(false)
-        // navigate('/home')
-        console.log("login successful")
+        navigate('/create-profile')
+        console.log("signup successful")
       }
       else{
-        //display log.error
+        setError(log.error);
       }
     } catch (error) {
       console.log(error);
       setError('Failed to sign up!! Please try again')
     }
-    setLoading(false)
   }
 
   async function googleSignin(e){
     e.preventDefault()
     setError('')
-    setLoading(true)
     try{
+        dispatch(startLoading());
         const log = await signInWithGoogle();
         console.log(log)
+        dispatch(endLoading());
       if(log.status){
-        setLoading(false)
-        // navigate('/home')
+        if(log.found)        navigate('/home');
+        else navigate('/create-profile');
         console.log("login successful")
       }
       else{
-        //display log.error
+        console.log("error at sigin with google")
+        setError(log.error)
       }
     }catch(error){
-        console.log("first00")
-        setLoading(false)
-        setError('Failed to sign in!! Please try again')
+        console.log("error")
+        setError(error)
     }
   }
   
@@ -349,6 +360,8 @@ const Auth = () => {
 
 
   return (
+    <>
+    {loading?<Loader/>:
     <Container>
         {/* <Wrapper> */}
 
@@ -398,11 +411,16 @@ const Auth = () => {
                     </Rem>
                     <Forgot>Forgot Password?</Forgot>
                     </Bottom>
+                    {error && 
+                        <Bottom style={{color:'red',fontWeight:'400'}}>
+                            {error}
+                        </Bottom>
+                    }
                     <SubmitBtn onClick={handleSubmitLogin}>Login</SubmitBtn>
                     <Bottom signup>
                         New Here? <a href="#register" style={{textDecoration:"none" ,color:"blue",margin:"0rem 1rem"}}> Create Account</a>
                     </Bottom>
-                    <Terms>By signing up , you agree to OctoChat's <span style={{color:"blue"}}>Terms & Conditions</span>
+                    <Terms>By signing up , you agree to Hideout's <span style={{color:"blue"}}>Terms & Conditions</span>
                     & <span style={{color:"blue"}}>Privacy Policy</span>
                     </Terms>
             </Login>
@@ -439,6 +457,8 @@ const Auth = () => {
                     </Label>
                     <Input type="password" ref={passwordRef}>
                     </Input>
+                    </InputGrp>
+                    <InputGrp>
                     <Label>
                         Confirm Password
                     </Label>
@@ -450,12 +470,17 @@ const Auth = () => {
                         <input type="checkbox"/> Remember Me 
                     </Rem>
                     </Bottom>
+                    {error && 
+                        <Bottom style={{color:'red',fontWeight:'400'}}>
+                            {error}
+                        </Bottom>
+                    }
                     <SubmitBtn onClick={handleSubmitSignUp}>Sign Up</SubmitBtn>
                     <Bottom signup>
                         Already had an account? <a href="#login" 
                         style={{textDecoration:"none" ,color:"blue",margin:"0rem 1rem"}}> Login Here</a>
                     </Bottom>
-                    <Terms>By signing up , you agree to OctoChat's <span style={{color:"blue"}}>Terms & Conditions</span>
+                    <Terms>By signing up , you agree to Hideout's <span style={{color:"blue"}}>Terms & Conditions</span>
                     & <span style={{color:"blue"}}>Privacy Policy</span>
                     </Terms>
             </Register>
@@ -470,6 +495,8 @@ const Auth = () => {
         {/* </Wrapper> */}
         
     </Container>
+     }
+     </>
   )
 }
 

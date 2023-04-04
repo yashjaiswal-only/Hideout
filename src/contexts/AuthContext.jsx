@@ -4,15 +4,17 @@ import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider, onAuthStat
 const AuthContext = createContext();
 import axios from 'axios'
 import { checkUser, createUser } from '../ApiCalls/User';
+import { useDispatch } from 'react-redux';
+import { addUser } from '../Redux/UserRedux';
 
 export const useAuth = () => {
     return useContext(AuthContext);
 }
 
 export const AuthProvider = ({ children }) => {
-    const [currentUser, setCurrentUser] = useState();
+    // const [currentUser, setCurrentUser] = useState();
     const [authorizedUser, setAuthorizedUser] = useState(false || sessionStorage.getItem('accessToken'));
-
+    const dispatch=useDispatch();
     const auth = getAuth();
     auth.languageCode = 'it';
     const signup = async (email, password) => {
@@ -27,11 +29,7 @@ export const AuthProvider = ({ children }) => {
                 await user.getIdToken()
                     .then(async (tkn) => {
                         setAuthorizedUser(true);
-                        // console.log('checking user')
                         const checkuser = await checkUser(tkn);
-
-                        // console.log(checkuser)
-                        // console.log('checked user')
                         if (checkuser.data.User == 0) {
                             const createuser = await createUser(tkn)
                             // console.log(createuser);
@@ -39,6 +37,7 @@ export const AuthProvider = ({ children }) => {
                                 status: 1,
                                 email: createuser.data.email,
                             }
+                            dispatch(addUser({email:returnval.email,token:tkn}));
                         }
                         else {
                             // console.log("Account already exists");
@@ -65,7 +64,7 @@ export const AuthProvider = ({ children }) => {
                     error: errorCode.slice(5),
                 }
             })
-        return returnval
+        return returnval;
     }
     const signInWithGoogle = async () => {
         let returnval
@@ -87,7 +86,7 @@ export const AuthProvider = ({ children }) => {
                         // console.log('checking user')
                         const checkuser = await checkUser(tkn);
 
-                        // console.log(checkuser)
+                        // console.log(checkuser)   
                         // console.log('checked user')
                         if (checkuser.data.User == 0) {
                             const createuser = await createUser(tkn)
@@ -95,6 +94,7 @@ export const AuthProvider = ({ children }) => {
                             returnval = {
                                 status: 1,
                                 email: createuser.data.email,
+                                found:0
                             }
                         }
                         else {
@@ -102,8 +102,10 @@ export const AuthProvider = ({ children }) => {
                             returnval = {
                                 status: 1,
                                 email: checkuser.data.email,
+                                found:1,
                             }
                         }
+                        dispatch(addUser({email:returnval.email,token:tkn}));
                     })
                     .catch(err => {
                         returnval = {
@@ -125,7 +127,6 @@ export const AuthProvider = ({ children }) => {
                     status: 0,
                     error: errorMessage.slice(9)
                 }
-                // ...
             });
         return returnval
     }
@@ -190,12 +191,9 @@ export const AuthProvider = ({ children }) => {
     }
 
     const signin = async (email, password) => {
-        // console.log(email)
-        // console.log(password)
         let returnval
         await signInWithEmailAndPassword(auth, email, password)
             .then(async(userCredential) => {
-                // Signed in 
                 const user = userCredential.user;
                 const accessToken = user.accessToken;
                 console.log(user)
@@ -204,12 +202,23 @@ export const AuthProvider = ({ children }) => {
                 await user.getIdToken()
                     .then(async (tkn) => {
                         setAuthorizedUser(true);
-                        // save in redux
-                        returnval = {
-                            status: 1,
-                            email: email
+                        const checkuser = await checkUser(tkn);
+                        if (checkuser.data.User == 0) {
+                            const createuser = await createUser(tkn)
+                            returnval = {
+                                status: 1,
+                                email: createuser.data.email,
+                                found:0
+                            }
                         }
-
+                        else {
+                            returnval = {
+                                status: 1,
+                                email: checkuser.data.email,
+                                found:1,
+                            }
+                        }
+                        dispatch(addUser({email:returnval.email,token:tkn}));
                     })
                     .catch(err => {
                         returnval = {
@@ -217,20 +226,17 @@ export const AuthProvider = ({ children }) => {
                             error: "Error in signing in! Please check your internet connection and Try Again",
                         }
                     })
-                // console.log(returnval)
             })
             .catch((error) => {
                 const errorCode = error.code;
                 const errorMessage = error.message;
                 console.log(errorMessage)
                 console.log(errorCode)
-                // console.log(returnval)
                 returnval = {
                     status: 0,
                     error: "Error! Please check your internet connection and Try Again",
                 }
             });
-        // console.log(returnval)
         return returnval
     }
 
@@ -254,7 +260,7 @@ export const AuthProvider = ({ children }) => {
     //     return stopAuthListener
     // },[])
     const value = {
-        currentUser,
+        // currentUser,
         signup,
         signin,
         signInWithGoogle,

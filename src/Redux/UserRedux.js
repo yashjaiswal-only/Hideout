@@ -5,16 +5,20 @@ const userSlice=createSlice({
     initialState:{
         user: null, 
         email:"",
-        loading:true
+        token:null,
+        loading:false
     },
     reducers:{
-        createUser:(state,action)=>{
+        
+        addUser:(state,action)=>{
             state.user=true;
-            state.email=action.payload;
+            state.email=action.payload.email;
+            state.token=action.payload.token;
         },
         removeUser:(state)=>{
             state.user=null;
             state.email="";
+            state.token=null;
         },
         startLoading:(state)=>{
             state.loading=true;
@@ -26,5 +30,5 @@ const userSlice=createSlice({
 });
 
 
-export const {createUser,removeUser,startLoading,endLoading}=userSlice.actions;
+export const {addUser,removeUser,startLoading,endLoading}=userSlice.actions;
 export default userSlice.reducer;

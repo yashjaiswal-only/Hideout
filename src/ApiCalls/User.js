@@ -6,12 +6,8 @@ const axiosInstance = axios.create({
 //   withCredentials: true,
   baseURL: BASE_URL
 })
-const authToken=sessionStorage.getItem('accessToken');
-// const config={
-//     headers:{
-//         'Authorization': `Bearer ${authToken}`
-//     }
-// }
+// const authToken=sessionStorage.getItem('accessToken');
+
 
 export const checkUser=async(token)=>{
     const config={

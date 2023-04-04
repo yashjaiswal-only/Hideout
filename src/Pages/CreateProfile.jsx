@@ -53,7 +53,7 @@ const CreateProfile = () => {
             <DatePicker label="Date of Birth" sx={{margin:'0.5rem'}}/>
             
         </div>
-      </Section>
+      </Section> 
       
       <Section>
         <section>Residence Details</section>
@@ -80,7 +80,7 @@ const CreateProfile = () => {
                 <CloudUploadIcon/> Profile Picture
             </label>
             <input id="file-upload" type="file"/>
-        </div>
+        </div> 
       </Section>
     </Container>
     </LocalizationProvider>

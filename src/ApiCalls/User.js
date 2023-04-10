@@ -69,12 +69,12 @@ export const updateUser=async(token,data)=>{
     // console.log(config)
     let returnval;
     try {
-        await axiosInstance.put("/user/updatd   e",data,config)
+        await axiosInstance.put("/user/update",data,config)
         .then(res=>{
             returnval=res;
         })
         .catch(err=>{
-            console.log('error in updating account')
+            console.log('error in updating account',err)
             returnval={error:'Error at creating profile'};
         })
                 
@@ -84,13 +84,14 @@ export const updateUser=async(token,data)=>{
     }
     return returnval;
 }
+
 export const getUserDetails=async(token)=>{
     const config={
         headers:{
             'Authorization': `Bearer ${token}`
         },
     }
-    console.log(config)
+    // console.log(config)
     let returnval;
     try {
         await axiosInstance.get("/user/getUserDetails",config)

@@ -14,3 +14,5 @@ export const tab=(props)=>{
         }
     `
 };
+
+export default mobile; 

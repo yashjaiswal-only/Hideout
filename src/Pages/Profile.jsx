@@ -17,10 +17,36 @@ import noprofile from '../assets/Forgot password.gif'
 import Loader from '../Components/Loader'; 
 import { endLoading, startLoading } from '../Redux/UserRedux';
 import { getUserDetails } from '../ApiCalls/User';
+import Post from '../Components/Post';
+import FriendCard from '../Components/FriendCard';
+import { getAllFriends, getAllRequest } from '../ApiCalls/Friend';
 
 const Container=styled.div`
-  width:100vw;
-  height:100vh;
+    width: 100%;
+    min-height: 100vh;
+`
+const Content=styled.div`
+    width: 100%;
+    position: relative;
+    top:3rem;
+    min-height: 100vh;
+    /* background-color: #e1f2f7; */
+    background-color: #fff;
+`
+const Display=styled.div`
+    width:75%;
+    margin-left:20%;
+    /* margin-right:25%; */
+    /* display: flex;
+    align-items: center;
+    justify-content: space-around; */
+    background-color: white;
+    min-height:100vh;
+    ${mobile({
+      width:'85%',
+      marginLeft:'15%',
+      justifyContent:'center'
+    })}
 `
 const Head=styled.div`
   display: flex;
@@ -116,7 +142,7 @@ const Wrapper=styled.div`
   })}
 `
 const Info=styled.div`
-    span{
+    >span{
       font-size:1.5rem;
       font-weight:700;
       display: flex;
@@ -134,10 +160,13 @@ const Info=styled.div`
       display: flex;
       align-items: center;
       font-size:1rem;
+      font-weight:600;
       margin:0.5rem 0;
+      color:#5f5d5d;
       span{
-        margin-right:4px;
-      font-size:1rem;
+        font-weight:700;
+        color:black;
+        margin:4px;
       }
     }
 `
@@ -233,12 +262,53 @@ const Error=styled.div`
   align-items: center;
   margin:1rem;
 `
+const Tabs=styled.div`
+  display: flex;
+  `
+const Tab=styled.div`
+  padding:1rem;
+  /* background-color: blue; */
+  color:${props=>props.index===props.myIndex?'black':'gray'};
+  font-weight:600;
+  font-size:1.5rem;
+  cursor:pointer;
+  position: relative;
+  &::after{
+    content:'';
+    width:${props=>props.index===props.myIndex?'100%':'0%'};
+    height:5px;
+    background:#3c75de;
+    position:absolute;
+    left:0rem;
+    bottom:1rem;
+    transition :0.5s;
+  }
+    
+`
+const ShowFriends=styled.div`
+  display: flex;
+  flex-direction: column;
+  max-height:80vh;
+  flex-wrap:wrap;
+  overflow:auto;
+`
+const Show=styled.div`
+  width: 50%;
+  /* background-color: blue; */
+  display: flex;
+  flex-direction:column;
+  align-items: center;
+  ${mobile({
+    width:'100%'
+  })}
+`
 const Profile = () => {
   const loading=useSelector(state=>state.loading);
   const token=useSelector(state=>state.token);
   const dispatch=useDispatch();
   // const history=useHistory();
   const [profileFetched,setProfileFetched]=useState(1);
+  const [friends,setFriends]=useState([]);
   const [details,setDetails]=useState({
     about:"wqwerty",
     address:{city: 'New ', country: 'India', state: 'Delhi', pincode: '110092'},
@@ -259,31 +329,43 @@ const Profile = () => {
   });
  const loadProfile=async()=>{
   dispatch(startLoading());
-  const res=await getUserDetails(token);  //put await here to stop further execution untill you get response
-  console.log(res);
-  if(res.code!="ERR_BAD_RESPONSE"){
+  var res=await getUserDetails(token);  //put await here to stop further execution untill you get response
+  console.log(res.data);
+  if(res.status===200){
     setProfileFetched(true);
-    console.log(res.data[0])
+    // console.log(res.data[0])
     setDetails(res.data[0]);
   }
   else{  setProfileFetched(false);}
+  res=await getAllFriends(token,res.data[0].uid);
+  console.log(res)
+  if(res.status===200){
+    // setFriends(res.data[0].friends);
+  }
   dispatch(endLoading());
 }
+
 useEffect(()=>{  
-  //  dispatch(endLoading());
+   dispatch(endLoading());
     // loadProfile();
  },[])
+
+ //show index 
+ const [index,setIndex]=useState(1);
 
   return (
    <>
    {
-    !loading?     
+    !loading? 
     <Container>
       {
         profileFetched?
         <>
-         {/* <Topbar/> */}
+         <Topbar/>
+         <Content>
          {/* <Sidebar/> */}
+
+         {/* <Display> */}
           <Head>
             <CoverImg src={profilebg}/>
             <ProfileImg src={'https://play-lh.googleusercontent.com/CKHLf6wwlacMnjuG730pY4cwJbUMoHDtFfoeVKuOxRmPwGXGkzzBfvB9jCJjBqhMSic'}/>
@@ -300,18 +382,18 @@ useEffect(()=>{
             <Info>
               <span>{`${details.name}`}<CheckCircleIcon sx={{color:'blue'}}/></span>
               <div style={{padding:'1rem 0',}}>{details.about}</div>
-              <div style={{fontSize:'1.2rem',color:'#5f5d5d'}}>
-              <FmdGoodIcon />{details.address.city} &bull; {details.address.state} &bull; {details.address.country} &emsp;
-              <CalendarMonthIcon /> Joined {details.createdAt.slice(0,10)}</div>
-              <p><span>425</span> WorkedWith</p>
+              <div style={{fontSize:'1rem',color:'#5f5d5d'}}>
+              {/* <FmdGoodIcon />{details.address.city} &bull; {details.address.state} &bull; {details.address.country} &emsp; */}
+              <CalendarMonthIcon /> Joined {details.createdAt.slice(0,10)}
+              </div>
+              {/* <div style={{fontSize:'1rem',color:'#5f5d5d'}}>
+                <span>162</span> Friends
+                <span>56</span> Mutual Friends
+              </div> */}
+              <p>
+                <span>425</span> Friends &bull; <span> 45</span> Mutual Friends
+              </p>
             </Info>
-
-            {/* <Skills>{
-                details.skills.map(s=>(
-                  <span>{s}</span>
-                ))
-              }
-            </Skills> */}
 
             <Links>
             <a target="_blank" href={`${details.social_links.linkedin}`}><span><i className="fa-brands fa-linkedin-in"></i>LinkedIn</span></a>
@@ -320,17 +402,34 @@ useEffect(()=>{
             <a target="_blank" href=""><span><i className="fa-solid fa-briefcase"></i> Portfolio</span></a>
             </Links>
 
-            {/* <h1>Work Experience</h1>
-            <WorkList>
-                {details.works.map(ele=>(
-                    <Work>
-                        <h3>{ele.title}</h3> 
-                        <h6>{ele.company}</h6>
-                        <span>{ele.description}</span>
-                    </Work>
-                ))}
-            </WorkList> */}
+            <Tabs>
+              <Tab index={index} myIndex={0} onClick={()=>setIndex(0)}>Posts</Tab>
+              <Tab index={index} myIndex={1} onClick={()=>setIndex(1)}>Friends</Tab>
+            </Tabs>
+            {index===0?
+            <Show>
+              <Post/>
+            </Show>:
+            <ShowFriends> 
+              <FriendCard/>
+              <FriendCard/>
+              <FriendCard/>
+              <FriendCard/>
+              <FriendCard/>
+              <FriendCard/>
+              <FriendCard/>
+              <FriendCard/>
+              <FriendCard/>
+              <FriendCard/>
+              <FriendCard/>
+              <FriendCard/> 
+            </ShowFriends>}
           </Wrapper>
+
+
+         {/* </Display> */}
+         </Content>
+
         </>:
         <Error>
          No Profile Available , Kindly  <span 

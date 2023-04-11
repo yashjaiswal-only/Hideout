@@ -21,9 +21,8 @@ import jpeg from '../assets/jpeg.png'
     },
   });
   
-  const FileUpload = ({multiple}) => {
+  const FileUpload = ({fileList,setFileList}) => {
  
-    const [fileList, setFileList] = useState([]);
     const wrapperRef = useRef(null);
   
     const onDragEnter = () => wrapperRef.current?.classList.add('dragover');
@@ -98,7 +97,7 @@ import jpeg from '../assets/jpeg.png'
                 type='file'
                 name={'image'}
                 onChange={onFileDrop}
-                multiple={multiple}
+                multiple={true}
                 accept='image/jpg, image/png, image/jpeg'
                 style={{
                 opacity: 0,
@@ -115,7 +114,7 @@ import jpeg from '../assets/jpeg.png'
   
         {fileList.length > 0 ? (
           <Stack spacing={2} sx={{ my: 2 }}>
-            {(multiple ? fileList : singleFile).map((item, index) => {
+            {fileList.map((item, index) => {
               var imageType = item.type.split('/')[1] ;
               return (
                 <Box
@@ -143,14 +142,7 @@ import jpeg from '../assets/jpeg.png'
                       </Typography>
                     </Box>
                   </Box>
-                  <IconButton
-                    onClick={() => {
-                      if (multiple) {
-                        fileRemove(item);
-                      } else {
-                        fileSingleRemove();
-                      }
-                    }}
+                  <IconButton onClick={() => {fileRemove(item)}}
                     sx={{
                       color: '#df2c0e',
                       position: 'absolute',

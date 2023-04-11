@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import FileUpload from './FileUpload'
 const Container=styled.div`
@@ -35,12 +35,13 @@ const Button=styled.button`
     width: max-content;
 `
 const CreatePost = () => {
+  const [fileList, setFileList] = useState([]);
   return (
     <Container>
         <h2>New Post</h2>
         <label>Caption</label>
       <input placeholder='Caption'/>
-      <FileUpload multiple name="images"/>
+      <FileUpload fileList={fileList} setFileList={setFileList}/>
       <Button>Create</Button>
     </Container>
   )

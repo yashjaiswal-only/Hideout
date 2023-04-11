@@ -15,7 +15,7 @@ const app = initializeApp(firebaseConfig);
 
 const auth = getAuth()
 auth.languageCode = 'it'
-
+  
 const GoogleProvider = new GoogleAuthProvider();
 GoogleProvider.addScope('https://www.googleapis.com/auth/contacts.readonly');
 

@@ -14,10 +14,10 @@ const Container=styled.div`
     })}
 `
 
-const Feed = () => {
+const Feed = ({handleOpen}) => {
   return (
     <Container>
-      <Create/>
+      <Create handleOpen={handleOpen}/>
        <Post/>
       {/* <Post/> 
       <Post/> */}

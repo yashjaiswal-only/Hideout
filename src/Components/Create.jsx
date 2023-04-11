@@ -108,7 +108,7 @@ const Image=styled.img`
     width:'10%'
   })}
 `
-const Create = () => {
+const Create = ({handleOpen}) => {
   return (
     <Container>
       <InputBox>
@@ -119,7 +119,7 @@ const Create = () => {
       <Options>
           {/* <Left> */}
             <Option><VideoCameraFrontIcon />GoLive</Option>
-            <Option><PermMediaIcon />Image/Video</Option>
+            <Option onClick={handleOpen}><PermMediaIcon />Image/Video</Option>
             <Option><PollIcon />Poll/Activity</Option>
           {/* </Left> */}
         {/* <Right>

@@ -7,6 +7,10 @@ import Feed from '../Components/Feed';
 import Right from '../Components/Right';
 import Sidebar from '../Components/Sidebar';
 import {mobile} from '../responsive'
+import Modal from '@mui/material/Modal';
+import CreatePost from '../Components/CreatePost';
+
+
 const Container=styled.div`
     width: 100%;
     min-height: 100vh;
@@ -39,8 +43,23 @@ const Main = () => {
   const [list,setList]=useState('');
   const showList=(val)=>setList(val);
   
+  //create post
+  const [open, setOpen] = React.useState(true);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () =>{
+    setOpen(false);
+    console.log('open')
+  }
   return (
     <Container>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+          <CreatePost/>
+      </Modal>
       <Topbar/>
       <Content>
            <Sidebar showList={showList}/>
@@ -52,7 +71,7 @@ const Main = () => {
               <ChatBox count={2}/>
             </Chats> */}
            <Display>
-              <Feed/> 
+              <Feed handleOpen={handleOpen}/>
             </Display>
       </Content>
     </Container>

@@ -12,11 +12,12 @@ const Container=styled.div`
     width: 100%;
     display: flex;
     justify-content: center;
-    padding:5rem 7rem;
+    /* padding:5rem 7rem; */
+    min-height:100vh;
     align-items: center;
     background-image:url(${bgimg});
     ${tab({
-        padding:'2rem',
+        padding:'2rem 0',
         flexDirection:'column'
     })}
 `
@@ -38,27 +39,29 @@ const Wrapper=styled.div`
 `
 const Left=styled.div`
     background-color: white;
-    flex:1;
+    /* flex:1; */
     display: flex;justify-content: center;align-items: center;
-    width:50%;
-    height:80vh;
+    width:45%;
+    height:90vh;
     ${tab({
-        width:'100%',
+        width:'90%',
+        height:'max-content',
         padding:'3rem 0'
     })}
 `
 const Right=styled.div`
-    flex:1;
+    /* flex:1; */
     background-color: #fff;
     display: flex;
     align-items: center;
     flex-direction: column;
     justify-content: center;
-    width:50%;
-    height:80vh;
+    width:45%;
+    height:90vh;
    padding:1rem;
    ${tab({
-    width:'100%'
+        width:'90%',
+        height:'max-content',
    })}
 `
 const Slider=styled.div`
@@ -157,6 +160,7 @@ const Button=styled.button`
         margin:'0.5rem 0',
         fontSize:'1rem',
         // padding:'1rem',
+        justifyContent:'space-around',
         width:'60%'
     })}
 `
@@ -373,7 +377,7 @@ const Auth = () => {
             <Slides>
 
             <Login id="login">
-                <Logo>OCTOCHAT</Logo>
+                <Logo>Hideout</Logo>
                 <Message>
                     Welcome Back, Please login to your account
                 </Message>
@@ -403,7 +407,7 @@ const Auth = () => {
                     <Label>
                         Password
                     </Label>
-                    <Input type="password" ref={passwordLoginRef}>
+                    <Input type="password" ref={passwordLoginRef} onKeyUp={(e)=>(e.key==='Enter')?handleSubmitLogin(e):""}>
                     </Input>
                     </InputGrp>
 
@@ -429,9 +433,9 @@ const Auth = () => {
 
 
             <Register id="register">
-            <Logo>OCTOCHAT</Logo>
+            <Logo>Hideout</Logo>
                 <Message>
-                    Welcome to Octochat, Please Create your account
+                    Welcome to Hideout, Please Create your account
                 </Message>
                     <ButtonGroup>
                     <Button color="white" onClick={googleSignin}>
@@ -464,7 +468,7 @@ const Auth = () => {
                     <Label>
                         Confirm Password
                     </Label>
-                    <Input type="password" ref={passwordConfirmRef}>
+                    <Input type="password" ref={passwordConfirmRef} onKeyUp={(e)=>(e.key==='Enter')?handleSubmitLogin(e):""}>
                     </Input>
                     </InputGrp>
                     <Bottom>

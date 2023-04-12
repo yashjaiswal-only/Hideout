@@ -24,6 +24,7 @@ export const checkUser=async(token)=>{
         })
         .catch(err=>{
             console.log('error at check user')
+            console.log(err)
             returnval=err;
         })
             

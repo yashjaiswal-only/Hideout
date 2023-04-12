@@ -14,10 +14,10 @@ export const makePost=async(token,data)=>{
             'Authorization': `Bearer ${token}`
         },
     }
-    // console.log(config)
+    console.log(data)
     let returnval;
     try {
-        await axiosInstance.put("/post/makepost",data,config)
+        await axiosInstance.post("/post/makepost",data,config)
         .then(res=>{
             returnval=res;
         })

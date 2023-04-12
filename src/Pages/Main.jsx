@@ -58,7 +58,7 @@ const Main = () => {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-          <CreatePost/>
+          <CreatePost handleClose={handleClose}/>
       </Modal>
       <Topbar/>
       <Content>

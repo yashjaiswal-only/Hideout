@@ -100,12 +100,13 @@ export const getUserDetails=async(token)=>{
             returnval=res;
         })
         .catch(err=>{
-            console.log('error in updating account')
+            console.log('error in fetching account'+err)
             returnval=err;
         })
-            
+        
     } catch (error) {
-        console.log('there seems a error')
+        console.log('error in fetching account')
+        console.log(error)
     }
     return returnval;
 }

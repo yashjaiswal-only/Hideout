@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import pic from '../Data/pic.png';
 import cover from '../Data/cover.jfif'
 import { mobile } from '../responsive';
 import { useSelector } from 'react-redux';
+import { getFriendsCount } from '../ApiCalls/Friend';
 const Container=styled.div`
   width:90%;
   min-height:20vh;
@@ -70,6 +71,16 @@ const Mysection = () => {
   const name=useSelector(state=>state.details?state.details.name:'Your Name');
   const profileImg=useSelector(state=>state.details?state.details.name:pic)
   const coverImg=useSelector(state=>state.details?state.details.name:cover)
+  const token=useSelector(state=>state.token)
+  var count=999;
+  useEffect(()=>{
+    const getCount=async()=>{
+      const res=await getFriendsCount(token)
+      console.log(res)
+      count=res.data.count;
+    }
+    // getCount();
+  },[])
   return (
     <>
     <Container>
@@ -79,7 +90,7 @@ const Mysection = () => {
       </Up>
       <Down>
         <Span name={1}>{name}</Span>
-        <Span >389 friends</Span>
+        <Span >{count} friends</Span>
         <Button>
             My Profile
         </Button>

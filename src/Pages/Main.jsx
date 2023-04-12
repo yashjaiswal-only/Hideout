@@ -11,7 +11,8 @@ import Modal from '@mui/material/Modal';
 import CreatePost from '../Components/CreatePost';
 import { useSearchParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { addUserDetails, endLoading } from '../Redux/UserRedux';
+import { addUserDetails, endLoading, startLoading } from '../Redux/UserRedux';
+import { getUserDetails } from '../ApiCalls/User';
 
 
 const Container=styled.div`
@@ -47,38 +48,31 @@ const Main = () => {
   const showList=(val)=>setList(val);
   
   //create post
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () =>{
     setOpen(false);
     console.log('open')
   }
 
+  // fetch profile and friends details
+  const token=useSelector(state=>state.token);
   // const details=useSelector(state=>state.details);
   const dispatch=useDispatch();
-  // fetch profile and friends details
   const loadProfile=async()=>{
-  dispatch(startLoading());
-  var res=await getUserDetails(token);  //put await here to stop further execution untill you get response
-  console.log(res.data);
-  if(res.status===200){
-    setProfileFetched(true);
-    // console.log(res.data[0])
-    dispatch(addUserDetails(res.data[0]));
+    dispatch(startLoading());
+    var res=await getUserDetails(token);  //put await here to stop further execution untill you get response
+    console.log(res.data);
+    if(res.status===200){
+      // console.log(res.data[0])
+      dispatch(addUserDetails(res.data[0]));
+    }
+    else{}
+    dispatch(endLoading());
   }
-  else{}
-
-  // res=await getAllFriends(token,res.data[0].uid);
-  // console.log(res)
-  // if(res.status===200){
-  //   // setFriends(res.data[0].friends);
-  // }
-  dispatch(endLoading());
-}
 
 useEffect(()=>{  
-   dispatch(endLoading());
-    // loadProfile();
+    loadProfile();
  },[])
   return (
     <Container>

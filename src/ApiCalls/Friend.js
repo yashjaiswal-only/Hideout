@@ -147,3 +147,25 @@ export const getAllRequest=async(token)=>{
     }
     return returnval;
 }
+export const getFriendsCount=async(token)=>{
+    const config={
+        headers:{
+            'Authorization': `Bearer ${token}`
+        },
+    }
+    // console.log(config)
+    let returnval;
+    try {
+        await axiosInstance.get("/friend/countFriends",config)
+        .then(res=>{
+            returnval=res;
+        })
+        .catch(err=>{
+            returnval={error:'Error at finding  count'};
+        })
+        
+    } catch (error) {
+        returnval={error:'Error at finding friends'};
+    }
+    return returnval;
+}

@@ -327,16 +327,9 @@ const Profile = () => {
     __v:0,
     _id:"642c6829185c6ea9fdf4c3ab"
   });
+  // const details=useSelector(state=>state.details)
  const loadProfile=async()=>{
   dispatch(startLoading());
-  var res=await getUserDetails(token);  //put await here to stop further execution untill you get response
-  console.log(res.data);
-  if(res.status===200){
-    setProfileFetched(true);
-    // console.log(res.data[0])
-    setDetails(res.data[0]);
-  }
-  else{  setProfileFetched(false);}
   res=await getAllFriends(token,res.data[0].uid);
   console.log(res)
   if(res.status===200){
@@ -350,7 +343,7 @@ useEffect(()=>{
     // loadProfile();
  },[])
 
- //show index 
+ //show index ,post vs friends
  const [index,setIndex]=useState(1);
 
   return (

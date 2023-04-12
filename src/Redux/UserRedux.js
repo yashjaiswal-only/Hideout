@@ -6,7 +6,8 @@ const userSlice=createSlice({
         user: null, 
         email:"",
         token:null,
-        loading:false
+        loading:false,
+        details:null
     },
     reducers:{
         
@@ -19,16 +20,21 @@ const userSlice=createSlice({
             state.user=null;
             state.email="";
             state.token=null;
+            state.details=null;
         },
         startLoading:(state)=>{
             state.loading=true;
         },
         endLoading:(state)=>{
             state.loading=false;
-        }
+        },
+        addUserDetails:(state,action)=>{
+            state.details=action.payload;
+        },
+        // addFriendList
     }
 });
 
 
-export const {addUser,removeUser,startLoading,endLoading}=userSlice.actions;
+export const {addUser,removeUser,startLoading,endLoading,addUserDetails}=userSlice.actions;
 export default userSlice.reducer;

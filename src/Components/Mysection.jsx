@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import pic from '../Data/pic.png';
 import cover from '../Data/cover.jfif'
 import { mobile } from '../responsive';
+import { useSelector } from 'react-redux';
 const Container=styled.div`
   width:90%;
   min-height:20vh;
@@ -36,9 +37,8 @@ const CoverImg=styled.img`
     border-radius:10px;
 `
 const Image=styled.img`
-  width:25%;
+  width:50px;
   aspect-ratio:1/1;
-  /* height:90%; */
   border-radius:50%;
   position:absolute;
   bottom:0;
@@ -67,16 +67,18 @@ const Button=styled.button`
     background-color: blue;
 `
 const Mysection = () => {
-
+  const name=useSelector(state=>state.details?state.details.name:'Your Name');
+  const profileImg=useSelector(state=>state.details?state.details.name:pic)
+  const coverImg=useSelector(state=>state.details?state.details.name:cover)
   return (
     <>
     <Container>
       <Up >
-        <CoverImg src={cover} />    
-        <Image src={pic}/>
+        <CoverImg src={coverImg} />    
+        <Image src={profileImg}/>
       </Up>
       <Down>
-        <Span name={1}>Yash Jaiswal </Span>
+        <Span name={1}>{name}</Span>
         <Span >389 friends</Span>
         <Button>
             My Profile

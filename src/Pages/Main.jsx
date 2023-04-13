@@ -63,14 +63,14 @@ const Main = () => {
     console.log(res.data);
     if(res.status===200){
       // console.log(res.data[0])
-      dispatch(addUserDetails(res.data[0]));
+      dispatch(addUserDetails(res.data));
     }
     else{}
     dispatch(endLoading());
   }
 
 useEffect(()=>{  
-    // loadProfile();
+    loadProfile();
  },[])
   return (
     <Container>

@@ -307,13 +307,13 @@ const Show=styled.div`
 const Profile = () => {
   //show index ,post vs friends
   const [index,setIndex]=useState(0);
+
+  const navigate=useNavigate()
   const location=useLocation();
   const profileUID=location.pathname.slice(9);
-  // console.log(location.pathname.slice(9))
   const loading=useSelector(state=>state.loading);
   const token=useSelector(state=>state.token);
   const dispatch=useDispatch();
-  // const history=useHistory();
   const [profileFetched,setProfileFetched]=useState(1);
   const [friends,setFriends]=useState([]);
   const [posts,setPosts]=useState([]);
@@ -335,13 +335,18 @@ const Profile = () => {
     __v:0,
     _id:"642c6829185c6ea9fdf4c3ab"
   });
+  const mydetails=useSelector(state=>state.details)
+
+
+  //load profile details
  const loadProfile=async()=>{
   dispatch(startLoading());
-  if(details.uid!=profileUID){
-    //get profile
+  if(profileUID && details.uid!=profileUID){
+  //   //get profile
     let res=await getUserDetails(token,profileUID);
     if(res.status==200){
       setDetails(res.data)
+      console.log(res.data)
     }
     else{
       console.log(res);
@@ -349,16 +354,14 @@ const Profile = () => {
     }
   }
   else{
-    const mydetails=useSelector(state=>state.details)
     setDetails(mydetails);
   }
-
   //get posts
-  var res=await getMyPosts(token);
+  var res=await getMyPosts(token,profileUID);
   // console.log(res);
   if(res.status==200){
-    setPosts(res.data.posts);
-    // console.log(res.data.posts);
+    setPosts(res.data);
+    console.log(res.data);
   }
   else{
     console.log(res);
@@ -366,7 +369,7 @@ const Profile = () => {
   }
 
   //get friends
-  res=await getAllFriends(token);
+  res=await getAllFriends(token,profileUID);
   // console.log(res)
   if(res.status==200){
     setFriends(res.data)
@@ -378,7 +381,6 @@ const Profile = () => {
   }
   dispatch(endLoading());
 }
-
 useEffect(()=>{  
    dispatch(endLoading());
     loadProfile();
@@ -436,7 +438,7 @@ useEffect(()=>{
             {index===0?
             <Show>
               {posts.map((p)=>(
-                <Post post={p} key={p._id}/>
+                <Post post={p}  key={p._id}/>
               ))
               }
             </Show>:
@@ -452,7 +454,7 @@ useEffect(()=>{
         </>:
         <Error>
          No Profile Available , Kindly  <span 
-         style={{color:'blue',textDecoration:'underline',cursor:'pointer'}} onClick={()=>history.push('/signin')}>Login</span> 
+         style={{color:'blue',textDecoration:'underline',cursor:'pointer'}} onClick={()=>navigate('/')}>Login</span> 
             <img src={noprofile}/>
         </Error>
       }

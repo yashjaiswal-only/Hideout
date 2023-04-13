@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import styled from 'styled-components'
 import VideoCameraFrontIcon from '@mui/icons-material/VideoCameraFront';
 import PermMediaIcon from '@mui/icons-material/PermMedia';
@@ -6,6 +6,10 @@ import PollIcon from '@mui/icons-material/Poll';
 import SendIcon from '@mui/icons-material/Send';
 import pic from '../Data/pic.png';
 import {mobile, tab} from '../responsive'
+import { makePost } from '../ApiCalls/Post';
+import { endLoading, startLoading } from '../Redux/UserRedux';
+import { useDispatch, useSelector } from 'react-redux';
+import { CircularProgress } from '@mui/material';
 
 const Container=styled.div`
     width:90%;
@@ -88,6 +92,7 @@ const InputBox=styled.div`
   height:45%;
   background-color: #e1f2f7;
   border-radius:10px;
+  margin-top:1rem;
 `
 const Input=styled.input`
     width:80%;
@@ -109,13 +114,60 @@ const Image=styled.img`
     width:'10%'
   })}
 `
+const TextArea=styled.textarea`
+  height:auto;
+  color:#999;
+  font-weight:400;
+  font-size:1.5rem;
+  font-family:'Ubuntu', Helvetica, Arial, sans-serif;
+  width:95%;  
+  margin: auto;
+  line-height:normal;
+  background-color: inherit;
+  outline:none;
+  border:none;
+  padding:0.5rem;
+  -webkit-transition: height 0.2s ease;
+  -moz-transition: height 0.2s ease;
+  -ms-transition: height 0.2s ease;
+  -o-transition: height 0.2s ease;
+  transition: height 0.2s ease;
+`
 const Create = ({handleOpen}) => {
+  const dispatch=useDispatch();
+  const loading=useSelector(state=>state.loading);
+  const token=useSelector(state=>state.token);
+  const captionRef=useRef();
+  const handleSubmit=async()=>{
+    if(captionRef.current.value){    
+      const data={
+        caption:captionRef.current.value,
+        likes:[],
+        comments:[],
+      }
+      dispatch(startLoading());
+      const res=await makePost(token,data);
+      dispatch(endLoading())
+      console.log(res)
+      if(res.status===200){
+        captionRef.current.value="";
+      }
+    }
+  }
+  dispatch(endLoading());
+
+  //for auto expand input
+  const autoExpand = (e)=>{
+      var element = typeof e === 'object' ? e.target : document.getElementById(e);
+      var scrollHeight = element.scrollHeight; 
+      element.style.height =  scrollHeight + "px";    
+  };
   return (
     <Container>
       <InputBox>
         <Image src={pic}/>
-        <Input  placeholder="What in your mind , Yash ?" />
-        <SendIcon sx={{color:'#6464d8'}}/>
+        <TextArea id="TextArea" ng-model="loremIpsum" ref={captionRef}  onKeyUp={autoExpand} placeholder="What in your mind , Yash ?"/>
+        {loading?<CircularProgress/>:<SendIcon sx={{color:'#6464d8',cursor:'pointer'}} onClick={()=>handleSubmit()}/>}
       </InputBox>
       <Options>
         <Option><VideoCameraFrontIcon />GoLive</Option>

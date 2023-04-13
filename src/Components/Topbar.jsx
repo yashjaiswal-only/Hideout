@@ -29,6 +29,7 @@ import pic from '../Data/pic.png'
 import hideout from '../Data/hideout.png'
 import {mobile} from '../responsive'
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 const Navbar=styled.div`
     width: inherit;
     height:3rem;
@@ -104,7 +105,8 @@ const Topbar = ({handleOpen}) => {
   };
   // ---------profilemenu--------------------
   
-  
+  //use details
+  const details=useSelector(state=>state.details)
   const navigate=useNavigate();
   return (
     <Navbar>  
@@ -132,7 +134,7 @@ const Topbar = ({handleOpen}) => {
             aria-haspopup="true"
             aria-expanded={open ? 'true' : undefined}
           >
-            <Avatar sx={{ width: 32, height: 32 }}><img style={{width:'100%'}} src={pic}/></Avatar>
+            <Avatar sx={{ width: 32, height: 32 }}><img style={{width:'100%'}} src={details.photo}/></Avatar>
           </IconButton>
         </Tooltip>
       </Box>
@@ -171,7 +173,7 @@ const Topbar = ({handleOpen}) => {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <MenuItem onClick={()=>navigate('/profile')}>
+        <MenuItem onClick={()=>navigate('/profile/'+details.uid)}>
           <Avatar /> Profile
         </MenuItem>
         <MenuItem onClick={handleClose}>

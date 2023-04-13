@@ -67,11 +67,11 @@ const TextArea=styled.textarea`
   border:none;
   box-shadow:0px 0px 5px 1px rgba(0,0,0,0.1);
   padding:1rem;
-  -webkit-transition: height 0.5s ease;
-  -moz-transition: height 0.5s ease;
-  -ms-transition: height 0.5s ease;
-  -o-transition: height 0.5s ease;
-  transition: height 0.5s ease;
+  -webkit-transition: height 0.2s ease;
+  -moz-transition: height 0.2s ease;
+  -ms-transition: height 0.2s ease;
+  -o-transition: height 0.2s ease;
+  transition: height 0.2s ease;
 `
 const CreatePost = ({handleClose}) => {
   const [fileList, setFileList] = useState([]);
@@ -157,8 +157,7 @@ const CreatePost = ({handleClose}) => {
     }
   }
  
-
-  
+  //for auto expand input
   const autoExpand = (e)=>{
         var element = typeof e === 'object' ? e.target : document.getElementById(e);
     		var scrollHeight = element.scrollHeight; 
@@ -170,8 +169,6 @@ const CreatePost = ({handleClose}) => {
     {loading?<CircularProgress sx={{margin:'auto'}}/>
       :<>
           <h2>New Post</h2>
-          {/* <label>Caption</label> */}
-        {/* <input placeholder='Caption' ref={captionRef}/> */}
         <TextArea id="TextArea" ng-model="loremIpsum" ref={captionRef}  onKeyUp={autoExpand} placeholder="Write something here..."/>
         <FileUpload fileList={fileList} setFileList={setFileList}/>
         <Button onClick={handleSubmit}>Create</Button>

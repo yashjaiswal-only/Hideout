@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import styled from 'styled-components'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -9,6 +9,7 @@ import SendIcon from '@mui/icons-material/Send';
 import pic from '../Data/pic.png';
 import picture from '../Data/pexels-maria-loznevaya-15237253.jpg'
 import { mobile,tab } from '../responsive';
+import { useSelector } from 'react-redux';
 const Container=styled.div`
     width:90%;
     margin:0.5rem 0rem;
@@ -166,18 +167,47 @@ const Input=styled.textarea`
       fontSize:'0.6rem'
     })}
 `
+const TextArea=styled.textarea`
+  /* height:auto; */
+  color:#999;
+  font-weight:400;
+  font-size:1.2rem;
+  font-family:'Ubuntu', Helvetica, Arial, sans-serif;
+  width:95%;  
+  margin: auto;
+  line-height:normal;
+  background-color: inherit;
+  outline:none;
+  border:none;
+  padding:0.5rem;
+  &::-webkit-scrollbar {
+      width: 0;
+    } 
+  -webkit-transition: height 0.2s ease;
+  -moz-transition: height 0.2s ease;
+  -ms-transition: height 0.2s ease;
+  -o-transition: height 0.2s ease;
+  transition: height 0.2s ease;
+`
 const Post = ({post}) => {
     let width = window.innerWidth;
     const cap=post.caption;
     const [wholeCap,setWholeCap]=useState(false);
     const [like,setLike]=useState(false);
-  
+    const viewerPic=useSelector(state=>state.details.photo)
+    const captionRef=useRef();
+     //for auto expand input
+    const autoExpand = (e)=>{
+      var element = typeof e === 'object' ? e.target : document.getElementById(e);
+      var scrollHeight = element.scrollHeight; 
+      element.style.height =  scrollHeight + "px";    
+    };
   return (
     <Container>
       <Details>
-        <Avatar src={pic} />
+        <Avatar src={post.photo} />
         <Entry>
-            <Name>Yash Jaiswal</Name>
+            <Name>{post.name}</Name>
             <Date>7 Feb at 11:27pm</Date>
         </Entry>
       </Details>
@@ -189,7 +219,7 @@ const Post = ({post}) => {
       </Caption>
 
       
-      <Picture  src={post.images[0]}/>
+      {post.images.length?<Picture  src={post.images[0]}/>:""}
       
      <Actions>
           <Action like={like} onClick={()=>{setLike(~like)}}>
@@ -201,8 +231,9 @@ const Post = ({post}) => {
       </Actions>
       
          <InputBox contenteditable="true">
-          <Image comment src={pic}/>
-          <Input  placeholder="Write a Comment.." />
+          <Image comment src={viewerPic}/>
+          <TextArea id="TextArea" ng-model="loremIpsum" ref={captionRef}  onKeyUp={autoExpand} placeholder="What in your mind , Yash ?"/>
+          {/* <Input  placeholder="Write a Comment.." /> */}
           {/* <span 
             className="input" 
             role="textbox" 

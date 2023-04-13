@@ -8,7 +8,7 @@ const axiosInstance = axios.create({
 })
 
 
-export const getAllFriends=async(token)=>{
+export const getAllFriends=async(token,uid)=>{
     const config={
         headers:{
             'Authorization': `Bearer ${token}`
@@ -16,7 +16,7 @@ export const getAllFriends=async(token)=>{
     }
     let returnval;
     try {
-        await axiosInstance.get("/friend/getAllFriends",config)
+        await axiosInstance.get(uid?`/friend/getAllFriends?uid=${uid}`:"/friend/getAllFriends",config)
         .then(res=>{
             returnval=res;
         })
@@ -149,7 +149,7 @@ export const getAllRequest=async(token)=>{
         headers:{
             'Authorization': `Bearer ${token}`
         },
-        // data:data
+        // data:data 
     }
     // console.log(config)
     let returnval;

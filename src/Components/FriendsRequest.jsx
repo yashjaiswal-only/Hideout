@@ -20,10 +20,8 @@ const Container=styled.div`
     box-shadow: 0px 0px 5px 3px rgba(214,214,214,1);
     align-items: center;
     ${tab({
-      width:'90%'
-    })}
-    ${mobile({
-      width:'90%'
+      width:'90%',
+      maxHeight:'50vh'
     })}
     >h1{
       text-align:center;

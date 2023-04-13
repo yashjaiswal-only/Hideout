@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import pic from '../Data/pic.png'
-import mobile from '../responsive'
+import mobile, { tab } from '../responsive'
 import { Check, Clear } from '@mui/icons-material'
 
 const Container=styled.div`
@@ -13,6 +13,7 @@ const Container=styled.div`
     border-bottom:1px solid gray;  
     >div{
         display: flex;
+        align-items: center;
     }
     >button{
         height:max-content; 
@@ -25,6 +26,14 @@ const Container=styled.div`
         color: white;
         padding: 0.5rem;
     }
+    ${tab({
+      // margin:'0.6rem',
+      paddingBottom:'0.5rem',
+    })}
+    ${mobile({
+      margin:'0.2rem',
+      paddingBottom:'0.2rem'
+    })}
 `
 const Avatar=styled.img`
   height:60px;
@@ -37,6 +46,9 @@ const Avatar=styled.img`
 const Entry=styled.div`
     margin:0rem 30px;
     display: flex; justify-content: center; flex-direction: column;
+    ${tab({
+      margin:'0 15px',
+    })}
 `
 const Name=styled.span`
     margin:0;
@@ -45,7 +57,7 @@ const Name=styled.span`
     font-weight:600;
     line-height:normal;
     ${mobile({
-      // fontSize:'0.8rem',
+      fontSize:'1rem',
     })}
 `
 const Info=styled.span`
@@ -55,16 +67,18 @@ const Info=styled.span`
     font-weight:600;
     line-height:normal;
     ${mobile({
-      // fontSize:'0.6rem',
+      fontSize:'0.8rem',
     })}
 `
 const Circle=styled.span`
   border-radius:50%;
   border:1px solid black;
-  width:50px;
-  height:50px;
+  cursor: pointer;
   display: flex;align-items: center;justify-content: center;
   margin:auto 1rem;
+  ${mobile({
+    margin:'auto 0.4rem'
+  })}
 `
 const FriendTab = ({myfriend,request}) => {
   return (

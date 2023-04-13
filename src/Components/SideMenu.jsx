@@ -7,7 +7,7 @@ import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import SettingsIcon from '@mui/icons-material/Settings';
 import ConnectWithoutContactIcon from '@mui/icons-material/ConnectWithoutContact';
 import RateReviewIcon from '@mui/icons-material/RateReview';
-import {mobile} from '../responsive'
+import {mobile, tab} from '../responsive'
 import logosm from '../Data/logo sm.png'
 const Container=styled.div`
     width: 90%;
@@ -50,6 +50,10 @@ const Option=styled.div`
             text-align:center;
             ${mobile({
                 fontSize:'0.5rem',
+                marginLeft:'0'
+            })}
+            ${tab({
+                fontSize:'0.8rem',
                 marginLeft:'0'
             })}
         }

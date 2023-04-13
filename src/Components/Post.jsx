@@ -211,12 +211,12 @@ const Post = ({post}) => {
             <Date>7 Feb at 11:27pm</Date>
         </Entry>
       </Details>
-      <Caption>
+      {post.caption?<Caption>
         {(wholeCap||cap.length<150)?cap:cap.slice(0,150)}
         {cap.length>150 && 
         (!wholeCap?<span onClick={()=>setWholeCap(true)}>...see more</span>:<span onClick={()=>setWholeCap(false)}>...see less</span>)
         }
-      </Caption>
+      </Caption>:""}
       
       {post.images.length?<Picture  src={post.images[0]}/>:""}
       

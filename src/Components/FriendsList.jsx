@@ -5,7 +5,7 @@ import {Box} from '@mui/material';
 // import Tab from '@mui/material/Tab';
 import styled from 'styled-components';
 import FriendTab from './FriendTab';
-import { getAllFriends } from '../ApiCalls/Friend';
+import { findFriends, getAllFriends } from '../ApiCalls/Friend';
 import { useSelector } from 'react-redux';
 const Container=styled.div`
     width: 50%;
@@ -97,7 +97,7 @@ const Tab=styled.div`
 `
 
 const FriendsList = () => {
-  const [index, setIndex] = React.useState(0);
+  const [index, setIndex] = React.useState(1);
   const handleChange = (event, newIndex) => {
     setIndex(newIndex);
   };
@@ -106,7 +106,9 @@ const FriendsList = () => {
   const list=['Yash Jaiswal','Yash Jaiswal','Yash Jaiswal','Yash Jaiswal','Yash Jaiswal','Yash Jaiswal','Yash Jaiswal',]
 
   //get my friends
-  const [friends,setFriends]=useState();
+  const [friends,setFriends]=useState([]);
+  const [possibleFriends,setPossibleFriends]=useState([]);
+  const loading=useSelector(state=>state.loading);
   const token=useSelector(state=>state.token);
   const getFriends=async()=>{
     const res=await getAllFriends(token);
@@ -117,23 +119,44 @@ const FriendsList = () => {
     }
     else{
       console.log(res);
-      setProfileFetched(0);
+    }
+  }
+  const getPossibleFriends=async()=>{
+    const res=await findFriends(token);
+    if(res.status==200){
+      setPossibleFriends(res.data)
+      console.log(res.data) 
+    }
+    else{
+      console.log(res);
     }
   }
   useEffect(()=>{
     if(index===0)    getFriends();
+    if(index===1)    getPossibleFriends();
   },[index])
+  useEffect(()=>{
+    getFriends();
+    getPossibleFriends();
+  },[])
   return (
     <Container>
       <Tabs>
         <Tab index={index} myIndex={0} onClick={()=>setIndex(0)}>My Friends</Tab>
         <Tab index={index} myIndex={1} onClick={()=>setIndex(1)}>Find Friends</Tab>
       </Tabs>
+   
       {index===1 && <SearchBox placeholder='Find Friend'/>}
       <List>
-      {list.map(f=>(
-          <FriendTab myfriend={index?false:true}/>
-          ))}
+        {index?
+          possibleFriends.length? possibleFriends.map(f=>(
+            <FriendTab myfriend={false} user={f} key={f._id}/>
+          )):"":
+          friends.length?friends.map(f=>(
+            <FriendTab myfriend={true} user={f} key={f._id}/>
+          )):""
+        }
+       
       </List>
     </Container>
   )

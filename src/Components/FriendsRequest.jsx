@@ -35,6 +35,7 @@ const List=styled.div`
     width:100%;
     display: flex;
     flex-wrap: wrap;
+    min-height:30vh;
     max-height:80vh;
     overflow-y:scroll;
     &::-webkit-scrollbar {
@@ -92,9 +93,12 @@ const FriendsList = () => {
     <Container>
         <h1>Friend Requests</h1>
         <List>
-        {list.map(f=>(
-           <FriendTab request/>
-            ))}
+         {requests.length?list.map(f=>(
+           <FriendTab myfriend={false} user={f} key={f._id}/>
+           ))
+           :
+           <div style={{margin:'auto',fontSize:'1.5rem'}}>No Request to show</div>
+           }
         </List>
     </Container>
   )

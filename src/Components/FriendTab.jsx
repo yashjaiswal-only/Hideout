@@ -80,14 +80,14 @@ const Circle=styled.span`
     margin:'auto 0.4rem'
   })}
 `
-const FriendTab = ({myfriend,request}) => {
+const FriendTab = ({myfriend,request,user}) => {
   return (
     <Container>
         <div>
-        <Avatar src={pic} />
+        <Avatar src={user.photo} />
         <Entry>
-            <Name>Yash Jaiswal</Name>
-            <Info>7 Feb at 11:27pm</Info>
+            <Name>{user.name}</Name>
+            <Info>{user.designation}</Info>
         </Entry>
         </div>
         {!request?

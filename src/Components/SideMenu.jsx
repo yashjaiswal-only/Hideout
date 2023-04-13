@@ -9,6 +9,7 @@ import ConnectWithoutContactIcon from '@mui/icons-material/ConnectWithoutContact
 import RateReviewIcon from '@mui/icons-material/RateReview';
 import {mobile, tab} from '../responsive'
 import logosm from '../Data/logo sm.png'
+import { useNavigate } from 'react-router-dom';
 const Container=styled.div`
     width: 90%;
     background-color: white;
@@ -79,11 +80,12 @@ const Logo=styled.img`
     })}
 `
 const SideMenu = ({showList}) => {
+    const navigate=useNavigate();
   return (
     <Container>
         <Option><Logo src={logosm}/></Option>
         <Option><div><DynamicFeedIcon sx={{color:'gray' }}/><span>My Posts</span></div></Option>
-        <Option><div><DataThresholdingIcon sx={{color:'gray' }}/><span>Activity</span></div></Option>
+        <Option onClick={()=>navigate('/friends')}><div><DataThresholdingIcon sx={{color:'gray' }}/><span>Friends</span></div></Option>
         <Option onClick={()=>showList('chats')}><div><TelegramIcon sx={{color:'gray' }}/><span>Chats</span></div></Option>
         <Option onClick={()=>showList('notifications')}><div><NotificationsNoneIcon sx={{color:'gray' }}/><span>Notifications</span></div></Option>
         <Option><div><SettingsIcon sx={{color:'gray' }}/><span>Settings</span></div></Option>

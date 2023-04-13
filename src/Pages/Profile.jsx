@@ -342,7 +342,7 @@ const Profile = () => {
  const loadProfile=async()=>{
   dispatch(startLoading());
   if(profileUID && details.uid!=profileUID){
-  //   //get profile
+    //get profile
     let res=await getUserDetails(token,profileUID);
     if(res.status==200){
       setDetails(res.data)
@@ -373,7 +373,7 @@ const Profile = () => {
   // console.log(res)
   if(res.status==200){
     setFriends(res.data)
-    // console.log(res.data) 
+    console.log(res.data) 
   }
   else{
     console.log(res);
@@ -401,18 +401,19 @@ useEffect(()=>{
          {/* <Display> */}
           <Head>
             <CoverImg src={profilebg}/>
-            <ProfileImg src={'https://play-lh.googleusercontent.com/CKHLf6wwlacMnjuG730pY4cwJbUMoHDtFfoeVKuOxRmPwGXGkzzBfvB9jCJjBqhMSic'}/>
+            <ProfileImg src={details.photo}/>
             <div>
               <Option><MoreHorizIcon/></Option>
               <Option><a href={`mailto:${details.email}`}><MailOutlineIcon/></a></Option>
-              <button onClick={()=>history('/dashboard')}>
-                Dashboad
+              <button onClick={()=>navigate('/home')}>
+                Message
               </button>
             </div>
           </Head>
 
           <Wrapper>
             <Info>
+              
               <span>{`${details.name}`}<CheckCircleIcon sx={{color:'blue'}}/></span>
               <div style={{padding:'1rem 0',}}>{details.about}</div>
               <div style={{fontSize:'1rem',color:'#5f5d5d'}}>
@@ -420,15 +421,14 @@ useEffect(()=>{
               <CalendarMonthIcon /> Joined {details.createdAt.slice(0,10)}
               </div>
               <p>
-                <span>425</span> Friends &bull; <span> 45</span> Mutual Friends
+                <span>{friends.length}</span> Friends &bull; <span> 45</span> Mutual Friends
               </p>
             </Info>
 
             <Links>
             <a target="_blank" href={`${details.social_links.linkedIn}`}><span><i className="fa-brands fa-linkedin-in"></i>LinkedIn</span></a>
-            <a target="_blank" href={`${details.social_links.linkedIn}`}><span><i className="fa-brands fa-github"></i> Github</span></a>
-            <a target="_blank" href={`${details.social_links.linkedIn}`}> <span><i className="fa-solid fa-pen-to-square"></i> Resume</span></a>
-            <a target="_blank" href={`${details.social_links.linkedIn}`}><span><i className="fa-solid fa-briefcase"></i> Portfolio</span></a>
+            <a target="_blank" href={`${details.social_links.github}`}><span><i className="fa-brands fa-github"></i> Github</span></a>
+            <a target="_blank" href={`${details.social_links.instagram}`}> <span><i className="fa-solid fa-pen-to-square"></i> Instagram</span></a>
             </Links>
 
             <Tabs>

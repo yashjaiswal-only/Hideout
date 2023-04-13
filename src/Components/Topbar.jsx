@@ -114,7 +114,7 @@ const Topbar = ({handleOpen}) => {
       <Search type='text' placeholder='Search' />
 
       <Icons>
-      <IconItem><HouseIcon/></IconItem>
+      <IconItem onClick={()=>navigate('/home')}><HouseIcon/></IconItem>
       <IconItem><NewspaperIcon/></IconItem>
       <IconItem><OndemandVideoIcon/></IconItem>
       <IconItem><WorkIcon/></IconItem>
@@ -174,7 +174,7 @@ const Topbar = ({handleOpen}) => {
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
         <MenuItem onClick={()=>navigate('/profile/'+details.uid)}>
-          <Avatar /> Profile
+          <Avatar><img style={{width:'100%'}} src={details.photo}/></Avatar> Profile
         </MenuItem>
         <MenuItem onClick={handleClose}>
           <Avatar /> My account

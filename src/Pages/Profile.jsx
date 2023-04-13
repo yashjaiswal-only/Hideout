@@ -9,7 +9,7 @@ import FmdGoodIcon from '@mui/icons-material/FmdGood';
 import Topbar from '../Components/Topbar'
 import Sidebar from '../Components/Sidebar'
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; 
+import { useLocation, useNavigate } from 'react-router-dom'; 
 import mobile, { tab } from '../responsive'
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -20,6 +20,7 @@ import { getUserDetails } from '../ApiCalls/User';
 import Post from '../Components/Post';
 import FriendCard from '../Components/FriendCard';
 import { getAllFriends, getAllRequest } from '../ApiCalls/Friend';
+import { getMyPosts } from '../ApiCalls/Post';
 
 const Container=styled.div`
     width: 100%;
@@ -291,6 +292,7 @@ const ShowFriends=styled.div`
   max-height:80vh;
   flex-wrap:wrap;
   overflow:auto;
+  ${mobile({maxHeight:'50vh'})}
 `
 const Show=styled.div`
   width: 50%;
@@ -303,12 +305,18 @@ const Show=styled.div`
   })}
 `
 const Profile = () => {
+  //show index ,post vs friends
+  const [index,setIndex]=useState(0);
+  const location=useLocation();
+  const profileUID=location.pathname.slice(9);
+  // console.log(location.pathname.slice(9))
   const loading=useSelector(state=>state.loading);
   const token=useSelector(state=>state.token);
   const dispatch=useDispatch();
   // const history=useHistory();
   const [profileFetched,setProfileFetched]=useState(1);
   const [friends,setFriends]=useState([]);
+  const [posts,setPosts]=useState([]);
   const [details,setDetails]=useState({
     about:"wqwerty",
     address:{city: 'New ', country: 'India', state: 'Delhi', pincode: '110092'},
@@ -327,24 +335,54 @@ const Profile = () => {
     __v:0,
     _id:"642c6829185c6ea9fdf4c3ab"
   });
-  // const details=useSelector(state=>state.details)
  const loadProfile=async()=>{
   dispatch(startLoading());
-  res=await getAllFriends(token,res.data[0].uid);
-  console.log(res)
-  if(res.status===200){
-    // setFriends(res.data[0].friends);
+  if(details.uid!=profileUID){
+    //get profile
+    let res=await getUserDetails(token,profileUID);
+    if(res.status==200){
+      setDetails(res.data)
+    }
+    else{
+      console.log(res);
+      setProfileFetched(0);
+    }
+  }
+  else{
+    const mydetails=useSelector(state=>state.details)
+    setDetails(mydetails);
+  }
+
+  //get posts
+  var res=await getMyPosts(token);
+  // console.log(res);
+  if(res.status==200){
+    setPosts(res.data.posts);
+    // console.log(res.data.posts);
+  }
+  else{
+    console.log(res);
+    setProfileFetched(0);
+  }
+
+  //get friends
+  res=await getAllFriends(token);
+  // console.log(res)
+  if(res.status==200){
+    setFriends(res.data.data.friends)
+    // console.log(res.data.data.friends) 
+  }
+  else{
+    console.log(res);
+    setProfileFetched(0);
   }
   dispatch(endLoading());
 }
 
 useEffect(()=>{  
    dispatch(endLoading());
-    // loadProfile();
+    loadProfile();
  },[])
-
- //show index ,post vs friends
- const [index,setIndex]=useState(1);
 
   return (
    <>
@@ -379,20 +417,16 @@ useEffect(()=>{
               {/* <FmdGoodIcon />{details.address.city} &bull; {details.address.state} &bull; {details.address.country} &emsp; */}
               <CalendarMonthIcon /> Joined {details.createdAt.slice(0,10)}
               </div>
-              {/* <div style={{fontSize:'1rem',color:'#5f5d5d'}}>
-                <span>162</span> Friends
-                <span>56</span> Mutual Friends
-              </div> */}
               <p>
                 <span>425</span> Friends &bull; <span> 45</span> Mutual Friends
               </p>
             </Info>
 
             <Links>
-            <a target="_blank" href={`${details.social_links.linkedin}`}><span><i className="fa-brands fa-linkedin-in"></i>LinkedIn</span></a>
-            <a target="_blank" href=""><span><i className="fa-brands fa-github"></i> Github</span></a>
-            <a target="_blank" href=""> <span><i className="fa-solid fa-pen-to-square"></i> Resume</span></a>
-            <a target="_blank" href=""><span><i className="fa-solid fa-briefcase"></i> Portfolio</span></a>
+            <a target="_blank" href={`${details.social_links.linkedIn}`}><span><i className="fa-brands fa-linkedin-in"></i>LinkedIn</span></a>
+            <a target="_blank" href={`${details.social_links.linkedIn}`}><span><i className="fa-brands fa-github"></i> Github</span></a>
+            <a target="_blank" href={`${details.social_links.linkedIn}`}> <span><i className="fa-solid fa-pen-to-square"></i> Resume</span></a>
+            <a target="_blank" href={`${details.social_links.linkedIn}`}><span><i className="fa-solid fa-briefcase"></i> Portfolio</span></a>
             </Links>
 
             <Tabs>
@@ -401,25 +435,17 @@ useEffect(()=>{
             </Tabs>
             {index===0?
             <Show>
-              <Post/>
+              {posts.map((p)=>(
+                <Post post={p} key={p._id}/>
+              ))
+              }
             </Show>:
             <ShowFriends> 
-              <FriendCard/>
-              <FriendCard/>
-              <FriendCard/>
-              <FriendCard/>
-              <FriendCard/>
-              <FriendCard/>
-              <FriendCard/>
-              <FriendCard/>
-              <FriendCard/>
-              <FriendCard/>
-              <FriendCard/>
-              <FriendCard/> 
+              {friends.map(f=>(
+                <FriendCard friend={f} key={f._id}/>
+              ))}
             </ShowFriends>}
           </Wrapper>
-
-
          {/* </Display> */}
          </Content>
 
@@ -431,7 +457,8 @@ useEffect(()=>{
         </Error>
       }
       
-    </Container>:<Loader/>
+    </Container>:
+    <Loader/>
    }
    </>
   )

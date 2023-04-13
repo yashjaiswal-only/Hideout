@@ -166,12 +166,12 @@ const Input=styled.textarea`
       fontSize:'0.6rem'
     })}
 `
-const Post = () => {
+const Post = ({post}) => {
     let width = window.innerWidth;
-    const cap='Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum ab consequatur nihil, voluptas, dolorem dolores esse quasi corrupti delectus magnam nam totam. Dolorum, corrupti esse dolores at quo nam ex!    Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum ab consequatur nihil, voluptas, dolorem dolores esse quasi corrupti delectus magnam nam totam. Dolorum, corrupti esse dolores at quo nam ex!Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum ab consequatur nihil, voluptas, dolorem dolores esse quasi corrupti delectus magnam nam totam. Dolorum, corrupti esse dolores at quo nam ex!'
+    const cap=post.caption;
     const [wholeCap,setWholeCap]=useState(false);
     const [like,setLike]=useState(false);
-
+  
   return (
     <Container>
       <Details>
@@ -182,12 +182,14 @@ const Post = () => {
         </Entry>
       </Details>
       <Caption>
-        {wholeCap?cap:cap.slice(0,150)}
-         {!wholeCap?<span onClick={()=>setWholeCap(true)}>...see more</span>:<span onClick={()=>setWholeCap(false)}>...see less</span>}
+        {(wholeCap||cap.length<150)?cap:cap.slice(0,150)}
+        {cap.length>150 && 
+        (!wholeCap?<span onClick={()=>setWholeCap(true)}>...see more</span>:<span onClick={()=>setWholeCap(false)}>...see less</span>)
+        }
       </Caption>
 
       
-      <Picture  src={picture}/>
+      <Picture  src={post.images[0]}/>
       
      <Actions>
           <Action like={like} onClick={()=>{setLike(~like)}}>

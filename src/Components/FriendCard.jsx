@@ -8,6 +8,7 @@ import Popper from '@mui/material/Popper';
 import MenuItem from '@mui/material/MenuItem';
 import MenuList from '@mui/material/MenuList';
 import Stack from '@mui/material/Stack';
+import {mobile} from '../responsive'
 const Container=styled.div`
   width:200px;
   height:200px;
@@ -21,6 +22,10 @@ const Container=styled.div`
     width:100%;
     height:100%;
   }
+  ${mobile({
+    width:'100px',
+    height:'100px'
+  })}
 `
 const Details=styled.div`
   position: absolute;
@@ -40,13 +45,26 @@ const Details=styled.div`
 const Option=styled.div`
   cursor: pointer;
   background:rgba(0,0,0,0.5);
-  margin:0.5rem; 
+  /* margin:0.5rem;  */
+  width:90%;
+  height:90%;
   border-radius:50%;
   display: flex;
   align-items: center;
   justify-content: center;
   padding:0.2rem; 
 `
+const style={
+  position:'absolute',
+  top:0,
+  right:0,
+  width:'25%',
+  height:'25%',
+  display:'flex',
+  alignItems:'center',
+  zIndex:500,
+  justifyContent:'center'
+}
 const MenuListComposition=()=>{
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
@@ -83,15 +101,8 @@ const MenuListComposition=()=>{
   }, [open]);
 
   return (
-    <Stack direction="row" spacing={2} style={{position:'absolute', top:'0',right:'0'}}>
-      {/* <Paper>
-        <MenuList>
-          <MenuItem>Profile</MenuItem>
-          <MenuItem>My account</MenuItem>
-          <MenuItem>Logout</MenuItem>
-        </MenuList>
-      </Paper> */}
-      <div>
+    <Stack direction="row" spacing={2} style={style}>
+     
         <Option
         ref={anchorRef}
         id="composition-button"
@@ -133,19 +144,18 @@ const MenuListComposition=()=>{
             </Grow>
           )}
         </Popper>
-      </div>
     </Stack>
   );
 }
-const FriendCard = () => {
+const FriendCard = ({friend}) => {
 
   return (
     <Container>
-      <img src='https://media.istockphoto.com/id/1338134336/photo/headshot-portrait-african-30s-man-smile-look-at-camera.jpg?b=1&s=170667a&w=0&k=20&c=j-oMdWCMLx5rIx-_W33o3q3aW9CiAWEvv9XrJQ3fTMU='/>
-      <MenuListComposition/>
+      <img src={friend.photo}/>
+       <MenuListComposition/>
       <Details>
-          Joey Tribianni
-          <span>Hey this is about me</span>
+          {friend.name}
+          <span>{friend.designation}</span>
       </Details>
     </Container>
   )

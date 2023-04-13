@@ -86,7 +86,7 @@ export const updateUser=async(token,data)=>{
     return returnval;
 }
 
-export const getUserDetails=async(token)=>{
+export const getUserDetails=async(token,uid)=>{
     const config={
         headers:{
             'Authorization': `Bearer ${token}`
@@ -95,7 +95,7 @@ export const getUserDetails=async(token)=>{
     // console.log(config)
     let returnval;
     try {
-        await axiosInstance.get("/user/getUserDetails",config)
+        await axiosInstance.get(uid?$`/user/getUserDetails?uid=${uid}`:"/user/getUserDetails",config)
         .then(res=>{
             returnval=res;
         })

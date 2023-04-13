@@ -32,3 +32,27 @@ export const makePost=async(token,data)=>{
     }
     return returnval;
 }
+
+export const getMyPosts=async(token)=>{
+    const config={
+        headers:{
+            'Authorization': `Bearer ${token}`
+        },
+    }
+    let returnval;
+    try {
+        await axiosInstance.get("/post/userpost",config)
+        .then(res=>{
+            returnval=res;
+        })
+        .catch(err=>{
+            console.log('error in fetching  post',err)
+            returnval=err;
+        })
+        
+    } catch (error) {
+        console.log('error in fetching my post',error)
+        returnval={error};
+    }
+    return returnval;
+}

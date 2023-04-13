@@ -16,6 +16,7 @@ function App() {
               <Route path='/' element={<Auth/>}/>
               <Route path='/home' element={<Main/>}/>
               <Route path='/profile' element={<Profile/>}/>
+              <Route path='/profile/:uid' element={<Profile/>}/>
               <Route path='/friends' element={<Friends/>}/>
               <Route path='/create-profile' element={<CreateProfile/>}/>
               {/* <Route path='/signup' element={<Signup/>}/> */}

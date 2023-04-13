@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import {mobile, tab} from '../responsive'
 import {Box} from '@mui/material';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
+// import Tabs from '@mui/material/Tabs';
+// import Tab from '@mui/material/Tab';
 import styled from 'styled-components';
 import FriendTab from './FriendTab';
 import { getAllFriends } from '../ApiCalls/Friend';
@@ -59,27 +59,45 @@ const SearchBox=styled.input`
     background-color: #e1f2f7;
 `
 
-const TabStyled=styled(Tab)`
-  color:black!important;
-  font-weight:600!important;
-  font-size:1.6rem!important;
-  margin:0;
-  padding:0.5rem!important;
+// const TabStyled=styled(Tab)`
+//   color:black!important;
+//   font-weight:600!important;
+//   font-size:1.6rem!important;
+//   margin:0;
+//   padding:0.5rem!important;
+//   ${tab({
+//     fontSize:'1rem!important'
+//   })}
+// `
+const Tabs=styled.div`
+  display: flex;
+  justify-content: space-around;
+  width:100%;
+  `
+const Tab=styled.div`
+  padding:1rem 0;
+  /* background-color: blue; */
+  color:${props=>props.index===props.myIndex?'black':'gray'};
+  font-weight:600;
+  font-size:2rem;
+  cursor:pointer;
+  position: relative;
+  &::after{
+    content:'';
+    width:${props=>props.index===props.myIndex?'100%':'0%'};
+    height:3px;
+    background:#3c75de;
+    position:absolute;
+    left:0rem;
+    bottom:1rem;
+    transition :0.5s;
+  }
   ${tab({
-    fontSize:'1rem!important'
+    fontSize:'1.3rem'
   })}
+    
 `
-function LinkTab(props) {
-  return (
-    <TabStyled
-      component="a"
-      onClick={(event) => {
-        event.preventDefault();
-      }}
-      {...props}
-    />
-  );  
-}
+
 const FriendsList = () => {
   const [index, setIndex] = React.useState(0);
   const handleChange = (event, newIndex) => {
@@ -109,18 +127,16 @@ const FriendsList = () => {
   },[index])
   return (
     <Container>
-    <Box sx={{ width: '100%' }}>
-        <Tabs value={index} onChange={handleChange} aria-label="nav tabs example">
-            <LinkTab label="My Friends"  />
-            <LinkTab label="Find Friends"  />
-        </Tabs>
-        {index===1 && <SearchBox placeholder='Find Friend'/>}
-        <List>
-        {list.map(f=>(
-           <FriendTab myfriend={index?false:true}/>
-            ))}
-        </List>
-    </Box>
+      <Tabs>
+        <Tab index={index} myIndex={0} onClick={()=>setIndex(0)}>My Friends</Tab>
+        <Tab index={index} myIndex={1} onClick={()=>setIndex(1)}>Find Friends</Tab>
+      </Tabs>
+      {index===1 && <SearchBox placeholder='Find Friend'/>}
+      {/* <List>
+      {list.map(f=>(
+          <FriendTab myfriend={index?false:true}/>
+          ))}
+      </List> */}
     </Container>
   )
 }

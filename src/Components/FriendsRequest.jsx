@@ -89,14 +89,12 @@ const FriendsList = () => {
   },[])
   return (
     <Container>
-    {/* <Box sx={{ width: '100%' }}> */}
         <h1>Friend Requests</h1>
-        <List>
+        {/* <List>
         {list.map(f=>(
            <FriendTab/>
             ))}
-        </List>
-    {/* </Box> */}
+        </List> */}
     </Container>
   )
 }

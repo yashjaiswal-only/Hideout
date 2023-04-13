@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import pic from '../Data/pic.png'
 import { mobile, tab } from '../responsive'
+import FriendTab from './FriendTab'
 const Container=styled.div`
     width:35%;
     height:max-content;
@@ -21,19 +22,9 @@ const Container=styled.div`
     })}
 `
 const List=styled.div`
+    width:90%;
     display: flex;
-    flex-direction: column;
-    width:100%;
-    >div{
-        width:100%;
-        padding:0.5rem;
-        display: flex;
-        align-items: center;
-        justify-content: space-around;
-        >img{
-            width:50px;
-        }
-    }
+    flex-wrap: wrap;
 `
 
 const Avatar=styled.img`
@@ -76,17 +67,7 @@ const FriendsRequest = () => {
       <h1>Friend Requests</h1>
       <List>
         {list.map(f=>(
-            <>
-              <div>
-                 <Avatar src={pic} />
-                <Entry>
-                    <Name>Yash Jaiswal</Name>
-                    <Date>7 Feb at 11:27pm</Date>
-                </Entry>
-                <button>Add Friend</button>
-            </div>
-            <hr style={{color:'black',width:'100%'}}/>
-            </>
+           <FriendTab/>
             ))}
         </List>
     </Container>

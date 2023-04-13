@@ -369,8 +369,8 @@ const Profile = () => {
   res=await getAllFriends(token);
   // console.log(res)
   if(res.status==200){
-    setFriends(res.data.data.friends)
-    // console.log(res.data.data.friends) 
+    setFriends(res.data)
+    // console.log(res.data) 
   }
   else{
     console.log(res);

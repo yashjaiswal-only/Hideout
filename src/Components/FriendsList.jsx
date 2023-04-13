@@ -4,13 +4,18 @@ import {Box} from '@mui/material';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import styled from 'styled-components';
-import pic from '../Data/pic.png'
+import FriendTab from './FriendTab';
 const Container=styled.div`
-    width: 60%;
+    width: 50%;
     margin:1rem;
     height:max-content;
     display: flex;
     flex-direction:column;
+    align-items: center;
+    background-color: #fff;
+    -webkit-box-shadow: 0px 0px 5px 3px rgba(214,214,214,1);
+    -moz-box-shadow: 0px 0px 5px 3px rgba(214,214,214,1);
+    box-shadow: 0px 0px 5px 3px rgba(214,214,214,1);
     align-items: center;
     ${tab({
       width:'50%'
@@ -20,69 +25,23 @@ const Container=styled.div`
     })}
 `
 const List=styled.div`
+    width:90%;
     display: flex;
-    flex-direction: column;
-    width:100%;
-    margin-top:1rem;
-    background-color: #fff;
-    -webkit-box-shadow: 0px 0px 5px 3px rgba(214,214,214,1);
-    -moz-box-shadow: 0px 0px 5px 3px rgba(214,214,214,1);
-    box-shadow: 0px 0px 5px 3px rgba(214,214,214,1);
-    >div{
-        width:100%;
-        padding:0.5rem;
-        display: flex;
-        align-items: center;
-        justify-content: space-around;
-        >img{
-            width:50px;
-        }
-    }
-`
-
-const Avatar=styled.img`
-  width:50px;
-  aspect-ratio:1/1;
-  border-radius:50%;
-  ${mobile({
-      // width:'12%'
-  })}
-`
-const Entry=styled.div`
-    margin:0rem 10px;
-    display: flex; justify-content: center; flex-direction: column;
-`
-const Name=styled.span`
-    margin:0;
-    font-size:1.2rem;
-    color:black;
-    font-weight:600;
-    line-height:normal;
-    ${mobile({
-      // fontSize:'0.8rem',
-    })}
-`
-const Date=styled.span`
-    margin:0;
-    font-size:0.8rem;
-    color:gray;
-    font-weight:600;
-    line-height:normal;
-    ${mobile({
-      // fontSize:'0.6rem',
-    })}
+    flex-wrap: wrap;
 `
 
 const SearchBox=styled.input`
     width:50%;
-    padding:0.5rem 1rem;
-    /* border-radius:20px; */
-    margin:1rem;
-    /* border:none; */
     outline:none;
-    font-size:1.2rem;
-    font-weight:400;
-    /* background-color: oldlace; */
+    font-weight:500;
+    font-size: 1.5rem;
+    line-height: normal;
+    padding: 1rem;
+    border: 1px solid black;
+    width: 80%;
+    margin: 2rem;
+    border-radius: 2rem;
+    background-color: #e1f2f7;
 `
 function LinkTab(props) {
   return (
@@ -91,7 +50,7 @@ function LinkTab(props) {
       onClick={(event) => {
         event.preventDefault();
       }}
-      sx={{color:'black',fontWeight:'500',fontSize:'1.2rem'
+      sx={{color:'black',fontWeight:'500',fontSize:'1.5rem'
         }}
       {...props}
     />
@@ -116,17 +75,7 @@ const FriendsList = () => {
         {value===1 && <SearchBox placeholder='Find Friend'/>}
         <List>
         {list.map(f=>(
-            <>
-              <div>
-                 <Avatar src={pic} />
-                <Entry>
-                    <Name>Yash Jaiswal</Name>
-                    <Date>7 Feb at 11:27pm</Date>
-                </Entry>
-                <button>Add Friend</button>
-            </div>
-            <hr style={{color:'black',width:'100%'}}/>
-            </>
+           <FriendTab/>
             ))}
         </List>
     </Box>

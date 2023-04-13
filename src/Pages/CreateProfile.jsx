@@ -1,28 +1,37 @@
 import { LinearProgress, TextField } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import {
+  getStorage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+} from "firebase/storage";
+import app from "../config/firebase-config";
 import { getUserDetails, updateUser } from '../ApiCalls/User';
 import { useDispatch, useSelector } from 'react-redux';
 import { endLoading, startLoading } from '../Redux/UserRedux';
 import { useNavigate } from 'react-router-dom';
+import FileUpload from '../Components/FileUpload';
 
 const Container=styled.div`
     width:100%;
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-height:100vh;
+    /* flex-direction: column; */
+    justify-content: space-around;
+    align-items: flex-start;
+    /* min-height:100vh; */
 `
 const Section=styled.div`
-    width:80%;
+    width:90%;
     margin:1rem 0;
-    background-color: #dfdfdf;
+    background-color: #cae8ef;
     >section{
-        background-color: #929292;
+        background-color: #2782aa;
         padding:0.5rem;
         font-size:1.5rem;
         color:white;
@@ -35,15 +44,31 @@ const Section=styled.div`
         /* justify-content: space-between; */
     }
 `
+const Left=styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width:70%;
+`
+const Right=styled.div`
+  width:30%;
+`
+const Submit=styled.div`
+  text-align:center;
+  display: flex;
+  flex-direction: column;
+  width:100%;
+  margin:2rem;
+`
 const Button=styled.button`
     padding:0.2rem 1rem;
     cursor:pointer;
     color:black;
-    margin:1rem 0;
-    border:3px solid #2ae88a;
+    margin:auto;
+    border:3px solid #2ce4de;
     border-radius:50px;
     text-align:center;
-    font-size:1.4rem;
+    font-size:2rem;
     background:white ;
     /* background: padding-box fixed, linear-gradient(-45deg, #2ae88a 0%, #08aeea 100%) border-box; */
     &:hover{
@@ -56,7 +81,33 @@ const CreateProfile = () => {
   const navigate=useNavigate();
   const dispatch=useDispatch();
   const [inputs,setInputs]=useState([]);
+  const [image,setImage]=useState("");
+  const [file,setFile]=useState([]);
   const [error,setError]=useState(null);
+  //uploading file to firebase
+  useEffect(()=>{
+    if(file.length){
+      const fileName=new Date().getTime()+file[0].name;  
+      const storage=getStorage(app);
+      const storageRef=ref(storage,fileName);
+      const uploadTask = uploadBytesResumable(storageRef, file[0]);
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {},
+        (error) => {
+          // Handle unsuccessful uploads
+          console.log('error at image upload')
+        },
+        async() => {
+          // Handle successful uploads on complete
+          await getDownloadURL(uploadTask.snapshot.ref).then(async(downloadURL) => {
+            setImage(downloadURL);
+            console.log(downloadURL);
+          });
+        }
+      );
+    }
+  },[file])
   const handleChange=(e)=>{
     setInputs({...inputs,[e.target.name]:e.target.value});
     console.log(inputs);
@@ -85,6 +136,7 @@ const CreateProfile = () => {
       name:inputs.name,
       phone:inputs.phone,
       dob:inputs.dob,
+      photo:image,
       social_links:{
         github:inputs.github,
         instagram:inputs.instagram,
@@ -117,8 +169,9 @@ const CreateProfile = () => {
       <div style={{position:'fixed',top:'0',width:'100%'}}>
         {loading && <LinearProgress sx={{width:'100%'}}/>}
       </div>
+      <h2 style={{textAlign:'center'}}>Complete Your Profile</h2>
     <Container>
-      <h2>Complete Your Profile</h2>
+      <Left>
       <Section>
         <section>Personal Details</section>
         <div>
@@ -148,18 +201,16 @@ const CreateProfile = () => {
             <TextField onChange={handleChange} name="github" label="Instagram" variant="outlined" sx={{margin:'0.5rem'}}/>
         </div>
       </Section>
-      <Section>
-        <section>Upload Photo</section>
-        <div>
-            <label htmlFor="file-upload" className="custom-file-upload">
-                <CloudUploadIcon/> Profile Picture
-            </label>
-            <input id="file-upload" type="file"/>
-        </div> 
-      </Section>
-      {error&&  <span style={{color:'red'}}>{error}</span>}
-      <Button disabled={loading} onClick={handleSubmit}>Submit</Button>
+      
+      </Left>
+      <Right>
+        <FileUpload fileList={file} setFileList={setFile} single/>
+      </Right>
     </Container>
+    <Submit>
+    {error&&  <span style={{color:'red',fontSize:'1.5rem',margin:'1rem'}}>{error}</span>}
+    <Button disabled={loading} onClick={handleSubmit}>Submit</Button>
+    </Submit>
     </LocalizationProvider>
 
   )

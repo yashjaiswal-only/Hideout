@@ -21,7 +21,7 @@ import jpeg from '../assets/jpeg.png'
     },
   });
   
-  const FileUpload = ({fileList,setFileList}) => {
+  const FileUpload = ({fileList,setFileList,single}) => {
  
     const wrapperRef = useRef(null);
   
@@ -93,11 +93,12 @@ import jpeg from '../assets/jpeg.png'
             </label>
            
             <input
+              disabled={(single && fileList.length?true:false)}
                 id='image'
                 type='file'
                 name={'image'}
                 onChange={onFileDrop}
-                multiple={true}
+                multiple={single?false:true}
                 accept='image/jpg, image/png, image/jpeg'
                 style={{
                 opacity: 0,

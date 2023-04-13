@@ -83,23 +83,25 @@ const CreatePost = ({handleClose}) => {
   //submit the post
 
   const handleSubmit=async()=>{
-    if(fileList.length){
+    if(!fileList.length){
+      console.log('posting')
       const data={
       caption:captionRef.current.value,
-        images:Images ,
         likes:[],
         comments:[],
       }
+      console.log(data)
       dispatch(startLoading());
       const res=await makePost(token,data);
       dispatch(endLoading())
       console.log(res)
       if(res.status===200){
-        handleClose();
+        // handleClose();
       }
     }
     else{
       var Images=[];
+      dispatch(startLoading())
       fileList.forEach(file=>{
         const fileName=new Date().getTime()+file.name;  
         const storage=getStorage(app);
@@ -133,7 +135,6 @@ const CreatePost = ({handleClose}) => {
               Images.push(downloadURL);
               console.log(downloadURL);
               if(countUploaded===fileList.length-1){  //on last file upload
-                console.log('creating post')
                 const data={
                   caption:captionRef.current.value,
                   images:Images ,
@@ -144,6 +145,7 @@ const CreatePost = ({handleClose}) => {
                 console.log(res);
                 if(res.status===200){
                   handleClose();
+                  dispatch(endLoading());
                 }
                 setCountUploaded(0);
               }
@@ -170,7 +172,7 @@ const CreatePost = ({handleClose}) => {
           <h2>New Post</h2>
           {/* <label>Caption</label> */}
         {/* <input placeholder='Caption' ref={captionRef}/> */}
-        <TextArea id="TextArea" ng-model="loremIpsum"  onKeyUp={autoExpand} placeholder="Write something here..."/>
+        <TextArea id="TextArea" ng-model="loremIpsum" ref={captionRef}  onKeyUp={autoExpand} placeholder="Write something here..."/>
         <FileUpload fileList={fileList} setFileList={setFileList}/>
         <Button onClick={handleSubmit}>Create</Button>
       </>

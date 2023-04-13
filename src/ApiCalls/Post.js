@@ -14,7 +14,6 @@ export const makePost=async(token,data)=>{
             'Authorization': `Bearer ${token}`
         },
     }
-    console.log(data)
     let returnval;
     try {
         await axiosInstance.post("/post/makepost",data,config)

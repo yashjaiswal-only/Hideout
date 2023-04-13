@@ -50,20 +50,20 @@ function LinkTab(props) {
       onClick={(event) => {
         event.preventDefault();
       }}
-      sx={{color:'black',fontWeight:'500',fontSize:'1.5rem'
+      sx={{color:'black',fontWeight:'600',fontSize:'2rem'
         }}
       {...props}
     />
   );  
 }
 const FriendsList = () => {
-    const [value, setValue] = React.useState(1);
+  const [value, setValue] = React.useState(1);
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
   //list of friends
-    const list=['Yash Jaiswal','Yash Jaiswal','Yash Jaiswal','Yash Jaiswal','Yash Jaiswal',]
+  const list=['Yash Jaiswal','Yash Jaiswal','Yash Jaiswal','Yash Jaiswal','Yash Jaiswal',]
 
   return (
     <Container>
@@ -75,7 +75,7 @@ const FriendsList = () => {
         {value===1 && <SearchBox placeholder='Find Friend'/>}
         <List>
         {list.map(f=>(
-           <FriendTab/>
+           <FriendTab myfriend={value?false:true}/>
             ))}
         </List>
     </Box>

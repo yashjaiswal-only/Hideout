@@ -14,6 +14,17 @@ const Container=styled.div`
     >div{
         display: flex;
     }
+    >button{
+        height:max-content; 
+        margin:auto;
+        font-weight:600;
+        font-size:1rem;
+        background-color: cornflowerblue;
+        border: none;
+        outline: none;
+        color: white;
+        padding: 0.5rem;
+    }
 `
 const Avatar=styled.img`
   height:60px;
@@ -37,7 +48,7 @@ const Name=styled.span`
       // fontSize:'0.8rem',
     })}
 `
-const Date=styled.span`
+const Info=styled.span`
     margin:0;
     font-size:1.2rem;
     color:gray;
@@ -47,17 +58,17 @@ const Date=styled.span`
       // fontSize:'0.6rem',
     })}
 `
-const FriendTab = () => {
+const FriendTab = ({myfriend}) => {
   return (
     <Container>
         <div>
         <Avatar src={pic} />
         <Entry>
             <Name>Yash Jaiswal</Name>
-            <Date>7 Feb at 11:27pm</Date>
+            <Info>7 Feb at 11:27pm</Info>
         </Entry>
         </div>
-        <button>Add Friend</button>
+        <button>{myfriend?'Message':'Add Friend'}</button>
     </Container>
   )
 }

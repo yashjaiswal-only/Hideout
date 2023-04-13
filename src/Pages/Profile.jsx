@@ -293,7 +293,7 @@ const ShowFriends=styled.div`
   flex-wrap:wrap;
   overflow:auto;
   ${mobile({maxHeight:'50vh'})}
-`
+` 
 const Show=styled.div`
   width: 50%;
   /* background-color: blue; */

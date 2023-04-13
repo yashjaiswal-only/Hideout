@@ -217,7 +217,6 @@ const Post = ({post}) => {
         (!wholeCap?<span onClick={()=>setWholeCap(true)}>...see more</span>:<span onClick={()=>setWholeCap(false)}>...see less</span>)
         }
       </Caption>
-
       
       {post.images.length?<Picture  src={post.images[0]}/>:""}
       

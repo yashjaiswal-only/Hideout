@@ -13,6 +13,7 @@ import { useSearchParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addUserDetails, endLoading, startLoading } from '../Redux/UserRedux';
 import { getUserDetails } from '../ApiCalls/User';
+import { getAllPosts } from '../ApiCalls/Post';
 
 
 const Container=styled.div`
@@ -68,10 +69,9 @@ const Main = () => {
     else{}
     dispatch(endLoading());
   }
-
-useEffect(()=>{  
-    loadProfile();
- },[])
+  useEffect(()=>{  
+      loadProfile();
+  },[])
   return (
     <Container>
       <Modal

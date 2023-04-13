@@ -273,8 +273,9 @@ const Auth = () => {
       dispatch(endLoading());
       if(log.status){
         setLoading(false)
-        if(log.found)        navigate('/home');
-        else navigate('/create-profile');
+        // if(log.found)        navigate('/home');
+        // else 
+        navigate('/create-profile');
         console.log("login successful")
       }
       else{

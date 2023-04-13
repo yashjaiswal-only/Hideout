@@ -118,18 +118,7 @@ const CreateProfile = () => {
       return ;
     }
     setError(null);
-    const dummydata={about:"hii this is yash",
-      city:"New Delhi",
-      country:"India",
-      designation:"nsut",
-      github:"dfn",
-      instagram: "dhjekj",
-      linkedIn:"dffsaf",
-      name:"yash",
-      phone:"8130060493",
-      pincode:"110092",
-      state:"Delhi"
-    }
+   
     const data={
       about:inputs.about,
       designation:inputs.designation,      
@@ -151,11 +140,11 @@ const CreateProfile = () => {
     }
     // console.log(data);
     dispatch(startLoading());
-    const res=await updateUser(token,dummydata);
+    const res=await updateUser(token,data);
     dispatch(endLoading());
     console.log(res);
     if(res.status==200){
-      navigate('/profile');
+      navigate('/home');
     }
     else setError(res.error);
   }

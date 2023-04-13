@@ -262,7 +262,6 @@ const Auth = () => {
   const loading=useSelector(state=>state.loading)
   const dispatch=useDispatch();
     // dispatch(removeUser())
-    dispatch(endLoading())
   async function handleSubmitLogin(e){
     e.preventDefault();
     try{

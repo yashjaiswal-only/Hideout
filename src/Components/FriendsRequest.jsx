@@ -20,7 +20,7 @@ const Container=styled.div`
     box-shadow: 0px 0px 5px 3px rgba(214,214,214,1);
     align-items: center;
     ${tab({
-      width:'50%'
+      width:'90%'
     })}
     ${mobile({
       width:'90%'
@@ -28,6 +28,9 @@ const Container=styled.div`
     >h1{
       text-align:center;
       margin:1rem;
+      ${tab({
+        fontSize:'1.2rem'
+      })}
     }
 `
 const List=styled.div`
@@ -90,11 +93,11 @@ const FriendsList = () => {
   return (
     <Container>
         <h1>Friend Requests</h1>
-        {/* <List>
+        <List>
         {list.map(f=>(
-           <FriendTab/>
+           <FriendTab request/>
             ))}
-        </List> */}
+        </List>
     </Container>
   )
 }

@@ -8,10 +8,13 @@ import FriendsList from '../Components/FriendsList';
 import FriendsRequest from '../Components/FriendsRequest';
 import Right from '../Components/Right';
 import Sidebar from '../Components/Sidebar';
-import {mobile} from '../responsive'
+import {mobile, tab} from '../responsive'
 const Container=styled.div`
     width: 100%;
-    overflow-y:hidden;
+    /* overflow-y:hidden;
+    ${tab({
+      overflowY:'scroll'
+    })} */
 `
 const Content=styled.div`
     width: 100%;
@@ -28,11 +31,13 @@ const Display=styled.div`
     display: flex;
     /* align-items: center; */
     justify-content: space-around;
+    ${tab({
+      justifyContent:'center',
+      flexDirection:'column-reverse'
+    })}
     ${mobile({
       width:'85%',
       marginLeft:'15%',
-      justifyContent:'center',
-      flexDirection:'column-reverse'
     })}
 `
 const Friends = () => {

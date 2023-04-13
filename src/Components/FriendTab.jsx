@@ -2,10 +2,11 @@ import React from 'react'
 import styled from 'styled-components'
 import pic from '../Data/pic.png'
 import mobile from '../responsive'
+import { Check, Clear } from '@mui/icons-material'
 
 const Container=styled.div`
     width:100%;
-    padding:1rem;   
+    padding-bottom:1rem;   
     display: flex;
     justify-content: space-between;
     margin:1rem;
@@ -57,7 +58,15 @@ const Info=styled.span`
       // fontSize:'0.6rem',
     })}
 `
-const FriendTab = ({myfriend}) => {
+const Circle=styled.span`
+  border-radius:50%;
+  border:1px solid black;
+  width:50px;
+  height:50px;
+  display: flex;align-items: center;justify-content: center;
+  margin:auto 1rem;
+`
+const FriendTab = ({myfriend,request}) => {
   return (
     <Container>
         <div>
@@ -67,7 +76,13 @@ const FriendTab = ({myfriend}) => {
             <Info>7 Feb at 11:27pm</Info>
         </Entry>
         </div>
-        <button>{myfriend?'Message':'Add Friend'}</button>
+        {!request?
+        <button>{myfriend?'Message':'Add Friend'}</button>:
+        <div>
+          <Circle><Check sx={{fontSize:'40px',color:'green'}}/></Circle>
+          <Circle><Clear sx={{fontSize:'40px',color:'red'}}/></Circle>
+        </div>
+        } 
     </Container>
   )
 }

@@ -20,11 +20,9 @@ const Container=styled.div`
     box-shadow: 0px 0px 5px 3px rgba(214,214,214,1);
     align-items: center;
     ${tab({
-      width:'50%'
-    })}
-    ${mobile({
       width:'90%'
     })}
+    
 `
 const List=styled.div`
     width:100%;
@@ -132,11 +130,11 @@ const FriendsList = () => {
         <Tab index={index} myIndex={1} onClick={()=>setIndex(1)}>Find Friends</Tab>
       </Tabs>
       {index===1 && <SearchBox placeholder='Find Friend'/>}
-      {/* <List>
+      <List>
       {list.map(f=>(
           <FriendTab myfriend={index?false:true}/>
           ))}
-      </List> */}
+      </List>
     </Container>
   )
 }

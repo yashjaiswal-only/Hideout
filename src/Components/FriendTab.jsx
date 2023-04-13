@@ -5,7 +5,6 @@ import mobile from '../responsive'
 
 const Container=styled.div`
     width:100%;
-    /* background-color: red; */
     padding:1rem;   
     display: flex;
     justify-content: space-between;
@@ -17,7 +16,7 @@ const Container=styled.div`
     >button{
         height:max-content; 
         margin:auto;
-        font-weight:600;
+        font-weight:500;
         font-size:1rem;
         background-color: cornflowerblue;
         border: none;

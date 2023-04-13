@@ -11,6 +11,7 @@ import Sidebar from '../Components/Sidebar';
 import {mobile} from '../responsive'
 const Container=styled.div`
     width: 100%;
+    overflow-y:hidden;
 `
 const Content=styled.div`
     width: 100%;

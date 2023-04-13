@@ -154,7 +154,7 @@ export const getAllRequest=async(token)=>{
     // console.log(config)
     let returnval;
     try {
-        await axiosInstance.put("/friend/getAllReq",config)
+        await axiosInstance.get("/friend/getAllReq",config)
         .then(res=>{
             returnval=res;
         })

@@ -52,12 +52,10 @@ const Main = () => {
   const handleOpen = () => setOpen(true);
   const handleClose = () =>{
     setOpen(false);
-    console.log('open')
   }
 
   // fetch profile and friends details
   const token=useSelector(state=>state.token);
-  // const details=useSelector(state=>state.details);
   const dispatch=useDispatch();
   const loadProfile=async()=>{
     dispatch(startLoading());
@@ -72,7 +70,7 @@ const Main = () => {
   }
 
 useEffect(()=>{  
-    loadProfile();
+    // loadProfile();
  },[])
   return (
     <Container>
@@ -84,7 +82,7 @@ useEffect(()=>{
       >
           <CreatePost handleClose={handleClose}/>
       </Modal>
-      <Topbar/>
+      <Topbar handleOpen={handleOpen}/>
       <Content>
            <Sidebar showList={showList}/>
            <Block list={list} showList={showList} />

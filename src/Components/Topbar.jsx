@@ -92,7 +92,7 @@ const Search=styled.input`
   background-color: #e1f2f7;
   `
 
-const Topbar = () => {
+const Topbar = ({handleOpen}) => {
   // ---------profilemenu--------------------
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -115,8 +115,8 @@ const Topbar = () => {
       <IconItem><HouseIcon/></IconItem>
       <IconItem><NewspaperIcon/></IconItem>
       <IconItem><OndemandVideoIcon/></IconItem>
-      <IconItem><WorkIcon/></IconItem>      
-      <IconItem> <AddBoxIcon/> </IconItem>
+      <IconItem><WorkIcon/></IconItem>
+      <IconItem onClick={()=>handleOpen()}> <AddBoxIcon/> </IconItem>
       </Icons>
 
       <Right>

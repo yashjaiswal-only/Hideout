@@ -18,7 +18,7 @@ const Feed = ({handleOpen}) => {
   return (
     <Container>
       <Create handleOpen={handleOpen}/>
-       <Post/>
+       {/* <Post/> */}
       {/* <Post/> 
       <Post/> */}
     </Container>  

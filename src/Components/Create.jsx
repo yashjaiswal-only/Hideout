@@ -51,6 +51,7 @@ const Option=styled.div`
     font-size:1rem;
     color:#655f5f;
     font-weight:600;
+    cursor: pointer;
     ${tab({
       fontSize:'0.6rem',
       padding:'0.2rem'
@@ -117,17 +118,9 @@ const Create = ({handleOpen}) => {
         <SendIcon sx={{color:'#6464d8'}}/>
       </InputBox>
       <Options>
-          {/* <Left> */}
-            <Option><VideoCameraFrontIcon />GoLive</Option>
-            <Option onClick={handleOpen}><PermMediaIcon />Image/Video</Option>
-            <Option><PollIcon />Poll/Activity</Option>
-          {/* </Left> */}
-        {/* <Right>
-            <select>
-              <option default>Public</option>
-              <option>Private</option>
-            </select>
-        </Right> */}
+        <Option><VideoCameraFrontIcon />GoLive</Option>
+        <Option onClick={handleOpen}><PermMediaIcon />Image/Video</Option>
+        <Option><PollIcon />Poll/Activity</Option>
       </Options>
       
     </Container>

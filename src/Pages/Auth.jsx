@@ -220,6 +220,9 @@ const Bottom=styled.div`
 `
 const Rem=styled.div`
     display: flex;
+    >input{
+    cursor: pointer;
+    }    
 `
 const Forgot=styled.div``
 const Terms=styled.div`
@@ -249,12 +252,13 @@ const SubmitBtn=styled.button`
     }
 `
 function myFunction() {
-    console.log('click')
-    var x = document.getElementById("myInput");
-    if (x.type === "password") {
-      x.type = "text";
-    } else {
-      x.type = "password";
+    var x=document.getElementsByClassName('mypassword');
+    for(let ele of x){
+         if (ele.type === "password") {
+            ele.type = "text";
+        } else {
+            ele.type = "password";
+        }
     }
   }
 const Auth = () => {
@@ -418,7 +422,7 @@ const Auth = () => {
                     <Label>
                         Password
                     </Label>
-                    <Input id='myInput' type="password" ref={passwordLoginRef} onKeyUp={(e)=>(e.key==='Enter')?handleSubmitLogin(e):""}>
+                    <Input className='mypassword' type="password" ref={passwordLoginRef} onKeyUp={(e)=>(e.key==='Enter')?handleSubmitLogin(e):""}>
                     </Input>
                     </InputGrp>
 
@@ -472,19 +476,19 @@ const Auth = () => {
                     <Label>
                         Password
                     </Label>
-                    <Input type="password" ref={passwordRef}>
+                    <Input className='mypassword' type="password" ref={passwordRef}>
                     </Input>
                     </InputGrp>
                     <InputGrp>
                     <Label>
                         Confirm Password
                     </Label>
-                    <Input type="password" ref={passwordConfirmRef} onKeyUp={(e)=>(e.key==='Enter')?handleSubmitLogin(e):""}>
+                    <Input className='mypassword'  type="password" ref={passwordConfirmRef} onKeyUp={(e)=>(e.key==='Enter')?handleSubmitLogin(e):""}>
                     </Input>
                     </InputGrp>
                     <Bottom>
                     <Rem >
-                        <input type="checkbox"/> Remember Me 
+                        <input type="checkbox" onClick={myFunction}/> Show Password
                     </Rem>
                     </Bottom>
                     {error && 

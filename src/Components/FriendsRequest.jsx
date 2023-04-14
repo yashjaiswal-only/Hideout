@@ -93,8 +93,8 @@ const FriendsList = () => {
     <Container>
         <h1>Friend Requests</h1>
         <List>
-         {requests.length?list.map(f=>(
-           <FriendTab myfriend={false} user={f} key={f._id}/>
+         {requests.length?requests.map(f=>(
+           <FriendTab request myfriend={false} user={f} key={f._id}/>
            ))
            :
            <div style={{margin:'auto',fontSize:'1.5rem'}}>No Request to show</div>

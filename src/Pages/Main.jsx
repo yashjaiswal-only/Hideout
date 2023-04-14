@@ -79,7 +79,7 @@ const Main = () => {
       setDetailsFetched(true);
     }
     else if(res.status===404){
-      dispatch(removeUser());
+      // dispatch(removeUser());
     }
     else{}
     setFetching(false);
@@ -92,6 +92,7 @@ const Main = () => {
     if(fetching===false && detailsFetched===false){
       console.log('navigating')
       setTimeout(()=>{
+        dispatch(removeUser());
         navigate('/')
       },5000)
     }

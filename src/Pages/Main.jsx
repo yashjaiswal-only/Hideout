@@ -11,9 +11,12 @@ import Modal from '@mui/material/Modal';
 import CreatePost from '../Components/CreatePost';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { addUserDetails, endLoading, startLoading } from '../Redux/UserRedux';
+import { addUserDetails, endLoading, removeUser, startLoading } from '../Redux/UserRedux';
 import { getUserDetails } from '../ApiCalls/User';
 import { getAllPosts } from '../ApiCalls/Post';
+import Loader from '../Components/Loader';
+import Warning from '../Components/Warning';
+import HomeLoader from '../Components/HomePageLoader';
 
 
 const Container=styled.div`
@@ -58,6 +61,7 @@ const Main = () => {
 
   // fetch profile and friends details
   const token=useSelector(state=>state.token);
+  const loading=useSelector(state=>state.loading);
   const user=useSelector(state=>state.user);
   const dispatch=useDispatch();
   const loadProfile=async()=>{
@@ -65,20 +69,25 @@ const Main = () => {
     var res=await getUserDetails(token);  //put await here to stop further execution untill you get response
     console.log(res.data);
     if(res.status===200){
-      // console.log(res.data[0])
       dispatch(addUserDetails(res.data));
+    }
+    else if(res.status===404){
+      dispatch(removeUser());
     }
     else{}
     dispatch(endLoading());
   }
   useEffect(()=>{  
-    console.log(user)
-    if(!user) navigate('/')
-    else loadProfile();
+    // console.log(user)
+    // if(!user) navigate('/')
+    // else 
+    loadProfile();
   },[])
   return (
-    
-    <Container>
+    <>
+    {loading?<HomeLoader/>:(
+      user?
+      <Container>
       <Modal
         open={open}
         onClose={handleClose}
@@ -101,7 +110,12 @@ const Main = () => {
               <Feed handleOpen={handleOpen}/>
             </Display>
       </Content>
-    </Container>
+      </Container>:
+      <HomeLoader warning />
+    )
+    }
+    </>
+
   )
 }
 

@@ -110,3 +110,27 @@ export const getUserDetails=async(token,uid)=>{
     }
     return returnval;
 }
+export const getUserMinDetails=async(token,uid)=>{
+    const config={
+        headers:{
+            'Authorization': `Bearer ${token}`
+        },
+    }
+    let returnval;
+    try {
+        await axiosInstance.get(uid?`/user/getMiniDetails?uid=${uid}`:"/user/getUserDetails",config)
+        .then(res=>{
+            returnval=res;
+        })
+        .catch(err=>{
+            console.log('error in fetching mini details '+err)
+            returnval=err;
+        })
+        
+    } catch (error) {
+        console.log('error in fetching mini details')
+        console.log(error)
+    }
+    return returnval;
+}
+

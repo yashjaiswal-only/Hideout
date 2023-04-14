@@ -1,9 +1,12 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import pic from '../Data/pic.png'
 import mobile, { tab } from '../responsive'
 import { Check, Clear } from '@mui/icons-material'
 import { useNavigate } from 'react-router-dom'
+import { getUserMinDetails } from '../ApiCalls/User'
+import { useSelector } from 'react-redux'
+import { makeRequest } from '../ApiCalls/Friend'
 
 const Container=styled.div`
     width:100%;
@@ -86,18 +89,42 @@ const FriendTab = ({myfriend,request,user}) => {
   const navigate=useNavigate();
   const handleClick=()=>{
     navigate('/profile/'+user.uid)
+    console.log(user.uid);
+  }
+  const token=useSelector(state=>state.token);
+  const [details,setDetails]=useState([]);
+  const getDetails=async()=>{
+    const res=await getUserMinDetails(token,user.uid);
+    if(res.status===200){
+      setDetails(res.data);
+    }
+    else console.log(res);
+  }
+  useEffect(()=>{
+    getDetails();
+  },[])
+
+  //button click
+  const buttonClick=async()=>{
+    console.log('button click')
+    // if(myfriend) navigate('/home');
+    // else{
+    //   //sending request
+    //   const res= await makeRequest(token,user.uid);
+    //   console.log(res);
+    // }
   }
   return (
     <Container>
         <div  onClick={handleClick}>
-        <Avatar src={user.photo} />
+        <Avatar src={details.photo} />
         <Entry>
-            <Name>{user.name}</Name>
-            <Info>{user.designation}</Info>
+            <Name>{details.name}</Name> 
+            <Info>{details.designation}</Info>
         </Entry>
         </div>
         {!request?
-        <button>{myfriend?'Message':'Add Friend'}</button>:
+        <button onClick={buttonClick}>{myfriend?'Message':'Add Friend'}</button>:
         <div>
           <Circle><Check sx={{fontSize:'40px',color:'green'}}/></Circle>
           <Circle><Clear sx={{fontSize:'40px',color:'red'}}/></Circle>

@@ -80,12 +80,10 @@ export const makeRequest=async(token,uid)=>{
         headers:{
             'Authorization': `Bearer ${token}`
         },
-        // data:data
     }
-    // console.log(config)
     let returnval;
     try {
-        await axiosInstance.put("/friend/makeFriendReq?uid="+uid,config)
+        await axiosInstance.post("/friend/makeFriendReq?uid="+uid,config)
         .then(res=>{
             returnval=res;
         })

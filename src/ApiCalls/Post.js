@@ -77,3 +77,25 @@ export const getAllPosts=async(token)=>{
     }
     return returnval;
 }
+export const countLike=async(token,postId,userId)=>{
+    const config={
+        headers:{
+            'Authorization':`Bearer ${token}`
+        }
+    }
+    let returnval;
+    try {
+        await axiosInstance.get('/post/allPosts',config)
+        .then((res)=>{
+            returnval=res;
+        })
+        .catch((err)=>{
+            console.log('error in getting all posts',err)
+            returnval=err;
+        })
+    } catch (error) {
+        console.log('error in getting all posts',error)
+        returnval=error;
+    }
+    return returnval;
+}

@@ -57,15 +57,15 @@ const Friends = () => {
     if(fails){
       console.log('navigating')
       setTimeout(()=>{
-        dispatch(removeUser());
-        navigate('/')
+        // dispatch(removeUser());
+        // navigate('/')
       },3000)
     }
   },[fails])
   return (<>
     <Container>
     <Topbar/>
-    <Content onClick={()=>setFails(true)}>
+    <Content>
          <Sidebar showList={showList}/>
          <Block list={list} showList={showList}/>
          <Display>

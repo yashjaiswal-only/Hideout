@@ -109,7 +109,7 @@ const FriendTab = ({myfriend,request,user}) => {
   const buttonClick=async()=>{
     console.log('button click')
     if(myfriend) navigate('/home');
-    else if(request){
+    else{
       //sending request
       const res= await makeRequest(token,user.uid);
       console.log(res);

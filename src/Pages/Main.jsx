@@ -61,33 +61,46 @@ const Main = () => {
 
   // fetch profile and friends details
   const token=useSelector(state=>state.token);
-  const loading=useSelector(state=>state.loading);
-  const user=useSelector(state=>state.user);
+  const details=useSelector(state=>state.details);
+  const [detailsFetched,setDetailsFetched]=useState(false);
+  const [fetching,setFetching]=useState(true);
   const dispatch=useDispatch();
+
   const loadProfile=async()=>{
-    dispatch(startLoading());
+    if(!token){
+      console.log('no token')
+      return ;
+    }
+    // setFetching(true)
     var res=await getUserDetails(token);  //put await here to stop further execution untill you get response
     console.log(res.data);
     if(res.status===200){
       dispatch(addUserDetails(res.data));
+      setDetailsFetched(true);
     }
     else if(res.status===404){
       dispatch(removeUser());
     }
     else{}
-    dispatch(endLoading());
+    setFetching(false);
   }
-  useEffect(()=>{  
-    // console.log(user)
-    // if(!user) navigate('/')
-    // else 
+  useEffect(()=>{
+    console.log('fetching profile')
     loadProfile();
   },[])
+  useEffect(()=>{
+    if(fetching===false && detailsFetched===false){
+      console.log('navigating')
+      setTimeout(()=>{
+        navigate('/')
+      },5000)
+    }
+  },[fetching])
   return (
     <>
-    {loading?<HomeLoader/>:(
-      user?
-      <Container>
+ {fetching?<HomeLoader/>:(
+      detailsFetched?
+      (<Container>
       <Modal
         open={open}
         onClose={handleClose}
@@ -106,14 +119,14 @@ const Main = () => {
               <ChatBox count={0}/>
               <ChatBox count={2}/>
             </Chats> */}
-           <Display>
+            <Display>
               <Feed handleOpen={handleOpen}/>
             </Display>
       </Content>
-      </Container>:
+      </Container>):
       <HomeLoader warning />
     )
-    }
+  }
     </>
 
   )

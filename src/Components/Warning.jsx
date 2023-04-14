@@ -1,7 +1,5 @@
-import React, { useEffect } from 'react'
-import {Box, CircularProgress, Skeleton} from '@mui/material';
-import LinearProgress from '@mui/material/LinearProgress';
-import { useNavigate } from 'react-router-dom';
+import React from 'react'
+import {Box, CircularProgress} from '@mui/material';
 import styled from 'styled-components';
 import mobile from '../responsive';
 const Container=styled.section`
@@ -29,12 +27,7 @@ const Container=styled.section`
     
 `
 const Warning = () => {
-  const navigate=useNavigate();
-  useEffect(()=>{
-      setTimeout(() => {
-          navigate('/')
-      }, 5000);
-  },[])
+
   return (
     <Container>
         <div>

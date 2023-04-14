@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import {Box, Skeleton} from '@mui/material';
 import LinearProgress from '@mui/material/LinearProgress';
 import Warning from './Warning';
 
 const HomeLoader = ({warning}) => {
-   
+  
   return (
     <div style={{width:'100vw',height:'100vh',position:'relative'}}>
         <LinearProgress sx={{height:'5px'}}/>

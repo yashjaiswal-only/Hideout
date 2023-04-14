@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import {mobile, tab} from '../responsive'
-import {Box} from '@mui/material';
+import {Box, CircularProgress} from '@mui/material';
 // import Tabs from '@mui/material/Tabs';
 // import Tab from '@mui/material/Tab';
 import styled from 'styled-components';
@@ -97,27 +97,26 @@ const Tab=styled.div`
 `
 const NoUser=()=>{
   return (
-    <div style={{height:'30vh',fontSize:'1.5rem',display:'flex',justifyContent:'center',alignItems:'center',width:'100%'}}>
+    <div style={{height:'40vh',fontSize:'1.5rem',display:'flex',justifyContent:'center',alignItems:'center',width:'100%'}}>
       No Friends to Display
     </div>
   )
 }
 
 const FriendsList = () => {
-  const [index, setIndex] = React.useState(1);
+  const [index, setIndex] = React.useState(0);
   const handleChange = (event, newIndex) => {
     setIndex(newIndex);
   };
 
-  // list of friends
-  // const list=['Yash Jaiswal','Yash Jaiswal','Yash Jaiswal','Yash Jaiswal','Yash Jaiswal','Yash Jaiswal','Yash Jaiswal',]
-
   //get my friends
+  const [load,setLoad]=useState(false);
   const [friends,setFriends]=useState([]);
   const [possibleFriends,setPossibleFriends]=useState([]);
   const loading=useSelector(state=>state.loading);
   const token=useSelector(state=>state.token);
   const getFriends=async()=>{
+    setLoad(true);
     const res=await getAllFriends(token);
     // console.log(res)
     if(res.status==200){
@@ -127,8 +126,10 @@ const FriendsList = () => {
     else{
       console.log(res);
     }
+    setLoad(false)
   }
   const getPossibleFriends=async()=>{
+    setLoad(true)
     const res=await findFriends(token);
     if(res.status==200){
       setPossibleFriends(res.data)
@@ -137,6 +138,7 @@ const FriendsList = () => {
     else{
       console.log(res);
     }
+    setLoad(false)
   }
   useEffect(()=>{
     if(index===0)    getFriends();
@@ -154,17 +156,19 @@ const FriendsList = () => {
       </Tabs>
    
       {index===1 && <SearchBox placeholder='Find Friend'/>}
-      <List>
-        {index?
-          possibleFriends.length? possibleFriends.map(f=>(
-            <FriendTab myfriend={false} user={f} key={f._id}/>
-          )):<NoUser/>:
-          friends.length?friends.map(f=>(
-            <FriendTab myfriend={true} user={f} key={f._id}/>
-          )):<NoUser/>
-        }
-       
-      </List>
+      {load?
+        <div style={{height:'40vh',width:'100%',display:'flex',justifyContent:'center',alignItems:'center'}}><CircularProgress/></div>
+        :<List>
+          {index?
+            possibleFriends.length? possibleFriends.map(f=>(
+              <FriendTab myfriend={false} user={f} key={f._id}/>
+            )):<NoUser/>:
+            friends.length?friends.map(f=>(
+              <FriendTab myfriend={true} user={f} key={f._id}/>
+            )):<NoUser/>
+          }
+        </List>
+      }
     </Container>
   )
 }

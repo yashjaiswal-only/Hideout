@@ -138,7 +138,7 @@ const FriendTab = ({myfriend,request,user}) => {
           <Circle onClick={accept}><Check sx={{fontSize:'40px',color:'green'}}/></Circle>
           <Circle onClick={reject}><Clear sx={{fontSize:'40px',color:'red'}}/></Circle>
         </div>
-        } 
+        }
     </Container>
   )
 }

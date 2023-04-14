@@ -248,6 +248,15 @@ const SubmitBtn=styled.button`
         background: linear-gradient(-45deg, #2ae88a 0%, #08aeea 100%) border-box;
     }
 `
+function myFunction() {
+    console.log('click')
+    var x = document.getElementById("myInput");
+    if (x.type === "password") {
+      x.type = "text";
+    } else {
+      x.type = "password";
+    }
+  }
 const Auth = () => {
 
   const emailRef=useRef();
@@ -409,13 +418,13 @@ const Auth = () => {
                     <Label>
                         Password
                     </Label>
-                    <Input type="password" ref={passwordLoginRef} onKeyUp={(e)=>(e.key==='Enter')?handleSubmitLogin(e):""}>
+                    <Input id='myInput' type="password" ref={passwordLoginRef} onKeyUp={(e)=>(e.key==='Enter')?handleSubmitLogin(e):""}>
                     </Input>
                     </InputGrp>
 
                     <Bottom>
                     <Rem >
-                        <input type="checkbox"/> Remember Me 
+                        <input type="checkbox"  onClick={()=>myFunction()}/> Show Password
                     </Rem>
                     <Forgot>Forgot Password?</Forgot>
                     </Bottom>
@@ -497,8 +506,7 @@ const Auth = () => {
         </Slider>
         </Left>
         <Right>
-
-        <Welcome/>
+            <Welcome/>
         </Right>
         {/* </Wrapper> */}
         

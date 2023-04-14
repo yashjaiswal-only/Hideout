@@ -29,7 +29,9 @@ import pic from '../Data/pic.png'
 import hideout from '../Data/hideout.png'
 import {mobile} from '../responsive'
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useDateField } from '@mui/x-date-pickers/DateField/useDateField';
+import { removeUser } from '../Redux/UserRedux';
 const Navbar=styled.div`
     width: inherit;
     height:3rem;
@@ -107,7 +109,14 @@ const Topbar = ({handleOpen}) => {
   
   //use details
   const details=useSelector(state=>state.details)
-  const navigate=useNavigate();
+  const dispatch=useDispatch();
+  const navigate=useNavigate();   
+
+  //handle logout
+  const handleLogout=()=>{
+    dispatch(removeUser());
+    navigate('/')
+  }
   return (
     <Navbar>  
       <Logo><img src={hideout}/></Logo>
@@ -192,10 +201,10 @@ const Topbar = ({handleOpen}) => {
           </ListItemIcon>
           Settings
         </MenuItem>
-        <MenuItem onClick={handleClose}>
+        <MenuItem onClick={handleLogout}>
           <ListItemIcon>
             <Logout fontSize="small" />
-          </ListItemIcon>
+          </ListItemIcon >
           Logout
         </MenuItem>
       </Menu>

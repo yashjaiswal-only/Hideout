@@ -95,6 +95,13 @@ const Tab=styled.div`
   })}
     
 `
+const NoUser=()=>{
+  return (
+    <div style={{height:'30vh',fontSize:'1.5rem',display:'flex',justifyContent:'center',alignItems:'center',width:'100%'}}>
+      No Friends to Display
+    </div>
+  )
+}
 
 const FriendsList = () => {
   const [index, setIndex] = React.useState(1);
@@ -102,8 +109,8 @@ const FriendsList = () => {
     setIndex(newIndex);
   };
 
-  //list of friends
-  const list=['Yash Jaiswal','Yash Jaiswal','Yash Jaiswal','Yash Jaiswal','Yash Jaiswal','Yash Jaiswal','Yash Jaiswal',]
+  // list of friends
+  // const list=['Yash Jaiswal','Yash Jaiswal','Yash Jaiswal','Yash Jaiswal','Yash Jaiswal','Yash Jaiswal','Yash Jaiswal',]
 
   //get my friends
   const [friends,setFriends]=useState([]);
@@ -131,10 +138,10 @@ const FriendsList = () => {
       console.log(res);
     }
   }
-  useEffect(()=>{
-    if(index===0)    getFriends();
-    if(index===1)    getPossibleFriends();
-  },[index])
+  // useEffect(()=>{
+  //   if(index===0)    getFriends();
+  //   if(index===1)    getPossibleFriends();
+  // },[index])
   useEffect(()=>{
     getFriends();
     getPossibleFriends();
@@ -151,10 +158,10 @@ const FriendsList = () => {
         {index?
           possibleFriends.length? possibleFriends.map(f=>(
             <FriendTab myfriend={false} user={f} key={f._id}/>
-          )):"":
+          )):<NoUser/>:
           friends.length?friends.map(f=>(
             <FriendTab myfriend={true} user={f} key={f._id}/>
-          )):""
+          )):<NoUser/>
         }
        
       </List>

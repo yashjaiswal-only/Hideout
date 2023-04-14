@@ -29,7 +29,7 @@ const Container=styled.section`
     
 `
 const Warning = () => {
-  const navigate=useNavigate();   
+  const navigate=useNavigate();
   useEffect(()=>{
       setTimeout(() => {
           navigate('/')

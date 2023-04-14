@@ -64,14 +64,11 @@ function LinkTab(props) {
     />
   );  
 }
-const FriendsList = () => {
+const FriendsRequest = ({setFails}) => {
   const [value, setValue] = React.useState(1);
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
-  //list of friends
-    const list=['Yash Jaiswal','Yash Jaiswal','Yash Jaiswal','Yash Jaiswal','Yash Jaiswal','Yash Jaiswal','Yash Jaiswal',]
 
   //get all requests
   const [requests,setRequests]=useState([]);
@@ -84,6 +81,7 @@ const FriendsList = () => {
     }
     else{
       console.log(res)
+      setFails(true)
     }
   }
   useEffect(()=>{
@@ -104,4 +102,4 @@ const FriendsList = () => {
   )
 }
 
-export default FriendsList
+export default FriendsRequest

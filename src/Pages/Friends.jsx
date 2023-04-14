@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components';
 import {Topbar} from '../Components'
 import Block from '../Components/Block';
@@ -9,6 +9,11 @@ import FriendsRequest from '../Components/FriendsRequest';
 import Right from '../Components/Right';
 import Sidebar from '../Components/Sidebar';
 import {mobile, tab} from '../responsive'
+import HomeLoader from '../Components/HomePageLoader';
+import Warning from '../Components/Warning';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { removeUser } from '../Redux/UserRedux';
 const Container=styled.div`
     width: 100%;
     /* overflow-y:hidden;
@@ -43,18 +48,34 @@ const Display=styled.div`
 const Friends = () => {
   const [list,setList]=useState('');
   const showList=(val)=>setList(val);
-  return (
+
+  //404 error 
+  const [fails,setFails]=useState(false);
+  const dispatch=useDispatch();
+  const navigate=useNavigate();
+  useEffect(()=>{
+    if(fails){
+      console.log('navigating')
+      setTimeout(()=>{
+        // dispatch(removeUser());
+        // navigate('/')
+      },3000)
+    }
+  },[fails])
+  return (<>
     <Container>
     <Topbar/>
-    <Content>
+    <Content onClick={()=>setFails(true)}>
          <Sidebar showList={showList}/>
-         <Block list={list} showList={showList} />
+         <Block list={list} showList={showList}/>
          <Display>
-            <FriendsList/> 
-            <FriendsRequest/>
+            <FriendsList setFails={setFails}/> 
+            <FriendsRequest setFails={setFails}/>
           </Display>
     </Content>
+    <Warning fails={fails}/>
   </Container>
+  </>
   )
 }
 

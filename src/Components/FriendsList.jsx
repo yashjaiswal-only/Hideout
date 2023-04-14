@@ -103,11 +103,12 @@ const NoUser=()=>{
   )
 }
 
-const FriendsList = () => {
+const FriendsList = ({setFails}) => {
   const [index, setIndex] = React.useState(0);
   const handleChange = (event, newIndex) => {
     setIndex(newIndex);
   };
+  
 
   //get my friends
   const [load,setLoad]=useState(false);
@@ -125,6 +126,7 @@ const FriendsList = () => {
     }
     else{
       console.log(res);
+      setFails(true);
     }
     setLoad(false)
   }
@@ -137,6 +139,7 @@ const FriendsList = () => {
     }
     else{
       console.log(res);
+      setFails(true);
     }
     setLoad(false)
   }

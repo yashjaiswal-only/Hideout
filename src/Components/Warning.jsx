@@ -11,6 +11,8 @@ const Container=styled.section`
     z-index:1000;
     top:0;
     display: flex;align-items: center;justify-content: center;
+    display:${props=>(props.fails===true)?'flex':'none'};
+    transition:display 3s ease;
     >div{
         width:50%;
         height:50%;
@@ -26,10 +28,10 @@ const Container=styled.section`
     }
     
 `
-const Warning = () => {
-
+const Warning = ({fails}) => {
+    console.log(fails)
   return (
-    <Container>
+    <Container fails={fails}>
         <div>
             <span>Your session expired!</span>
             <span>Redirecting to login page</span>

@@ -19,8 +19,6 @@ function App() {
               <Route path='/profile/:uid' element={<Profile/>}/>
               <Route path='/friends' element={<Friends/>}/>
               <Route path='/create-profile' element={<CreateProfile/>}/>
-              {/* <Route path='/signup' element={<Signup/>}/> */}
-              {/* <Route path='/signin' element={<Signin/>}/> */}
             </Routes>
         
       </div>

@@ -69,9 +69,9 @@ const Main = () => {
   const loadProfile=async()=>{
     if(!token){
       console.log('no token')
-      return ;
+      // return ;
     }
-    // setFetching(true)
+    // setFetching(true)  //by default fetching is true
     var res=await getUserDetails(token);  //put await here to stop further execution untill you get response
     console.log(res.data);
     if(res.status===200){

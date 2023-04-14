@@ -78,7 +78,6 @@ const Mysection = () => {
   useEffect(()=>{
     const getCount=async()=>{
       const res=await getFriendsCount(token)
-      console.log(res)
       setCount(res.data)
     }
     getCount();

@@ -121,7 +121,6 @@ const Topbar = ({handleOpen}) => {
     <Navbar>  
       <Logo><img src={hideout}/></Logo>
       <Search type='text' placeholder='Search' />
-
       <Icons>
       <IconItem onClick={()=>navigate('/home')}><HouseIcon/></IconItem>
       <IconItem><NewspaperIcon/></IconItem>

@@ -9,7 +9,7 @@ import Sidebar from '../Components/Sidebar';
 import {mobile} from '../responsive'
 import Modal from '@mui/material/Modal';
 import CreatePost from '../Components/CreatePost';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addUserDetails, endLoading, startLoading } from '../Redux/UserRedux';
 import { getUserDetails } from '../ApiCalls/User';
@@ -47,6 +47,7 @@ const Chats=styled.div`
 const Main = () => {
   const [list,setList]=useState('');
   const showList=(val)=>setList(val);
+  const navigate=useNavigate();
   
   //create post
   const [open, setOpen] = React.useState(false);
@@ -57,6 +58,7 @@ const Main = () => {
 
   // fetch profile and friends details
   const token=useSelector(state=>state.token);
+  const user=useSelector(state=>state.user);
   const dispatch=useDispatch();
   const loadProfile=async()=>{
     dispatch(startLoading());
@@ -70,9 +72,12 @@ const Main = () => {
     dispatch(endLoading());
   }
   useEffect(()=>{  
-      loadProfile();
+    console.log(user)
+    if(!user) navigate('/')
+    else loadProfile();
   },[])
   return (
+    
     <Container>
       <Modal
         open={open}

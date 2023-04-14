@@ -110,7 +110,6 @@ const CreateProfile = () => {
   },[file])
   const handleChange=(e)=>{
     setInputs({...inputs,[e.target.name]:e.target.value});
-    console.log(inputs);
   }
   const handleSubmit=async()=>{
     if(!inputs.name){

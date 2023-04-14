@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import pic from '../Data/pic.png'
 import mobile, { tab } from '../responsive'
 import { Check, Clear } from '@mui/icons-material'
+import { useNavigate } from 'react-router-dom'
 
 const Container=styled.div`
     width:100%;
@@ -14,10 +15,11 @@ const Container=styled.div`
     >div{
         display: flex;
         align-items: center;
+        cursor: pointer;
     }
     >button{
         height:max-content; 
-        margin:auto;
+        margin:auto 2rem;
         font-weight:500;
         font-size:1rem;
         background-color: cornflowerblue;
@@ -81,9 +83,13 @@ const Circle=styled.span`
   })}
 `
 const FriendTab = ({myfriend,request,user}) => {
+  const navigate=useNavigate();
+  const handleClick=()=>{
+    navigate('/profile/'+user.uid)
+  }
   return (
     <Container>
-        <div>
+        <div  onClick={handleClick}>
         <Avatar src={user.photo} />
         <Entry>
             <Name>{user.name}</Name>

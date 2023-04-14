@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useAuth } from '../contexts/AuthContext';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
@@ -249,7 +249,6 @@ const SubmitBtn=styled.button`
     }
 `
 const Auth = () => {
-    const navigate=useNavigate();
 
   const emailRef=useRef();
   const passwordRef=useRef();
@@ -272,9 +271,8 @@ const Auth = () => {
       dispatch(endLoading());
       if(log.status){
         setLoading(false)
-        // if(log.found)        navigate('/home');
-        // else 
-        navigate('/create-profile');
+        if(log.found)        navigate('/home');
+        else        navigate('/create-profile');
         console.log("login successful")
       }
       else{
@@ -364,7 +362,11 @@ const Auth = () => {
     setLoading(false)
   }
 
-
+  const user=useSelector(state=>state.user);
+  const navigate=useNavigate();
+  useEffect(()=>{
+    if(user) navigate('/home');
+  },[])
   return (
     <>
     {loading?<Loader/>:

@@ -6,7 +6,7 @@ import { Check, Clear } from '@mui/icons-material'
 import { useNavigate } from 'react-router-dom'
 import { getUserMinDetails } from '../ApiCalls/User'
 import { useSelector } from 'react-redux'
-import { makeRequest } from '../ApiCalls/Friend'
+import { acceptRequest, makeRequest, rejectRequest } from '../ApiCalls/Friend'
 
 const Container=styled.div`
     width:100%;
@@ -30,6 +30,7 @@ const Container=styled.div`
         outline: none;
         color: white;
         padding: 0.5rem;
+        cursor: pointer;
     }
     ${tab({
       // margin:'0.6rem',
@@ -101,33 +102,41 @@ const FriendTab = ({myfriend,request,user}) => {
     else console.log(res);
   }
   useEffect(()=>{
-    getDetails();
+    // getDetails();
   },[])
 
   //button click
   const buttonClick=async()=>{
     console.log('button click')
-    // if(myfriend) navigate('/home');
-    // else{
-    //   //sending request
-    //   const res= await makeRequest(token,user.uid);
-    //   console.log(res);
-    // }
+    if(myfriend) navigate('/home');
+    else if(request){
+      //sending request
+      const res= await makeRequest(token,user.uid);
+      console.log(res);
+    }
+  }
+  const accept=async()=>{
+    const res=await acceptRequest(token,user.uid);
+    console.log(res)
+  }
+  const reject=async()=>{
+    const res=await rejectRequest(token,user.uid);
+    console.log(res)
   }
   return (
     <Container>
         <div  onClick={handleClick}>
-        <Avatar src={details.photo} />
+        <Avatar src={user.photo} />
         <Entry>
-            <Name>{details.name}</Name> 
-            <Info>{details.designation}</Info>
+            <Name>{user.name}</Name> 
+            <Info>{user.designation}</Info>
         </Entry>
         </div>
         {!request?
         <button onClick={buttonClick}>{myfriend?'Message':'Add Friend'}</button>:
         <div>
-          <Circle><Check sx={{fontSize:'40px',color:'green'}}/></Circle>
-          <Circle><Clear sx={{fontSize:'40px',color:'red'}}/></Circle>
+          <Circle onClick={accept}><Check sx={{fontSize:'40px',color:'green'}}/></Circle>
+          <Circle onClick={reject}><Clear sx={{fontSize:'40px',color:'red'}}/></Circle>
         </div>
         } 
     </Container>

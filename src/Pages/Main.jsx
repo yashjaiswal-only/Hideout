@@ -86,7 +86,13 @@ const Main = () => {
   }
   useEffect(()=>{
     console.log('fetching profile')
-    loadProfile();
+    if(details){
+      setFetching(false)
+      setDetailsFetched(true)
+    }
+    else{
+      loadProfile();
+    }
   },[])
   useEffect(()=>{
     if(fetching===false && detailsFetched===false){

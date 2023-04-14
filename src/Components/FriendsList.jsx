@@ -138,10 +138,10 @@ const FriendsList = () => {
       console.log(res);
     }
   }
-  // useEffect(()=>{
-  //   if(index===0)    getFriends();
-  //   if(index===1)    getPossibleFriends();
-  // },[index])
+  useEffect(()=>{
+    if(index===0)    getFriends();
+    if(index===1)    getPossibleFriends();
+  },[index])
   useEffect(()=>{
     getFriends();
     getPossibleFriends();

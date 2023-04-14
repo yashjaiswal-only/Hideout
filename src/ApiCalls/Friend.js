@@ -61,7 +61,7 @@ export const acceptRequest=async(token,uid)=>{
     // console.log(config)
     let returnval;
     try {
-        await axiosInstance.put("/friend/acceptFriendReq?uid="+uid,config)
+        await axiosInstance.get("/friend/acceptFriendReq?uid="+uid,config)
         .then(res=>{
             returnval=res;
         })
@@ -82,16 +82,16 @@ export const makeRequest=async(token,uid)=>{
     }
     let returnval;
     try {
-        await axiosInstance.post("/friend/makeFriendReq?uid="+uid,config)
+        await axiosInstance.get("/friend/makeFriendReq?uid="+uid,config)
         .then(res=>{
             returnval=res;
         })
         .catch(err=>{
-            returnval={error:'Error at finding friends'};
+            returnval=err
         })
         
     } catch (error) {
-        returnval={error:'Error at finding friends'};
+        returnval={error:'Error at making requests'+error};
     }
     return returnval;
 }
@@ -105,7 +105,7 @@ export const deleteRequest=async(token,uid)=>{
     // console.log(config)
     let returnval;
     try {
-        await axiosInstance.put("/friend/makeFriendReq?uid="+uid,config)
+        await axiosInstance.get("/friend/makeFriendReq?uid="+uid,config)
         .then(res=>{
             returnval=res;
         })

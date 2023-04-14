@@ -57,8 +57,8 @@ const Friends = () => {
     if(fails){
       console.log('navigating')
       setTimeout(()=>{
-        // dispatch(removeUser());
-        // navigate('/')
+        dispatch(removeUser());
+        navigate('/')
       },3000)
     }
   },[fails])

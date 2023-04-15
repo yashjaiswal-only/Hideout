@@ -1,6 +1,10 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components';
 import pic from '../Data/pic.png'
+import { CircularProgress } from '@mui/material';
+import { getNotificationsOfUser } from '../ApiCalls/Notification';
+import { useSelector } from 'react-redux';
+import Notification from './Notification';
 
 const Wrapper=styled.div`
     width:95%;
@@ -45,62 +49,33 @@ const Text=styled.div`
 // const Wrapper=styled.div``
 
 const NotificationList = () => {
+    const [allNotifications,setAllNotifications]=useState([]);
+    const [load,setLoad]=useState(false);
+    const token=useSelector(state=>state.token)
+
+    const getNotification=async()=>{
+        setLoad(true)
+        const res=await getNotificationsOfUser(token)
+        // console.log(res)
+        if(res.status===200){
+            setAllNotifications(res.data.notifications)
+            console.log(res.data.notifications)
+        }   
+        setLoad(false)
+    }
+    useEffect(()=>{
+        getNotification();
+    },[])
   return (
-   
-      <Wrapper>
-            <ListItem>
-                <Image src={pic}/>
-                <Text><p>Sunny Graham voted for Reforest the amazon Rainforest</p><span>2h ago</span></Text>
-            </ListItem>
-            <ListItem>
-                <Image src={pic}/>
-                <Text><p>Sunny Graham voted for Reforest the amazon Rainforest</p><span>2h ago</span></Text>
-            </ListItem>
-            <ListItem>
-                <Image src={pic}/>
-                <Text><p>Sunny Graham voted for Reforest the amazon Rainforest</p><span>2h ago</span></Text>
-            </ListItem>
-            <ListItem>
-                <Image src={pic}/>
-                <Text><p>Sunny Graham voted for Reforest the amazon Rainforest</p><span>2h ago</span></Text>
-            </ListItem>
-            <ListItem>
-                <Image src={pic}/>
-                <Text><p>Sunny Graham voted for Reforest the amazon Rainforest</p><span>2h ago</span></Text>
-            </ListItem>
-            <ListItem>
-                <Image src={pic}/>
-                <Text><p>Sunny Graham voted for Reforest the amazon Rainforest</p><span>2h ago</span></Text>
-            </ListItem>
-            <ListItem>
-                <Image src={pic}/>
-                <Text><p>Sunny Graham voted for Reforest the amazon Rainforest</p><span>2h ago</span></Text>
-            </ListItem>
-            <ListItem>
-                <Image src={pic}/>
-                <Text><p>Sunny Graham voted for Reforest the amazon Rainforest</p><span>2h ago</span></Text>
-            </ListItem>
-            <ListItem>
-                <Image src={pic}/>
-                <Text><p>Sunny Graham voted for Reforest the amazon Rainforest</p><span>2h ago</span></Text>
-            </ListItem>
-            <ListItem>
-                <Image src={pic}/>
-                <Text><p>Sunny Graham voted for Reforest the amazon Rainforest</p><span>2h ago</span></Text>
-            </ListItem>
-            <ListItem>
-                <Image src={pic}/>
-                <Text><p>Sunny Graham voted for Reforest the amazon Rainforest</p><span>2h ago</span></Text>
-            </ListItem>
-            <ListItem>
-                <Image src={pic}/>
-                <Text><p>Sunny Graham voted for Reforest the amazon Rainforest</p><span>2h ago</span></Text>
-            </ListItem>
-            <ListItem>
-                <Image src={pic}/>
-                <Text><p>Sunny Graham voted for Reforest the amazon Rainforest</p><span>2h ago</span></Text>
-            </ListItem>
-      </Wrapper>
+   <>{load?<CircularProgress/>:
+     <Wrapper>           
+        {
+            allNotifications.map((not)=>(
+                <Notification not={not}/>
+            ))
+        }
+      </Wrapper>}
+    </>
   )
 }
 

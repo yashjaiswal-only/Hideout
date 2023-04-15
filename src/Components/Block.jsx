@@ -8,7 +8,7 @@ const Component=styled.div`
     background-color: white;
     position:absolute;
     height:${props=>props.list!=''?'85vh':'10vh'};
-    width:${props=>props.list!=''?'25%':'5%'};
+    width:${props=>props.list!=''?'30%':'5%'};
     left:${props=>props.list!=''?'20%':'5%'};
     top:10%;
     position:fixed;

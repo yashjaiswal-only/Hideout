@@ -2,15 +2,18 @@ import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import { getUserMinDetails } from '../ApiCalls/User'
 import { useSelector } from 'react-redux'
-import { CircularProgress } from '@mui/material'
+import { CircularProgress, Tooltip } from '@mui/material'
 import SendIcon from '@mui/icons-material/Send';    
 import { convertDate } from '../Service'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import mobile, { tab } from '../responsive'
-import { addLikeInComment, addReply, checkLikeInComment, countLikeInComment, deleteLikeInComment, getAllCommentsOfPost } from '../ApiCalls/Post'
+import { addLikeInComment, addReply, checkLikeInComment, countLikeInComment, deleteComment, deleteLikeInComment, getAllCommentsOfPost } from '../ApiCalls/Post'
+import { MoreHoriz } from '@mui/icons-material'
+
 const Container=styled.div`
     display: flex;  
+    position: relative;
     width:100%;
     padding:0.5rem;
     border-top:${props=>props.reply?'none':'0.2px solid gray'};
@@ -22,9 +25,12 @@ const Container=styled.div`
         padding:0.5rem 1rem;
         border-radius:1.5rem;
         border-top-left-radius:0;
+        
         >div{
             font-size: 1.3rem;
             font-weight: 700;
+            display: flex;
+            justify-content: space-between;
             ${tab({
                 fontSize:'1rem'
             })}
@@ -227,20 +233,37 @@ const Comment = ({comment,posterId,postId,setAllComments,count,allComments}) => 
             setLikeCount(res.data)
         }
     }
+    const commentDelete=async()=>{
+        const res=await deleteComment(token,postId,comment._id);
+        if(res.status===200){
+            var r=await getAllCommentsOfPost(token,postId);
+            console.log('upating all comments')
+            setAllComments(r.data.comments)
+        }
+    }
+    
     useEffect(()=>{
         getMinDetails();
         setAllReply(comment.replies);
         setDateOf(convertDate(comment.createdAt));
         countLikes()
     },[])
+
+  
   return (
     <>
     {user?
     <>
     <Container>
+    {/* <Button onClick={handleOpen}>Open modal</Button> */}
+   
         <img src={user.photo}/>
         <section>
-            <div>{user.name} </div>
+            <div>{user.name} 
+                {(postId===myDetails.uid || comment.uid===myDetails.uid)?<Tooltip title="Delete Comment">
+                <MoreHoriz onClick={commentDelete} sx={{cursor:'pointer'}} />
+                </Tooltip>:""}
+            </div>
             <p>{comment.comment} {like?<FavoriteIcon sx={{color:'red'}} onClick={dislikeComment}/>
             :<FavoriteBorderIcon onClick={likeComment}/>}</p>
             <span>{dateof} &bull; <span>{likeCount} Likes</span>  &bull; <span onClick={()=>setShowReply(showReply?false:true)}>{showReply?'Collapse':`Reply (${allReply.length})`}</span></span>

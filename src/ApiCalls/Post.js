@@ -30,6 +30,29 @@ export const makePost=async(token,data)=>{
     }
     return returnval;
 }
+export const deletePost=async(token,postId)=>{
+    const config={
+        headers:{
+            'Authorization': `Bearer ${token}`
+        },
+    }
+    let returnval;
+    try {
+        await axiosInstance.get("/post/deletePost?postId="+postId,config)
+        .then(res=>{
+            returnval=res;
+        })
+        .catch(err=>{
+            console.log('error in deleing post',err)
+            returnval=err;
+        })
+                
+    } catch (error) {
+        console.log('there seems a error')
+        returnval={error};
+    }
+    return returnval;
+}
 
 export const getMyPosts=async(token,uid)=>{
     const config={
@@ -343,6 +366,28 @@ export const countLikeInComment=async(token,postId,commentId)=>{
         })
     } catch (error) {
         console.log('error in counting like in comment',error)
+        returnval=error;
+    }
+    return returnval;
+}
+export const deleteComment=async(token,postId,commentId)=>{
+    const config={
+        headers:{
+            'Authorization':`Bearer ${token}`
+        }
+    }
+    let returnval;
+    try {
+        await axiosInstance.get(`/post/deleteComment?commentId=${commentId}&postId=${postId}`,config)
+        .then((res)=>{
+            returnval=res;
+        })
+        .catch((err)=>{
+            console.log('error in deleting comment',err)
+            returnval=err;
+        })
+    } catch (error) {
+        console.log('error in deleting comment',error)
         returnval=error;
     }
     return returnval;

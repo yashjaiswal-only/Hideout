@@ -10,10 +10,11 @@ import pic from '../Data/pic.png';
 import picture from '../Data/pexels-maria-loznevaya-15237253.jpg'
 import { mobile,tab } from '../responsive';
 import { useSelector } from 'react-redux';
-import { addComment, addLike, checkLike, countComment, countLike, getAllCommentsOfPost, removeLike } from '../ApiCalls/Post';
-import { CircularProgress } from '@mui/material';
+import { addComment, addLike, checkLike, countComment, countLike, deletePost, getAllCommentsOfPost, removeLike } from '../ApiCalls/Post';
+import { CircularProgress, Tooltip } from '@mui/material';
 import Comment from './Comment';
 import {convertDate}  from '../Service.js'
+import { MoreHoriz } from '@mui/icons-material';
 const Container=styled.div`
     width:90%;
     margin:0.5rem 0rem;
@@ -35,6 +36,7 @@ const Details=styled.div`
     height:60px;
     display: flex;
     align-items: center;
+    position: relative;
     ${mobile({
       // height:'2rem'
     })}
@@ -269,6 +271,12 @@ const Post = ({post}) => {
         else setLike(false);
       }
     }
+    const postDelete=async()=>{
+      const res=await deletePost(token,post._id);
+      console.log(res)
+      if(res.status===200){
+      }
+  }
     useEffect(()=>{
       count();
       isLike();
@@ -285,6 +293,9 @@ const Post = ({post}) => {
             <Name>{post.name}</Name>
             <Date>{dateofpost}</Date>
         </Entry>
+        {post.uid===myDetails.uid?<Tooltip title="Delete Post">
+                <MoreHoriz onClick={postDelete} sx={{cursor:'pointer',position:'absolute',right:'0'}} />
+          </Tooltip>:""}
       </Details>
       {post.caption?<Caption>
         {(wholeCap||cap.length<150)?cap:cap.slice(0,150)}

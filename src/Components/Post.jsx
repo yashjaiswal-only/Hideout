@@ -41,10 +41,12 @@ const Details=styled.div`
 `
 const Avatar=styled.img`
   width:50px;
+  height:50px;
   aspect-ratio:1/1;
   border-radius:50%;
   ${mobile({
-      // width:'12%'
+      width:'40px',
+      height:'40px',
   })}
 `
 const Entry=styled.div`
@@ -58,7 +60,7 @@ const Name=styled.span`
     font-weight:600;
     line-height:normal;
     ${mobile({
-      // fontSize:'0.8rem',
+      fontSize:'1rem',
     })}
 `
 const Date=styled.span`
@@ -68,7 +70,7 @@ const Date=styled.span`
     font-weight:600;
     line-height:normal;
     ${mobile({
-      // fontSize:'0.6rem',
+      fontSize:'0.6rem',
     })}
 `
 const Caption=styled.div`
@@ -107,7 +109,6 @@ const Actions=styled.div`
     justify-content:space-between;
     border-top:1.4px solid rgba(0,0,0,0.5);
     border-opacity:0.4;
-    /* border-bottom:1px solid gray; */
     
     ${mobile({
       minHeight:'1rem',
@@ -116,10 +117,7 @@ const Actions=styled.div`
     })}
 `
 const Action=styled.div`
-    /* border:${props=>props.like?'1px solid red':'1px solid black'}; */
-    /* color:${props=>props.like?'red':'black'}; */
     color:black;
-    /* border:2px solid gray; */
     border-radius:15px;
     font-weight:600;
     display: flex;
@@ -130,20 +128,24 @@ const Action=styled.div`
     font-size:1rem;
     padding:0.2 1rem;
     height:100%;
-    width:30%;
+    /* width:30%; */
     color:gray;
+    >svg{
 
+    }
+    ${tab({
+      fontSize:'1rem',
+      flexDirection:'column'
+    })}
     ${mobile({
-      fontSize:'0.5rem',
-      width:'30%'
+      fontSize:'0.8rem',
     })}
 `
 const InputBox=styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
   width:100%;
-  /* min-height:50px; */
   background-color: #e1f2f7;
   border-radius:25px;
   margin:0.4rem 0;
@@ -151,34 +153,15 @@ const InputBox=styled.div`
       minHeight:'1.5rem'
   })}
 `
-const Image=styled.img`
-  width:40px;
-  aspect-ratio:1/1;
-  border-radius:50%;
-  margin:0.4rem;
-  ${mobile({
-      width:'8%'
-  })}
-`
-const Input=styled.textarea`
-    width:80%;
-    height:max-content;
-    background-color: inherit;   
-    border:none;
-    outline:none;
-    font-size:1.2rem;
-    ${mobile({
-      fontSize:'0.6rem'
-    })}
-`
+
 const TextArea=styled.textarea`
   /* height:auto; */
   color:#999;
   font-weight:400;
   font-size:1.2rem;
   font-family:'Ubuntu', Helvetica, Arial, sans-serif;
-  width:95%;  
-  margin: auto;
+  width:80%;  
+  /* margin: auto; */
   line-height:normal;
   background-color: inherit;
   outline:none;
@@ -187,11 +170,13 @@ const TextArea=styled.textarea`
   &::-webkit-scrollbar {
       width: 0;
     } 
-  -webkit-transition: height 0.2s ease;
-  -moz-transition: height 0.2s ease;
-  -ms-transition: height 0.2s ease;
-  -o-transition: height 0.2s ease;
   transition: height 0.2s ease;
+  ${tab({
+    fontSize:'1rem'
+  })}
+  ${tab({
+    fontSize:'0.8rem'
+  })}
 `
 const CommentBox=styled.div`
   width:100%;
@@ -312,18 +297,18 @@ const Post = ({post}) => {
       
      <Actions>
           <Action like={like} onClick={like?dislikesPost:likesPost}>
-            {like?<FavoriteIcon sx={{color:'red',fontSize:`${width<500?'1rem':'2rem'}`}}/>
-            :<FavoriteBorderIcon sx={{fontSize:`${width<500?'1rem':'2rem'}` }} />}{countLikes} Likes
+            {like?<FavoriteIcon sx={{color:'red'}}/>
+            :<FavoriteBorderIcon />}{countLikes} Likes
           </Action>
-          <Action onClick={()=>setShowComments(showComments?false:true)}><ChatBubbleOutlineIcon sx={{fontSize:`${width<500?'1rem':'2rem'}` }}/>{countComments} Comments</Action>
-          <Action onClick={()=>setShowComments(false)}><ShareOutlinedIcon sx={{fontSize:`${width<500?'1rem':'2rem'}` }}/>Share</Action>
+          <Action onClick={()=>setShowComments(showComments?false:true)}><ChatBubbleOutlineIcon/>{countComments} Comments</Action>
+          <Action onClick={()=>setShowComments(false)}><ShareOutlinedIcon />Share</Action>
       </Actions>
       
       <InputBox contenteditable="true">
-        <Image comment src={myDetails.photo}/>
+        <Avatar comment src={myDetails.photo}/>
         <TextArea id="TextArea" ng-model="loremIpsum" ref={commentRef}  onKeyUp={autoExpand} 
         placeholder={`Write Something Here.. ${myDetails.name}`} />
-        {load?<CircularProgress/>:<SendIcon sx={{color:'#6464d8',cursor:'pointer',fontSize:`${width<500?'1rem':'2rem'}`}} onClick={commentPost}/>}
+        {load?<CircularProgress/>:<SendIcon sx={{color:'#6464d8',cursor:'pointer'}} onClick={commentPost}/>}
       </InputBox>
       <CommentBox  show={showComments} >
         {allComments.map(com=>(<Comment comment={com} postId={post._id} posterId={post.uid} setAllComments={setAllComments} count={count} allComments={allComments}/>))}

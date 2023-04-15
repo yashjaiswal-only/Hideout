@@ -18,7 +18,7 @@ const Container=styled.div`
         background-color: #e4e4e4;
         width:80%;
         padding:0.5rem 1rem;
-        border-radius:2rem;
+        border-radius:1.5rem;
         border-top-left-radius:0;
         >div{
             font-size: 1.3rem;
@@ -144,11 +144,10 @@ const TextArea=styled.textarea`
   &::-webkit-scrollbar {
       width: 0;
     } 
-  -webkit-transition: height 0.2s ease;
-  -moz-transition: height 0.2s ease;
-  -ms-transition: height 0.2s ease;
-  -o-transition: height 0.2s ease;
   transition: height 0.2s ease;
+  ${tab({
+    fontSize:'1rem'
+  })}
 `
 const Comment = ({comment,posterId,postId,setAllComments,count,allComments}) => {
     const token=useSelector(state=>state.token);

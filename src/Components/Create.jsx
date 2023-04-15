@@ -127,11 +127,10 @@ const TextArea=styled.textarea`
   outline:none;
   border:none;
   padding:0.5rem;
-  -webkit-transition: height 0.2s ease;
-  -moz-transition: height 0.2s ease;
-  -ms-transition: height 0.2s ease;
-  -o-transition: height 0.2s ease;
   transition: height 0.2s ease;
+  ${tab({
+    fontSize:'1rem'
+  })}
 `
 const Create = ({handleOpen}) => {
   const dispatch=useDispatch();

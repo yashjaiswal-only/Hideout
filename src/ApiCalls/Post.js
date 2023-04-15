@@ -77,6 +77,50 @@ export const getAllPosts=async(token)=>{
     }
     return returnval;
 }
+export const addLike=async(token,postId,userId)=>{
+    const config={
+        headers:{
+            'Authorization':`Bearer ${token}`
+        }
+    }
+    let returnval;
+    try {
+        await axiosInstance.get(`/post/addlike?id=${userId}&postId=${postId}`,config)
+        .then((res)=>{
+            returnval=res;
+        })
+        .catch((err)=>{
+            console.log('error in  liking',err)
+            returnval=err;
+        })
+    } catch (error) {
+        console.log('error in liking',error)
+        returnval=error;
+    }
+    return returnval;
+}
+export const removeLike=async(token,postId,userId)=>{
+    const config={
+        headers:{
+            'Authorization':`Bearer ${token}`
+        }
+    }
+    let returnval;
+    try {
+        await axiosInstance.get(`/post/unlike?id=${userId}&postId=${postId}`,config)
+        .then((res)=>{
+            returnval=res;
+        })
+        .catch((err)=>{
+            console.log('error in  unliking',err)
+            returnval=err;
+        })
+    } catch (error) {
+        console.log('error in unliking',error)
+        returnval=error;
+    }
+    return returnval;
+}
 export const countLike=async(token,postId,userId)=>{
     const config={
         headers:{
@@ -85,16 +129,106 @@ export const countLike=async(token,postId,userId)=>{
     }
     let returnval;
     try {
-        await axiosInstance.get('/post/allPosts',config)
+        await axiosInstance.get(`/post/countlikes?id=${userId}&postId=${postId}`,config)
         .then((res)=>{
             returnval=res;
         })
         .catch((err)=>{
-            console.log('error in getting all posts',err)
+            console.log('error in counting likes',err)
             returnval=err;
         })
     } catch (error) {
-        console.log('error in getting all posts',error)
+        console.log('error in counting likes',error)
+        returnval=error;
+    }
+    return returnval;
+}
+export const countComment=async(token,postId)=>{
+    const config={
+        headers:{
+            'Authorization':`Bearer ${token}`
+        }
+    }
+    let returnval;
+    try {
+        await axiosInstance.get(`/post/countComment?postId=${postId}`,config)
+        .then((res)=>{
+            returnval=res;
+        })
+        .catch((err)=>{
+            console.log('error in counting comment',err)
+            returnval=err;
+        })
+    } catch (error) {
+        console.log('error in counting comment',error)
+        returnval=error;
+    }
+    return returnval;
+}
+export const addComment=async(token,postUID,postId,data)=>{
+    const config={
+        headers:{
+            'Authorization':`Bearer ${token}`
+        }
+    }
+    let returnval;
+    try {
+        await axiosInstance.post(`/post/addComment?postId=${postId}&id=${postUID}`,data,config)
+        .then((res)=>{
+            returnval=res;
+        })
+        .catch((err)=>{
+            console.log('error in adding comment',err)
+            returnval=err;
+        })
+    } catch (error) {
+        console.log('error in adding comment',error)
+        returnval=error;
+    }
+    return returnval;
+}
+
+export const getAllCommentsOfPost=async(token,postId)=>{
+    const config={
+        headers:{
+            'Authorization':`Bearer ${token}`
+        }
+    }
+    console.log(postId)
+    let returnval;
+    try {
+        await axiosInstance.get(`/post/getCommentsOfPost?postId=${postId}`,config)
+        .then((res)=>{
+            returnval=res;
+        })
+        .catch((err)=>{
+            console.log('error in fetching comment',err)
+            returnval=err;
+        })
+    } catch (error) {
+        console.log('error in fetching comment',error)
+        returnval=error;
+    }
+    return returnval;
+}
+export const addReply=async(token,postId,commentId,posterId,commenterId,data)=>{
+    const config={
+        headers:{
+            'Authorization':`Bearer ${token}`
+        }
+    }
+    let returnval;
+    try {
+        await axiosInstance.post(`/post/addReply?postId=${postId}&commentId=${commentId}&id=${posterId}&commenterId=${commenterId}`,data,config)
+        .then((res)=>{
+            returnval=res;
+        })
+        .catch((err)=>{
+            console.log('error in add reply',err)
+            returnval=err;
+        })
+    } catch (error) {
+        console.log('error in add reply',error)
         returnval=error;
     }
     return returnval;

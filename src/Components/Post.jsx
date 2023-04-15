@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -10,6 +10,10 @@ import pic from '../Data/pic.png';
 import picture from '../Data/pexels-maria-loznevaya-15237253.jpg'
 import { mobile,tab } from '../responsive';
 import { useSelector } from 'react-redux';
+import { addComment, addLike, countComment, countLike, getAllCommentsOfPost, removeLike } from '../ApiCalls/Post';
+import { CircularProgress } from '@mui/material';
+import Comment from './Comment';
+import {convertDate}  from '../Service.js'
 const Container=styled.div`
     width:90%;
     margin:0.5rem 0rem;
@@ -189,26 +193,104 @@ const TextArea=styled.textarea`
   -o-transition: height 0.2s ease;
   transition: height 0.2s ease;
 `
+const CommentBox=styled.div`
+  width:100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow:hidden;
+  max-height:${props=>props.show?'200vh':'0'};
+  transition: max-height 1s ease; 
+`
+
+
 const Post = ({post}) => {
     let width = window.innerWidth;
     const cap=post.caption;
     const [wholeCap,setWholeCap]=useState(false);
     const [like,setLike]=useState(false);
-    const viewerPic=useSelector(state=>state.details.photo)
-    const captionRef=useRef();
+    const [dateofpost,setdateofpost]=useState("");
+    const myDetails=useSelector(state=>state.details)
+    const commentRef=useRef();
      //for auto expand input
     const autoExpand = (e)=>{
       var element = typeof e === 'object' ? e.target : document.getElementById(e);
       var scrollHeight = element.scrollHeight; 
       element.style.height =  scrollHeight + "px";    
     };
+
+    const token=useSelector(state=>state.token);
+    const [load,setLoad]=useState(false);
+    const [showComments,setShowComments]=useState(false);
+    //count likes
+    const [countLikes,setCountLikes]=useState('###');
+    const [countComments,setCountComments]=useState('###');
+    const [allComments,setAllComments]=useState([]);
+    const count=async()=>{
+      var res=await countLike(token,post._id,post.uid)
+      // console.log(res)
+      if(res.status===200){
+        setCountLikes(res.data);
+        // console.log(res.data+'likes')
+      }
+      // console.log('counting')
+      res=await countComment(token,post._id)
+      if(res.status===200)  setCountComments(res.data)
+      // console.log(res)
+      // console.log(res.data+'comments')
+    }
+    const likesPost=async()=>{
+      console.log('liking a post')
+      const res=await addLike(token,post._id,post.uid)
+      console.log(res)
+      if(res.status===200){
+        setLike(true)
+        count();
+      }
+    }
+    const dislikesPost=async()=>{
+      console.log('unliking a post')
+      const res=await removeLike(token,post._id,post.uid)
+      console.log(res)
+      if(res.status===200){
+        setLike(false)
+        count();
+      }
+    }
+    const commentPost=async()=>{
+      var comment=commentRef.current.value;
+      if(!comment)  return
+      const data={
+        uid:myDetails.uid,
+        comment:comment
+      }
+      setLoad(true);
+      const res=await addComment(token,post.uid,post._id,data);
+      console.log(res);
+      if(res.status===200){
+        count();
+        var r=await getAllCommentsOfPost(token,post._id);
+        console.log('upating all comments')
+        setAllComments(r.data.comments)
+        setShowComments(true)
+      }
+      setLoad(false)
+      commentRef.current.value=null;
+    }
+    useEffect(()=>{
+      count();
+      setdateofpost(convertDate(post.createdAt));
+      setAllComments(post.comments);
+      console.log('rendering post')
+    },[])
+   
   return (
     <Container>
       <Details>
         <Avatar src={post.photo} />
         <Entry>
             <Name>{post.name}</Name>
-            <Date>7 Feb at 11:27pm</Date>
+            <Date>{dateofpost}</Date>
         </Entry>
       </Details>
       {post.caption?<Caption>
@@ -221,27 +303,23 @@ const Post = ({post}) => {
       {post.images.length?<Picture  src={post.images[0]}/>:""}
       
      <Actions>
-          <Action like={like} onClick={()=>{setLike(~like)}}>
+          <Action like={like} onClick={like?dislikesPost:likesPost}>
             {like?<FavoriteIcon sx={{color:'red',fontSize:`${width<500?'1rem':'2rem'}`}}/>
-            :<FavoriteBorderIcon sx={{fontSize:`${width<500?'1rem':'2rem'}` }} />}1.5k Likes
+            :<FavoriteBorderIcon sx={{fontSize:`${width<500?'1rem':'2rem'}` }} />}{countLikes} Likes
           </Action>
-          <Action><ChatBubbleOutlineIcon sx={{fontSize:`${width<500?'1rem':'2rem'}` }}/>Comments</Action>
-          <Action><ShareOutlinedIcon sx={{fontSize:`${width<500?'1rem':'2rem'}` }}/>Share</Action>
+          <Action onClick={()=>setShowComments(true)}><ChatBubbleOutlineIcon sx={{fontSize:`${width<500?'1rem':'2rem'}` }}/>{countComments} Comments</Action>
+          <Action onClick={()=>setShowComments(false)}><ShareOutlinedIcon sx={{fontSize:`${width<500?'1rem':'2rem'}` }}/>Share</Action>
       </Actions>
       
-         <InputBox contenteditable="true">
-          <Image comment src={viewerPic}/>
-          <TextArea id="TextArea" ng-model="loremIpsum" ref={captionRef}  onKeyUp={autoExpand} placeholder="What in your mind , Yash ?"/>
-          {/* <Input  placeholder="Write a Comment.." /> */}
-          {/* <span 
-            className="input" 
-            role="textbox" 
-            contenteditable>
-              99
-          </span> */}
-          <SendIcon sx={{color:'#6464d8',fontSize:`${width<500?'1rem':'2rem'}`}}/>
-        </InputBox>
-
+      <InputBox contenteditable="true">
+        <Image comment src={myDetails.photo}/>
+        <TextArea id="TextArea" ng-model="loremIpsum" ref={commentRef}  onKeyUp={autoExpand} 
+        placeholder={`Write Something Here.. ${myDetails.name}`} />
+        {load?<CircularProgress/>:<SendIcon sx={{color:'#6464d8',cursor:'pointer',fontSize:`${width<500?'1rem':'2rem'}`}} onClick={commentPost}/>}
+      </InputBox>
+      <CommentBox  show={showComments} >
+        {allComments.map(com=>(<Comment comment={com} postId={post._id} posterId={post.uid} setAllComments={setAllComments} count={count} allComments={allComments}/>))}
+      </CommentBox>
     </Container>
   )
 }

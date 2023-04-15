@@ -256,3 +256,94 @@ export const addReply=async(token,postId,commentId,posterId,commenterId,data)=>{
     }
     return returnval;
 }
+
+export const checkLikeInComment=async(token,postId,commentId)=>{
+    const config={
+        headers:{
+            'Authorization':`Bearer ${token}`
+        }
+    }
+    let returnval;
+    try {
+        await axiosInstance.get(`/post/checkLikeOfComment?commentId=${commentId}&postId=${postId}`,config)
+        .then((res)=>{
+            returnval=res;
+        })
+        .catch((err)=>{
+            console.log('error in counting likes',err)
+            returnval=err;
+        })
+    } catch (error) {
+        console.log('error in counting likes',error)
+        returnval=error;
+    }
+    return returnval;
+}
+
+export const addLikeInComment=async(token,postId,commentId)=>{
+    const config={
+        headers:{
+            'Authorization':`Bearer ${token}`
+        }
+    }
+    let returnval;
+    try {
+        await axiosInstance.get(`/post/addLikeToComment?commentId=${commentId}&postId=${postId}`,config)
+        .then((res)=>{
+            returnval=res;
+        })
+        .catch((err)=>{
+            console.log('error in liking comment',err)
+            returnval=err;
+        })
+    } catch (error) {
+        console.log('error in liking comment',error)
+        returnval=error;
+    }
+    return returnval;
+}
+
+export const deleteLikeInComment=async(token,postId,commentId)=>{
+    const config={
+        headers:{
+            'Authorization':`Bearer ${token}`
+        }
+    }
+    let returnval;
+    try {
+        await axiosInstance.get(`/post/deleteLikeFromComment?commentId=${commentId}&postId=${postId}`,config)
+        .then((res)=>{
+            returnval=res;
+        })
+        .catch((err)=>{
+            console.log('error in disliking comment',err)
+            returnval=err;
+        })
+    } catch (error) {
+        console.log('error in disliking comment',error)
+        returnval=error;
+    }
+    return returnval;
+}
+export const countLikeInComment=async(token,postId,commentId)=>{
+    const config={
+        headers:{
+            'Authorization':`Bearer ${token}`
+        }
+    }
+    let returnval;
+    try {
+        await axiosInstance.get(`/post/countLikesOfComment?commentId=${commentId}&postId=${postId}`,config)
+        .then((res)=>{
+            returnval=res;
+        })
+        .catch((err)=>{
+            console.log('error in counting like in comment',err)
+            returnval=err;
+        })
+    } catch (error) {
+        console.log('error in counting like in comment',error)
+        returnval=error;
+    }
+    return returnval;
+}

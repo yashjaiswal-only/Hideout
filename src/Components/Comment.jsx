@@ -5,8 +5,10 @@ import { useSelector } from 'react-redux'
 import { CircularProgress } from '@mui/material'
 import SendIcon from '@mui/icons-material/Send';    
 import { convertDate } from '../Service'
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import mobile, { tab } from '../responsive'
-import { addReply, getAllCommentsOfPost } from '../ApiCalls/Post'
+import { addLikeInComment, addReply, checkLikeInComment, countLikeInComment, deleteLikeInComment, getAllCommentsOfPost } from '../ApiCalls/Post'
 const Container=styled.div`
     display: flex;  
     width:100%;
@@ -32,10 +34,15 @@ const Container=styled.div`
             font-size:1.3rem;
             font-weight:600;
             margin:0.6rem 0;
+            display: flex;
+            justify-content: space-between;
             ${tab({
                 fontSize:'1rem',
                 margin:'0.3rem 0'
             })}
+            >svg{
+                cursor: pointer;
+            }
         }
         >span{
             >span{
@@ -69,6 +76,7 @@ const Reply=styled.div`
 `
 const SingleReply=({r})=>{
     const [dateof,setDateOf]=useState();
+    const [like,setLike]=useState(false);
     const [user,setUser]=useState(null);
     const token=useSelector(state=>state.token);
     const getMinDetails=async()=>{
@@ -87,7 +95,8 @@ const SingleReply=({r})=>{
             <img src={user.photo}/>
             <section>
                 <div>{user.name}</div>
-                <p>{r.reply}</p>
+                <p>{r.reply} {like?<FavoriteIcon sx={{color:'red'}}/>
+            :<FavoriteBorderIcon />}</p>
                 <span>{dateof}</span>
             </section>
         </Container>
@@ -156,6 +165,8 @@ const Comment = ({comment,posterId,postId,setAllComments,count,allComments}) => 
     const [showReply,setShowReply]=useState(false);
     const [allReply,setAllReply]=useState([]);
     const [user,setUser]=useState(null)
+    const [like,setLike]=useState(false);
+    const [likeCount,setLikeCount]=useState(0);
     const [load,setLoad]=useState(false);   
     const [dateof,setDateOf]=useState();
     //for auto expand input
@@ -188,12 +199,39 @@ const Comment = ({comment,posterId,postId,setAllComments,count,allComments}) => 
         }
         setLoad(false)
         // replyRef.current.value=null;
-      }
+    }
+    const checkLike=async()=>{
+        const res=await checkLikeInComment(token,postId,comment._id);
+        if(res.status===200){
+            setLike(res.data)
+        }
+    }
+    const likeComment=async()=>{
+        console.log('liking comment')
+        const res=await addLikeInComment(token,postId,comment._id);
+        if(res.status===200){
+            countLikes();
+        }
+    }
+    const dislikeComment=async()=>{
+        console.log('disliking comment')
+        const res=await deleteLikeInComment(token,postId,comment._id);
+        if(res.status===200){
+            countLikes();
+        }
+    }
+    const countLikes=async()=>{
+        const res=await countLikeInComment(token,postId,comment._id);
+        if(res.status===200){
+            checkLike();
+            setLikeCount(res.data)
+        }
+    }
     useEffect(()=>{
         getMinDetails();
         setAllReply(comment.replies);
         setDateOf(convertDate(comment.createdAt));
-        console.log('redenring comment')
+        countLikes()
     },[])
   return (
     <>
@@ -202,9 +240,10 @@ const Comment = ({comment,posterId,postId,setAllComments,count,allComments}) => 
     <Container>
         <img src={user.photo}/>
         <section>
-            <div>{user.name}</div>
-            <p>{comment.comment}</p>
-            <span>{dateof}  &bull; <span onClick={()=>setShowReply(showReply?false:true)}>{showReply?'Collapse':`Reply (${allReply.length})`}</span></span>
+            <div>{user.name} </div>
+            <p>{comment.comment} {like?<FavoriteIcon sx={{color:'red'}} onClick={dislikeComment}/>
+            :<FavoriteBorderIcon onClick={likeComment}/>}</p>
+            <span>{dateof} &bull; <span>{likeCount} Likes</span>  &bull; <span onClick={()=>setShowReply(showReply?false:true)}>{showReply?'Collapse':`Reply (${allReply.length})`}</span></span>
         </section>
     </Container>
     <Reply show={showReply}>

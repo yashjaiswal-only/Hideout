@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux'
 import { CircularProgress } from '@mui/material'
 import SendIcon from '@mui/icons-material/Send';    
 import { convertDate } from '../Service'
-import mobile from '../responsive'
+import mobile, { tab } from '../responsive'
 import { addReply, getAllCommentsOfPost } from '../ApiCalls/Post'
 const Container=styled.div`
     display: flex;  
@@ -23,18 +23,28 @@ const Container=styled.div`
         >div{
             font-size: 1.3rem;
             font-weight: 700;
+            ${tab({
+                fontSize:'1rem'
+            })}
         }
         >p{
             margin:0;
             font-size:1.3rem;
             font-weight:600;
             margin:0.6rem 0;
+            ${tab({
+                fontSize:'1rem',
+                margin:'0.3rem 0'
+            })}
         }
         >span{
             >span{
                 cursor: pointer;
                 font-weight:600;
             }
+            ${tab({
+                fontSize:'0.8rem',
+            })}
         }
     }
     >img{
@@ -43,6 +53,11 @@ const Container=styled.div`
         height:60px;
         aspect-ratio:1/1;
         border-radius:50%;
+        ${tab({
+            width:'30px',
+            height:'30px',
+            margin:'0.5rem'
+        })}
     }
 `
 const Reply=styled.div`

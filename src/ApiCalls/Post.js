@@ -143,6 +143,29 @@ export const countLike=async(token,postId,userId)=>{
     }
     return returnval;
 }
+export const checkLike=async(token,postId,userId)=>{
+    const config={
+        headers:{
+            'Authorization':`Bearer ${token}`
+        }
+    }
+    let returnval;
+    try {
+        await axiosInstance.get(`/post/checkLike?id=${userId}&postId=${postId}`,config)
+        .then((res)=>{
+            returnval=res;
+        })
+        .catch((err)=>{
+            console.log('error in counting likes',err)
+            returnval=err;
+        })
+    } catch (error) {
+        console.log('error in counting likes',error)
+        returnval=error;
+    }
+    return returnval;
+}
+
 export const countComment=async(token,postId)=>{
     const config={
         headers:{

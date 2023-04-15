@@ -10,7 +10,7 @@ import pic from '../Data/pic.png';
 import picture from '../Data/pexels-maria-loznevaya-15237253.jpg'
 import { mobile,tab } from '../responsive';
 import { useSelector } from 'react-redux';
-import { addComment, addLike, countComment, countLike, getAllCommentsOfPost, removeLike } from '../ApiCalls/Post';
+import { addComment, addLike, checkLike, countComment, countLike, getAllCommentsOfPost, removeLike } from '../ApiCalls/Post';
 import { CircularProgress } from '@mui/material';
 import Comment from './Comment';
 import {convertDate}  from '../Service.js'
@@ -277,11 +277,19 @@ const Post = ({post}) => {
       setLoad(false)
       commentRef.current.value=null;
     }
+    const isLike=async()=>{
+      const res=await checkLike(token,post._id,post.uid);
+      if(res.status===200){
+        if(res.data)  setLike(true);
+        else setLike(false);
+      }
+    }
     useEffect(()=>{
       count();
+      isLike();
       setdateofpost(convertDate(post.createdAt));
       setAllComments(post.comments);
-      console.log('rendering post')
+      // console.log('rendering post')
     },[])
    
   return (
@@ -307,7 +315,7 @@ const Post = ({post}) => {
             {like?<FavoriteIcon sx={{color:'red',fontSize:`${width<500?'1rem':'2rem'}`}}/>
             :<FavoriteBorderIcon sx={{fontSize:`${width<500?'1rem':'2rem'}` }} />}{countLikes} Likes
           </Action>
-          <Action onClick={()=>setShowComments(true)}><ChatBubbleOutlineIcon sx={{fontSize:`${width<500?'1rem':'2rem'}` }}/>{countComments} Comments</Action>
+          <Action onClick={()=>setShowComments(showComments?false:true)}><ChatBubbleOutlineIcon sx={{fontSize:`${width<500?'1rem':'2rem'}` }}/>{countComments} Comments</Action>
           <Action onClick={()=>setShowComments(false)}><ShareOutlinedIcon sx={{fontSize:`${width<500?'1rem':'2rem'}` }}/>Share</Action>
       </Actions>
       

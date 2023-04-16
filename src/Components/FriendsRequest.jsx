@@ -99,7 +99,7 @@ const FriendsRequest = ({setFails}) => {
         <div style={{height:'40vh',width:'100%',display:'flex',justifyContent:'center',alignItems:'center'}}><CircularProgress/></div>:
         <List>
          {requests.length?requests.map(f=>(
-           <FriendTab request myfriend={false} user={f} key={f._id}/>
+           <FriendTab request myfriend={false} user={f} key={f._id} getRequests={getRequests} />
            ))
            :
            <div style={{margin:'auto',fontSize:'1.5rem'}}>No Request to show</div>

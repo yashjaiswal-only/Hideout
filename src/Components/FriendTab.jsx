@@ -15,6 +15,12 @@ const Container=styled.div`
     justify-content: space-between;
     margin:1rem;
     border-bottom:1px solid gray;  
+    /* transform:translateX(0%); */
+    transform:${props=>props.done?'translateX(110%)':''};
+    transition:transform 1s;
+    &:hover{
+      /* transform:translateX(100%) */
+    }
     >div{
         display: flex;
         align-items: center;
@@ -86,25 +92,14 @@ const Circle=styled.span`
     margin:'auto 0.4rem'
   })}
 `
-const FriendTab = ({myfriend,request,user}) => {
+const FriendTab = ({myfriend,request,user,getRequests,getPossibleFriends}) => {
   const navigate=useNavigate();
+  const [done,setDone]=useState(false);
   const handleClick=()=>{
     navigate('/profile/'+user.uid)
     console.log(user.uid);
   }
   const token=useSelector(state=>state.token);
-  const [details,setDetails]=useState([]);
-  const getDetails=async()=>{
-    const res=await getUserMinDetails(token,user.uid);
-    if(res.status===200){
-      setDetails(res.data);
-    }
-    else console.log(res);
-  }
-  useEffect(()=>{
-    // getDetails();
-  },[])
-
   //button click
   const buttonClick=async()=>{
     if(myfriend) navigate('/home');
@@ -112,18 +107,38 @@ const FriendTab = ({myfriend,request,user}) => {
       //sending request
       const res= await makeRequest(token,user.uid);
       console.log(res);
+      if(res.status===200){
+        setDone(true);
+        setTimeout(() => {
+            getPossibleFriends();
+          
+        }, 800);
+      }
     }
   }
   const accept=async()=>{
+      // setDone(true);
     const res=await acceptRequest(token,user.uid);
     console.log(res)
+    if(res.status===200){
+      setDone(true);
+      setTimeout(() => {
+        getRequests();
+      }, 1200);
+    }
   }
   const reject=async()=>{
     const res=await rejectRequest(token,user.uid);
     console.log(res)
+    if(res.status===200){
+      setDone(true);
+      setTimeout(() => {
+        getRequests();
+      }, 1200);
+    }
   }
   return (
-    <Container>
+    <Container done={done}>
         <div  onClick={handleClick}>
         <Avatar src={user.photo} />
         <Entry>

@@ -98,7 +98,7 @@ const Tab=styled.div`
 const NoUser=()=>{
   return (
     <div style={{height:'40vh',fontSize:'1.5rem',display:'flex',justifyContent:'center',alignItems:'center',width:'100%'}}>
-      No Friends to Display
+      No User to Display
     </div>
   )
 }
@@ -176,7 +176,7 @@ const FriendsList = ({setFails}) => {
         :<List>
           {index?
             possibleFriends.length? possibleFriends.map(f=>(
-              <FriendTab myfriend={false} user={f} key={f._id}/>
+              <FriendTab myfriend={false} user={f} key={f._id} getPossibleFriends={getPossibleFriends}/>
             )):<NoUser/>:
             friends.length?friends.map(f=>(
               <FriendTab myfriend={true} user={f} key={f._id}/>

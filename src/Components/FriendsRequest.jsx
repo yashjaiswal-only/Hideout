@@ -28,7 +28,7 @@ const Container=styled.div`
       cursor: pointer;
       margin:1rem;
       ${tab({
-        fontSize:'1.2rem'
+        fontSize:'1.6rem'
       })}
     }
 `

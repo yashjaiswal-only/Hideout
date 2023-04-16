@@ -37,6 +37,11 @@ const Container=styled.div`
         color: white;
         padding: 0.5rem;
         cursor: pointer;
+        ${tab({
+          margin:'auto 1rem',
+          padding:'0.4rem',
+          fontSize:'0.8rem'
+        })}
     }
     ${tab({
       // margin:'0.6rem',
@@ -49,15 +54,18 @@ const Container=styled.div`
 `
 const Avatar=styled.img`
   height:60px;
+  width:60px;
   aspect-ratio:1/1;
   border-radius:50%;
   ${mobile({
-      // width:'12%'
+      width:'30px',
+      height:'30px',
   })}
 `
 const Entry=styled.div`
     margin:0rem 30px;
     display: flex; justify-content: center; flex-direction: column;
+    background-color: red;
     ${tab({
       margin:'0 15px',
     })}
@@ -139,7 +147,7 @@ const FriendTab = ({myfriend,request,user,getRequests,getPossibleFriends}) => {
   }
   return (
     <Container done={done}>
-        <div  onClick={handleClick}>
+        <div  onClick={handleClick}>  
         <Avatar src={user.photo} />
         <Entry>
             <Name>{user.name}</Name> 

@@ -91,7 +91,7 @@ const Tab=styled.div`
     transition :0.5s;
   }
   ${tab({
-    fontSize:'1.3rem'
+    fontSize:'1.6rem'
   })}
     
 `

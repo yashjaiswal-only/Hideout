@@ -194,7 +194,7 @@ const Topbar = ({handleOpen}) => {
               <div style={{height:'40vh',width:'100%',display:'flex',justifyContent:'center',alignItems:'center'}}><CircularProgress/></div>
               :<List>
                 {users.length?users.map(f=>(
-                    <FriendTab myfriend={false} user={f} key={f._id} />
+                    <FriendTab user={f} key={f._id} />
                     // <Typography sx={{ p: 2 }}>The content of the Popper.</Typography>
                   )): <NoUser/>
                 }

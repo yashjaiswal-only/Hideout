@@ -6,7 +6,7 @@ import { Check, Clear } from '@mui/icons-material'
 import { useNavigate } from 'react-router-dom'
 import { getUserMinDetails } from '../ApiCalls/User'
 import { useSelector } from 'react-redux'
-import { acceptRequest, makeRequest, rejectRequest } from '../ApiCalls/Friend'
+import { acceptRequest, checkFriend, makeRequest, rejectRequest } from '../ApiCalls/Friend'
 
 const Container=styled.div`
     width:100%;
@@ -31,6 +31,7 @@ const Container=styled.div`
     >button{
         max-height:40px;
         height:max-content; 
+        min-width:10%;
         margin:auto 1rem;
         font-weight:500;
         font-size:1rem;
@@ -109,9 +110,10 @@ const Circle=styled.span`
 const FriendTab = ({myfriend,request,user,getRequests,getPossibleFriends}) => {
   const navigate=useNavigate();
   const [done,setDone]=useState(false);
+  const [isFriend,setIsFriend]=useState(false);
   const handleClick=()=>{
     navigate('/profile/'+user.uid)
-    console.log(user.uid);
+    // console.log(user.uid);
   }
   const token=useSelector(state=>state.token);
   //button click
@@ -151,6 +153,19 @@ const FriendTab = ({myfriend,request,user,getRequests,getPossibleFriends}) => {
       }, 1200);
     }
   }
+  const friendCheck=async()=>{
+    const res= await checkFriend(token,user.uid);
+    console.log(res)
+    if(res.status===200){
+      setIsFriend(res.data);
+    }
+  }
+  useEffect(()=>{
+    if(!request){
+      if(myfriend)  setIsFriend(true);
+      else friendCheck();
+    }
+  },[])
   return (
     <Container done={done}>
         <div  onClick={handleClick}>  
@@ -161,7 +176,7 @@ const FriendTab = ({myfriend,request,user,getRequests,getPossibleFriends}) => {
         </Entry>
         </div>
         {!request?
-        <button onClick={buttonClick}>{myfriend?'Message':'Add Friend'}</button>:
+        <button onClick={buttonClick}>{isFriend?'Message':'Add Friend'}</button>:
         <div>
           <Circle onClick={accept}><Check sx={{fontSize:'40px',color:'green'}}/></Circle>
           <Circle onClick={reject}><Clear sx={{fontSize:'40px',color:'red'}}/></Circle>

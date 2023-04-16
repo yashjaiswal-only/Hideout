@@ -133,4 +133,27 @@ export const getUserMinDetails=async(token,uid)=>{
     }
     return returnval;
 }
+export const searchUser=async(token,name)=>{
+    const config={
+        headers:{
+            'Authorization': `Bearer ${token}`
+        },
+    }
+    let returnval;
+    try {
+        await axiosInstance.get(`/user/searchUser?name=${name}`,config)
+        .then(res=>{
+            returnval=res;
+        })
+        .catch(err=>{
+            console.log('error in searching user '+err)
+            returnval=err;
+        })
+        
+    } catch (error) {
+        console.log('error in searching user')
+        console.log(error)
+    }
+    return returnval;
+}
 

@@ -25,8 +25,11 @@ const Container=styled.div`
         display: flex;
         align-items: center;
         cursor: pointer;
+        max-width:60%;
+
     }
     >button{
+        max-height:40px;
         height:max-content; 
         margin:auto 1rem;
         font-weight:500;
@@ -68,6 +71,9 @@ const Entry=styled.div`
     /* background-color: red; */
     ${tab({
       margin:'0 15px',
+    })}
+    ${mobile({
+      margin:'0 5px'
     })}
 `
 const Name=styled.span`

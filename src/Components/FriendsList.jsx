@@ -95,7 +95,7 @@ const Tab=styled.div`
   })}
     
 `
-const NoUser=()=>{
+export const NoUser=()=>{
   return (
     <div style={{height:'40vh',fontSize:'1.5rem',display:'flex',justifyContent:'center',alignItems:'center',width:'100%'}}>
       No User to Display

@@ -1,4 +1,4 @@
-import {Box} from '@mui/material';
+import {Box, CircularProgress} from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -19,19 +19,28 @@ import SpeedDial from '@mui/material/SpeedDial';
 import SpeedDialIcon from '@mui/material/SpeedDialIcon';
 import SpeedDialAction from '@mui/material/SpeedDialAction';
 import FileCopyIcon from '@mui/icons-material/FileCopyOutlined';
+import Popper from '@mui/material/Popper';
+import Typography from '@mui/material/Typography';
+import Grid from '@mui/material/Grid';
+import Button from '@mui/material/Button';
+import Fade from '@mui/material/Fade';
+import Paper from '@mui/material/Paper';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import SaveIcon from '@mui/icons-material/Save';
 import PrintIcon from '@mui/icons-material/Print';
 import ShareIcon from '@mui/icons-material/Share';
-import React from 'react'
+import React, { useRef, useState } from 'react'
 import styled from 'styled-components';
 import pic from '../Data/pic.png'
 import hideout from '../Data/hideout.png'
-import {mobile} from '../responsive'
+import {mobile, tab} from '../responsive'
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useDateField } from '@mui/x-date-pickers/DateField/useDateField';
 import { removeUser } from '../Redux/UserRedux';
+import { searchUser } from '../ApiCalls/User';
+import { NoUser } from './FriendsList';
+import FriendTab from './FriendTab';
 const Navbar=styled.div`
     width: inherit;
     height:3rem;
@@ -94,8 +103,40 @@ const Search=styled.input`
   padding:0rem 1rem;
   background-color: #e1f2f7;
   `
-
+const List=styled.div`
+  width:100%;
+  display: flex;
+  flex-wrap: wrap;
+  max-height:80vh;
+  overflow-y:scroll;
+  /* background-color: red; */
+  overflow-x:hidden;
+  &::-webkit-scrollbar {
+    width: 0.3rem;               /* width of the entire scrollbar */
+  }
+  &::-webkit-scrollbar-track {
+    background: outset;        /* color of the tracking area */
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #b6b6e4;    /* color of the scroll thumb */
+    border-radius: 50px;       /* roundness of the scroll thumb */
+    border: 1px solid white;  /* creates padding around scroll thumb */
+  }
+`
+const PAPER=styled(Paper)`
+  width:50vw;
+  /* z-index:1000; */
+  
+  ${tab({
+    width:'70vw'
+  })}
+  ${mobile({
+    width:'80vw',
+    marginLeft:'20%'
+  })}
+`
 const Topbar = ({handleOpen}) => {
+  
   // ---------profilemenu--------------------
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -117,10 +158,53 @@ const Topbar = ({handleOpen}) => {
     dispatch(removeUser());
     navigate('/')
   }
+
+  //search popper
+  const [anchorE2, setAnchorE2] = React.useState(null);
+  const [open2, setOpen2] = React.useState(false);
+  const [placement, setPlacement] = React.useState();
+  const [load, setLoad] = useState(false);
+  const [users, setUsers] = useState([]);
+  const token=useSelector(state=>state.token)
+  const handleClick2 = (newPlacement) => (event) => {
+    setAnchorE2(event.currentTarget);
+    setOpen2((prev) => placement !== newPlacement || !prev);
+    setPlacement(newPlacement);
+  };
+  const searchRef=useRef();
+  const search=async()=>{ 
+    setLoad(true)
+    console.log(searchRef.current.value);
+    const res=await searchUser(token,searchRef.current.value)
+    console.log(res)
+    if(res.status===200){
+      setUsers(res.data)
+    }
+    setLoad(false)
+  }
   return (
     <Navbar>  
       <Logo><img src={hideout}/></Logo>
-      <Search type='text' placeholder='Search' />
+      <Search type='text' placeholder='Search' onClick={handleClick2('bottom-start')} ref={searchRef} onChange={search}/>
+      <Popper open={open2} anchorEl={anchorE2} close={()=>setOpen2(false)} placement={placement} transition>
+        {({ TransitionProps }) => (
+          <Fade {...TransitionProps} timeout={350}>
+            <PAPER >
+            {load?
+              <div style={{height:'40vh',width:'100%',display:'flex',justifyContent:'center',alignItems:'center'}}><CircularProgress/></div>
+              :<List>
+                {users.length?users.map(f=>(
+                    <FriendTab myfriend={false} user={f} key={f._id} />
+                    // <Typography sx={{ p: 2 }}>The content of the Popper.</Typography>
+                  )): <NoUser/>
+                }
+              </List>
+            }
+            {/* YASH */}
+            </PAPER>
+          </Fade>
+        )}
+      </Popper>
       <Icons>
       <IconItem onClick={()=>navigate('/home')}><HouseIcon/></IconItem>
       <IconItem><NewspaperIcon/></IconItem>

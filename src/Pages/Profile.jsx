@@ -8,6 +8,14 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import FmdGoodIcon from '@mui/icons-material/FmdGood';
 import Topbar from '../Components/Topbar'
 import Sidebar from '../Components/Sidebar'
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import ClickAwayListener from '@mui/material/ClickAwayListener';
+import Grow from '@mui/material/Grow';
+import Paper from '@mui/material/Paper';
+import Popper from '@mui/material/Popper';
+import MenuItem from '@mui/material/MenuItem';
+import MenuList from '@mui/material/MenuList';
+import Stack from '@mui/material/Stack';
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom'; 
 import mobile, { tab } from '../responsive'
@@ -19,7 +27,7 @@ import { endLoading, startLoading } from '../Redux/UserRedux';
 import { getUserDetails } from '../ApiCalls/User';
 import Post from '../Components/Post';
 import FriendCard from '../Components/FriendCard';
-import { getAllFriends, getAllRequest } from '../ApiCalls/Friend';
+import { getAllFriends, getAllRequest, makeRequest, removeFriend } from '../ApiCalls/Friend';
 import { getMyPosts } from '../ApiCalls/Post';
 
 const Container=styled.div`
@@ -269,10 +277,11 @@ const Tabs=styled.div`
   `
 const Tab=styled.div`
   padding:1rem;
-  width:30%;
+  width:20%;
   text-align:center;
-  /* background-color:${props=>props.index===props.myIndex?'gray':''}; */
+  background-color:${props=>props.index===props.myIndex?'#e5e5e5':''};
   color:${props=>props.index===props.myIndex?'black':'gray'};
+  transition:background 0.5s ease;
   font-weight:600;
   font-size:2rem;
   cursor:pointer;
@@ -280,11 +289,11 @@ const Tab=styled.div`
   &::after{
     content:'';
     width:${props=>props.index===props.myIndex?'100%':'0%'};
-    height:5px;
+    height:3px;
     background:#3c75de;
     position:absolute;
     left:0rem;
-    bottom:1rem;
+    bottom:0rem;
     transition :0.5s;
   }
   ${mobile({
@@ -309,10 +318,117 @@ const Show=styled.div`
   display: flex;
   flex-direction:column;
   align-items: center;
+  ${tab({
+    width:'80%'
+  })}
   ${mobile({
     width:'100%'
   })}
 `
+const style={
+  display:'flex',
+  alignItems:'center',
+  justifyContent:'center'
+}
+const MenuListComposition=({friend,uid})=>{
+  const [open, setOpen] = React.useState(false);
+  const anchorRef = React.useRef(null);
+
+  const handleToggle = () => {
+    setOpen((prevOpen) => !prevOpen);
+  };
+
+  const handleClose = (event) => {
+    if (anchorRef.current && anchorRef.current.contains(event.target)) {
+      return;
+    }
+
+    setOpen(false);
+  };
+
+  function handleListKeyDown(event) {
+    if (event.key === 'Tab') {
+      event.preventDefault();
+      setOpen(false);
+    } else if (event.key === 'Escape') {
+      setOpen(false);
+    }
+  }
+
+  // return focus to the button when we transitioned from !open -> open
+  const prevOpen = React.useRef(open);
+  React.useEffect(() => {
+    if (prevOpen.current === true && open === false) {
+      anchorRef.current.focus();
+    }
+
+    prevOpen.current = open;
+  }, [open]);
+  
+  //make request
+  const token=useSelector(state=>state.token)
+  const addFriend=async()=>{
+    const res=await makeRequest(token,uid);
+    console.log(res)
+    
+  }
+  const deleteFriend=async()=>{
+    const res=await removeFriend(token,uid);
+    console.log(res)
+  }
+  return (
+    <Stack direction="row" spacing={2} style={style}>
+     
+        <Option
+        ref={anchorRef}
+        id="composition-button"
+        aria-controls={open ? 'composition-menu' : undefined}
+        aria-expanded={open ? 'true' : undefined}
+        aria-haspopup="true"
+        onClick={handleToggle}
+        ><MoreVertIcon sx={{}}/></Option>
+        <Popper
+          open={open}
+          anchorEl={anchorRef.current}
+          role={undefined}
+          placement="bottom-end"
+          transition
+          disablePortal
+        >
+          {({ TransitionProps, placement }) => (
+            <Grow
+              {...TransitionProps}
+              style={{
+                transformOrigin:
+                  placement === 'bottom-end' ? 'right top' : 'right bottom',
+              }}
+            >
+              <Paper>
+                <ClickAwayListener onClickAway={handleClose}>
+                  <MenuList
+                    autoFocusItem={open}
+                    id="composition-menu"
+                    aria-labelledby="composition-button"
+                    onKeyDown={handleListKeyDown}
+                  >
+                    {friend?
+                    <>
+                        <MenuItem onClick={deleteFriend}>Remove Friend</MenuItem>
+                    </>:
+                    <>
+                        <MenuItem  onClick={addFriend}>Add Friend</MenuItem>
+                    </>}
+
+                    
+                  </MenuList>
+                </ClickAwayListener>
+              </Paper>
+            </Grow>
+          )}
+        </Popper>
+    </Stack>
+  );
+}
 const Profile = () => {
   //show index ,post vs friends
   const [index,setIndex]=useState(0);
@@ -412,7 +528,7 @@ useEffect(()=>{
             <CoverImg src={profilebg}/>
             <ProfileImg src={details.photo}/>
             <div>
-              <Option><MoreHorizIcon/></Option>
+              <MenuListComposition uid={details.uid}/>
               <Option><a href={`mailto:${details.email}`}><MailOutlineIcon/></a></Option>
               <button onClick={()=>navigate('/home')}>
                 Message

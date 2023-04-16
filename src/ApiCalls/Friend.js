@@ -95,6 +95,29 @@ export const acceptRequest=async(token,uid)=>{
     }
     return returnval;
 }
+export const removeFriend=async(token,uid)=>{
+    const config={
+        headers:{
+            'Authorization': `Bearer ${token}`
+        },
+        // data:data
+    }
+    // console.log(config)
+    let returnval;
+    try {
+        await axiosInstance.get("/friend/removeFriend?uid="+uid,config)
+        .then(res=>{
+            returnval=res;
+        })
+        .catch(err=>{
+            returnval={error:'Error at finding friends'};
+        })
+        
+    } catch (error) {
+        returnval={error:'Error at finding friends'};
+    }
+    return returnval;
+}
 export const checkFriend=async(token,uid)=>{
     const config={
         headers:{

@@ -7,9 +7,10 @@ import { useSelector } from 'react-redux';
 import Notification from './Notification';
 
 const Wrapper=styled.div`
-    width:95%;
+    width:100%;
     height:90%;
-    overflow:auto;
+    overflow-y:auto;
+    overflow-x:hidden;
     &::-webkit-scrollbar {
       width: 0.3rem;               /* width of the entire scrollbar */
     }

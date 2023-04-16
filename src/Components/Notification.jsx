@@ -4,11 +4,16 @@ import { getUserMinDetails } from '../ApiCalls/User';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { convertDate } from '../Service';
+import { seeNotification } from '../ApiCalls/Notification';
+import { useNavigate } from 'react-router-dom';
 
 const ListItem=styled.div`
     display: flex;
-    margin:1rem 0;
-    /* background-color: red; */
+    /* margin:0.5rem 0; */
+    padding:0.5rem 0.2rem;
+    border-bottom:1px solid gray;
+    background-color:${props=>props.seen?'':'#f0f9ff'};
+    cursor: pointer;
     font-size:1.2rem;
 `
 const Image=styled.img`
@@ -35,24 +40,45 @@ const Name=styled.span`
 const Notification = ({not}) => {
     const [load,setLoad]=useState(false);
     const [dateof,setDateof]=useState();
+    const [link,setLink]=useState('/home');
     const token=useSelector(state=>state.token)
+    const navigate=useNavigate();
     const [user,setUser]=useState({})
     const getDetails=async()=>{
         setLoad(true)
         const res=await getUserMinDetails(token,not.uid);
-        console.log(res);
+        // console.log(res);
         if(res.status){
             setUser(res.data)
         }
         setLoad(false)
     }
+    const getLink=()=>{
+        if(not.action===1) setLink('/friends')
+        else if(not.action===2) setLink('/profile/'+not.uid)
+        else if(not.action>=3 ) setLink('/post/'+not.postUid+'/'+not.postid)
+        // else if(not.action===3) setLink('/allposts/'+not.uid)
+        // else if(not.action===4 || not.action===5) setLink('/post/'+not.postUid+'/'+not.postid)
+        // else if(not.action===4) setLink('/post/'+not.postUid+'/'+not.postid)
+        
+    }   
     useEffect(()=>{
         getDetails();
         setDateof(convertDate(not.createdAt))
+        getLink();
     },[])
+    const click=async()=>{
+        console.log('seen')
+        if(!not.seen){
+            const res=await seeNotification(token,not.uid,not._id)
+            console.log(res)
+        }
+        console.log(link)
+        navigate(`${link}`);
+    }
   return (
     <>{load?<CircularProgress/>:
-        <ListItem>
+        <ListItem seen={not.seen} onClick={click}>
             <Image src={user.photo}/>
             <Text>
                 <p>

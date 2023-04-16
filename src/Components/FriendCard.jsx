@@ -61,6 +61,12 @@ const Option=styled.div`
   align-items: center;
   justify-content: center;
   padding:0.2rem; 
+  >svg{
+    /* font-size:1rem; */
+    ${mobile({
+      fontSize:'1rem'
+    })}
+  }
 `
 const style={
   position:'absolute',

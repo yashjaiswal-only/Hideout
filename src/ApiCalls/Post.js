@@ -414,3 +414,25 @@ export const deleteComment=async(token,postId,commentId)=>{
     }
     return returnval;
 }
+export const deleteReply=async(token,postId,commentId,replyId)=>{
+    const config={
+        headers:{
+            'Authorization':`Bearer ${token}`
+        }
+    }
+    let returnval;
+    try {
+        await axiosInstance.get(`/post/deleteReply?commentId=${commentId}&postId=${postId}&replyId=${replyId}`,config)
+        .then((res)=>{
+            returnval=res;
+        })
+        .catch((err)=>{
+            console.log('error in deleting reply',err)
+            returnval=err;
+        })
+    } catch (error) {
+        console.log('error in deleting reply',error)
+        returnval=error;
+    }
+    return returnval;
+}

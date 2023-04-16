@@ -8,7 +8,7 @@ import { convertDate } from '../Service'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import mobile, { tab } from '../responsive'
-import { addLikeInComment, addReply, checkLikeInComment, countLikeInComment, deleteComment, deleteLikeInComment, getAllCommentsOfPost, getRepliesOfComment } from '../ApiCalls/Post'
+import { addLikeInComment, addReply, checkLikeInComment, countLikeInComment, deleteComment, deleteLikeInComment, deleteReply, getAllCommentsOfPost, getRepliesOfComment } from '../ApiCalls/Post'
 import { MoreHoriz } from '@mui/icons-material'
 
 const Container=styled.div`
@@ -80,34 +80,7 @@ const Reply=styled.div`
     max-height:${props=>props.show?'200vh':'0'};
     transition: max-height 1s ease; 
 `
-const SingleReply=({r})=>{
-    const [dateof,setDateOf]=useState();
-    const [like,setLike]=useState(false);
-    const [user,setUser]=useState(null);
-    const token=useSelector(state=>state.token);
-    const getMinDetails=async()=>{
-        const res=await getUserMinDetails(token,r.uid)
-        if(res.status===200){
-            setUser(res.data);
-        }
-    }
-    useEffect(()=>{
-        getMinDetails();
-        setDateOf(convertDate(r.createdAt));
-    },[])
-    return(
-        user&&
-        <Container reply>
-            <img src={user.photo}/>
-            <section>
-                <div>{user.name}</div>
-                <p>{r.reply} {like?<FavoriteIcon sx={{color:'red'}}/>
-            :<FavoriteBorderIcon />}</p>
-                <span>{dateof}</span>
-            </section>
-        </Container>
-    )
-}
+
 const InputBox=styled.div`
   display: flex;
   justify-content: space-between;
@@ -164,6 +137,41 @@ const TextArea=styled.textarea`
     fontSize:'1rem'
   })}
 `
+
+const SingleReply=({r,postId,replyDelete})=>{
+    const [dateof,setDateOf]=useState();
+    const [like,setLike]=useState(false);
+    const [user,setUser]=useState(null);
+    const token=useSelector(state=>state.token);
+    const myDetails=useSelector(state=>state.details);
+    const getMinDetails=async()=>{
+        const res=await getUserMinDetails(token,r.uid)
+        if(res.status===200){
+            setUser(res.data);
+        }
+    }
+   
+    useEffect(()=>{
+        getMinDetails();
+        setDateOf(convertDate(r.createdAt));
+    },[])
+    return(
+        user&&
+        <Container reply>
+            <img src={user.photo}/>
+            <section>
+                <div>{user.name}
+                {(postId===myDetails.uid || r.uid===myDetails.uid)?<Tooltip title="Delete Reply">
+                <MoreHoriz onClick={()=>replyDelete(r._id)} sx={{cursor:'pointer'}} />
+                </Tooltip>:""}
+                </div>
+                <p>{r.reply} {like?<FavoriteIcon sx={{color:'red'}}/>
+            :<FavoriteBorderIcon />}</p>
+                <span>{dateof}</span>
+            </section>
+        </Container>
+    )
+}
 const Comment = ({comment,posterId,postId,setAllComments,count,allComments}) => {
     const token=useSelector(state=>state.token);
     const myDetails=useSelector(state=>state.details);
@@ -198,7 +206,7 @@ const Comment = ({comment,posterId,postId,setAllComments,count,allComments}) => 
         const res=await addReply(token,postId,comment._id,posterId,comment.uid,data);
         // console.log(res);
         if(res.status===200){
-          count();
+        //   count();
           var r=await getRepliesOfComment(token,postId,comment._id);
           if(r.status===200)    setAllReply(r.data)
         }
@@ -236,11 +244,17 @@ const Comment = ({comment,posterId,postId,setAllComments,count,allComments}) => 
         const res=await deleteComment(token,postId,comment._id);
         if(res.status===200){
             var r=await getAllCommentsOfPost(token,postId);
-            console.log('upating all comments')
             setAllComments(r.data.comments)
         }
     }
-    
+    const replyDelete=async(replyId)=>{
+        const res=await deleteReply(token,postId,comment._id,replyId);
+        console.log(res)
+        if(res.status===200){
+            var r=await getRepliesOfComment(token,postId,comment._id);
+            if(r.status===200)    setAllReply(r.data)
+        }
+    }
     useEffect(()=>{
         getMinDetails();
         setAllReply(comment.replies);
@@ -271,7 +285,7 @@ const Comment = ({comment,posterId,postId,setAllComments,count,allComments}) => 
     <Reply show={showReply}>
         {
             allReply.map(r=>(
-                <SingleReply r={r}/>
+                <SingleReply r={r} postId={postId} replyDelete={replyDelete}/>
             ))
         }
         <InputBox contenteditable="true">

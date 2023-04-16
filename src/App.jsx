@@ -6,6 +6,7 @@ import { AuthProvider } from './contexts/AuthContext';
 import Profile from './Pages/Profile';
 import Friends from './Pages/Friends';
 import CreateProfile from './Pages/CreateProfile';
+import MyPost from './Pages/MyPost';
 function App() {
   return (
     <BrowserRouter>
@@ -18,6 +19,7 @@ function App() {
               <Route path='/profile' element={<Profile/>}/>
               <Route path='/profile/:uid' element={<Profile/>}/>
               <Route path='/friends' element={<Friends/>}/>
+              <Route path='/myposts' element={<MyPost/>}/>
               <Route path='/create-profile' element={<CreateProfile/>}/>
             </Routes>
         

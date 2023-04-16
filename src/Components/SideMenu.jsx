@@ -84,7 +84,7 @@ const SideMenu = ({showList}) => {
   return (
     <Container>
         <Option><Logo src={logosm}/></Option>
-        <Option><div><DynamicFeedIcon sx={{color:'gray' }}/><span>My Posts</span></div></Option>
+        <Option onClick={()=>navigate('/myposts')}><div><DynamicFeedIcon sx={{color:'gray' }}/><span>My Posts</span></div></Option>
         <Option onClick={()=>navigate('/friends')}><div><DataThresholdingIcon sx={{color:'gray' }}/><span>Friends</span></div></Option>
         <Option onClick={()=>showList('chats')}><div><TelegramIcon sx={{color:'gray' }}/><span>Chats</span></div></Option>
         <Option onClick={()=>showList('notifications')}><div><NotificationsNoneIcon sx={{color:'gray' }}/><span>Notifications</span></div></Option>

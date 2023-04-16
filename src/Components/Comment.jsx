@@ -278,7 +278,7 @@ const Comment = ({comment,posterId,postId,setAllComments,count,allComments}) => 
         <InputBox contenteditable="true">
             <Image comment src={myDetails.photo}/>
             <TextArea id="TextArea" ng-model="loremIpsum" ref={replyRef}  onKeyUp={autoExpand}
-            placeholder={`Write reply here ... ${myDetails.name}`} />
+            placeholder={`Write reply here ... ${myDetails.name.split(" ")[0]}`} />
             {load?<CircularProgress/>:<SendIcon sx={{color:'#6464d8',cursor:'pointer',fontSize:`${"width"<500?'1rem':'2rem'}`}} onClick={replyPost}/>}
       </InputBox>
     </Reply>    

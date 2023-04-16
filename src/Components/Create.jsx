@@ -136,6 +136,7 @@ const Create = ({handleOpen}) => {
   const dispatch=useDispatch();
   const loading=useSelector(state=>state.loading);
   const token=useSelector(state=>state.token);
+  const details=useSelector(state=>state.details);
   const captionRef=useRef();
   const handleSubmit=async()=>{
     if(captionRef.current.value){    
@@ -164,8 +165,8 @@ const Create = ({handleOpen}) => {
   return (
     <Container>
       <InputBox>
-        <Image src={pic}/>
-        <TextArea id="TextArea" ng-model="loremIpsum" ref={captionRef}  onKeyUp={autoExpand} placeholder="What in your mind , Yash ?"/>
+        <Image src={details.photo}/>
+        <TextArea id="TextArea" ng-model="loremIpsum" ref={captionRef}  onKeyUp={autoExpand} placeholder={`What in your mind, ${details.name.split(" ")[0]}?`}/>
         {loading?<CircularProgress/>:<SendIcon sx={{color:'#6464d8',cursor:'pointer'}} onClick={()=>handleSubmit()}/>}
       </InputBox>
       <Options>

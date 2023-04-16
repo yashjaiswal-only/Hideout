@@ -318,7 +318,7 @@ const Post = ({post}) => {
       <InputBox contenteditable="true">
         <Avatar comment src={myDetails.photo}/>
         <TextArea id="TextArea" ng-model="loremIpsum" ref={commentRef}  onKeyUp={autoExpand} 
-        placeholder={`Write Something Here.. ${myDetails.name}`} />
+        placeholder={`Write Something Here.. ${myDetails.name.split(' ')[0]}`} />
         {load?<CircularProgress/>:<SendIcon sx={{color:'#6464d8',cursor:'pointer'}} onClick={commentPost}/>}
       </InputBox>
       <CommentBox  show={showComments} >

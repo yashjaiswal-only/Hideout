@@ -28,7 +28,7 @@ const Container=styled.div`
     }
     >button{
         height:max-content; 
-        margin:auto 2rem;
+        margin:auto 1rem;
         font-weight:500;
         font-size:1rem;
         background-color: cornflowerblue;
@@ -37,7 +37,7 @@ const Container=styled.div`
         color: white;
         padding: 0.5rem;
         cursor: pointer;
-        ${tab({
+        ${mobile({
           margin:'auto 1rem',
           padding:'0.4rem',
           fontSize:'0.8rem'
@@ -65,7 +65,7 @@ const Avatar=styled.img`
 const Entry=styled.div`
     margin:0rem 30px;
     display: flex; justify-content: center; flex-direction: column;
-    background-color: red;
+    /* background-color: red; */
     ${tab({
       margin:'0 15px',
     })}

@@ -31,15 +31,23 @@ const Details=styled.div`
   position: absolute;
   bottom:0;
   width:100%;
-  height:20%;
-  background-color: rgba(0,0,0,0.5);
+  height:30%;
+  background-color: rgba(0,0,0,0.8);
+  overflow:hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
   color:white;
   /* padding:0.5rem; */
+  ${mobile({
+    fontSize:'0.5rem'
+  })}
   >span{
     font-size:0.8rem;
+    text-align:center;
+    ${mobile({
+      fontSize:'0.4rem'
+    })}
   }
 `
 const Option=styled.div`

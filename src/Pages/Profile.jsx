@@ -265,13 +265,14 @@ const Error=styled.div`
 `
 const Tabs=styled.div`
   display: flex;
+  justify-content: center;
   `
 const Tab=styled.div`
   padding:1rem;
   /* background-color: blue; */
   color:${props=>props.index===props.myIndex?'black':'gray'};
   font-weight:600;
-  font-size:1.5rem;
+  font-size:2rem;
   cursor:pointer;
   position: relative;
   &::after{
@@ -284,19 +285,26 @@ const Tab=styled.div`
     bottom:1rem;
     transition :0.5s;
   }
+  ${mobile({
+    fontSize:'1.5rem'
+  })}
     
 `
 const ShowFriends=styled.div`
   display: flex;
-  flex-direction: column;
+  /* flex-direction: column; */
   max-height:80vh;
+  height:max-content;
   flex-wrap:wrap;
+  background-color: red;
+  width:100%;
   overflow:auto;
   ${mobile({maxHeight:'50vh'})}
 ` 
 const Show=styled.div`
   width: 50%;
   /* background-color: blue; */
+  margin:auto;
   display: flex;
   flex-direction:column;
   align-items: center;

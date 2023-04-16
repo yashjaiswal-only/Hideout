@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {mobile, tab} from '../responsive'
 import {Box, CircularProgress} from '@mui/material';
 // import Tabs from '@mui/material/Tabs';
 // import Tab from '@mui/material/Tab';
 import styled from 'styled-components';
 import FriendTab from './FriendTab';
-import { findFriends, getAllFriends } from '../ApiCalls/Friend';
+import { findFriends, getAllFriends, searchInFindFriends } from '../ApiCalls/Friend';
 import { useSelector } from 'react-redux';
 const Container=styled.div`
     width: 50%;
@@ -104,7 +104,7 @@ const NoUser=()=>{
 }
 
 const FriendsList = ({setFails}) => {
-  const [index, setIndex] = React.useState(0);
+  const [index, setIndex] = React.useState(1);
   const handleChange = (event, newIndex) => {
     setIndex(newIndex);
   };
@@ -116,6 +116,17 @@ const FriendsList = ({setFails}) => {
   const [possibleFriends,setPossibleFriends]=useState([]);
   const loading=useSelector(state=>state.loading);
   const token=useSelector(state=>state.token);
+  const searchRef=useRef();
+  const searchFindFriend=async()=>{
+    setLoad(true)
+    console.log(searchRef.current.value);
+    const res=await searchInFindFriends(token,searchRef.current.value)
+    console.log(res)
+    if(res.status===200){
+      setPossibleFriends(res.data)
+    }
+    setLoad(false)
+  }
   const getFriends=async()=>{
     setLoad(true);
     const res=await getAllFriends(token);
@@ -132,6 +143,7 @@ const FriendsList = ({setFails}) => {
   }
   const getPossibleFriends=async()=>{
     setLoad(true)
+    searchRef.current.value=null;
     const res=await findFriends(token);
     if(res.status==200){
       setPossibleFriends(res.data)
@@ -158,7 +170,7 @@ const FriendsList = ({setFails}) => {
         <Tab index={index} myIndex={1} onClick={()=>setIndex(1)}>Find Friends</Tab>
       </Tabs>
    
-      {index===1 && <SearchBox placeholder='Find Friend'/>}
+      {index===1 && <SearchBox ref={searchRef} placeholder='Find Friend' onChange={searchFindFriend}/>}
       {load?
         <div style={{height:'40vh',width:'100%',display:'flex',justifyContent:'center',alignItems:'center'}}><CircularProgress/></div>
         :<List>

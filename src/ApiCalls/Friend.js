@@ -6,7 +6,28 @@ const axiosInstance = axios.create({
   baseURL: BASE_URL
 })
 
-
+export const searchInFindFriends=async(token,name)=>{
+    const config={
+        headers:{
+            'Authorization': `Bearer ${token}`
+        },
+    }
+    let returnval;
+    try {
+        await axiosInstance.get(`/friend/searchInFindFriends?name=${name}`,config)
+        .then(res=>{
+            returnval=res;
+        })
+        .catch(err=>{
+            console.log(err)
+            returnval={error:'Error at search finding friends'};
+        })
+        
+    } catch (err) {
+        returnval={error:'Error at search finding friends'};
+    }
+    return returnval;
+}
 export const getAllFriends=async(token,uid)=>{
     const config={
         headers:{

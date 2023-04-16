@@ -107,7 +107,6 @@ const FriendTab = ({myfriend,request,user}) => {
 
   //button click
   const buttonClick=async()=>{
-    console.log('button click')
     if(myfriend) navigate('/home');
     else{
       //sending request

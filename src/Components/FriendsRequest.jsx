@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import {mobile, tab} from '../responsive'
-import {Box} from '@mui/material';
+import {Box, CircularProgress} from '@mui/material';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import styled from 'styled-components';
@@ -25,6 +25,7 @@ const Container=styled.div`
     })}
     >h1{
       text-align:center;
+      cursor: pointer;
       margin:1rem;
       ${tab({
         fontSize:'1.2rem'
@@ -38,6 +39,7 @@ const List=styled.div`
     min-height:30vh;
     max-height:80vh;
     overflow-y:scroll;
+    overflow-x:hidden;
     &::-webkit-scrollbar {
       width: 0.3rem;               /* width of the entire scrollbar */
     }
@@ -66,6 +68,7 @@ function LinkTab(props) {
 }
 const FriendsRequest = ({setFails}) => {
   const [value, setValue] = React.useState(1);
+  const [load, setLoad] = React.useState(1);
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -74,6 +77,7 @@ const FriendsRequest = ({setFails}) => {
   const [requests,setRequests]=useState([]);
   const token=useSelector(state=>state.token);
   const getRequests=async()=>{
+    setLoad(true)
     const res=await getAllRequest(token);
     if(res.status===200){
       console.log(res.data)
@@ -83,13 +87,16 @@ const FriendsRequest = ({setFails}) => {
       console.log(res)
       setFails(true)
     }
+    setLoad(false)
   }
   useEffect(()=>{
     getRequests();
   },[])
   return (
     <Container>
-        <h1>Friend Requests</h1>
+        <h1 onClick={getRequests}>Friend Requests</h1>
+        {load?
+        <div style={{height:'40vh',width:'100%',display:'flex',justifyContent:'center',alignItems:'center'}}><CircularProgress/></div>:
         <List>
          {requests.length?requests.map(f=>(
            <FriendTab request myfriend={false} user={f} key={f._id}/>
@@ -98,6 +105,7 @@ const FriendsRequest = ({setFails}) => {
            <div style={{margin:'auto',fontSize:'1.5rem'}}>No Request to show</div>
            }
         </List>
+        }
     </Container>
   )
 }

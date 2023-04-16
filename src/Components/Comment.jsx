@@ -165,8 +165,9 @@ const SingleReply=({r,postId,replyDelete})=>{
                 <MoreHoriz onClick={()=>replyDelete(r._id)} sx={{cursor:'pointer'}} />
                 </Tooltip>:""}
                 </div>
-                <p>{r.reply} {like?<FavoriteIcon sx={{color:'red'}}/>
-            :<FavoriteBorderIcon />}</p>
+                <p>{r.reply} 
+                    {/* {like?<FavoriteIcon sx={{color:'red'}}/>:<FavoriteBorderIcon />} */}
+                </p>
                 <span>{dateof}</span>
             </section>
         </Container>

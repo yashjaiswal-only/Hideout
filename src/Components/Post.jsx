@@ -77,9 +77,11 @@ const Date=styled.span`
 `
 const Caption=styled.div`
     width:100%;
-    font-size:1rem;
+    font-size:${props=>props.noImage?'2rem':'1rem'};
+    margin:${props=>props.noImage?'1rem':'0rem'};
     font-weight:600;
     text-align:justify;
+
     ${mobile({
       // fontSize:'0.6rem'
     })}
@@ -108,7 +110,7 @@ const Actions=styled.div`
     min-height:3rem;
     display: flex;
     align-items: center;
-    justify-content:space-between;
+    justify-content:space-around;
     border-top:1.4px solid rgba(0,0,0,0.5);
     border-opacity:0.4;
     
@@ -297,7 +299,7 @@ const Post = ({post}) => {
                 <MoreHoriz onClick={postDelete} sx={{cursor:'pointer',position:'absolute',right:'0'}} />
           </Tooltip>:""}
       </Details>
-      {post.caption?<Caption>
+      {post.caption?<Caption noImage={post.images.length===0}>
         {(wholeCap||cap.length<150)?cap:cap.slice(0,150)}
         {cap.length>150 && 
         (!wholeCap?<span onClick={()=>setWholeCap(true)}>...see more</span>:<span onClick={()=>setWholeCap(false)}>...see less</span>)

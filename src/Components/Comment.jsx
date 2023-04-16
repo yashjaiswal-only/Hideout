@@ -8,7 +8,7 @@ import { convertDate } from '../Service'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import mobile, { tab } from '../responsive'
-import { addLikeInComment, addReply, checkLikeInComment, countLikeInComment, deleteComment, deleteLikeInComment, getAllCommentsOfPost } from '../ApiCalls/Post'
+import { addLikeInComment, addReply, checkLikeInComment, countLikeInComment, deleteComment, deleteLikeInComment, getAllCommentsOfPost, getRepliesOfComment } from '../ApiCalls/Post'
 import { MoreHoriz } from '@mui/icons-material'
 
 const Container=styled.div`
@@ -196,15 +196,14 @@ const Comment = ({comment,posterId,postId,setAllComments,count,allComments}) => 
         }
         setLoad(true);
         const res=await addReply(token,postId,comment._id,posterId,comment.uid,data);
-        console.log(res);
+        // console.log(res);
         if(res.status===200){
           count();
-          var r=await getAllCommentsOfPost(token,postId);
-          console.log(r)
-          setAllComments(r.data.comments)
+          var r=await getRepliesOfComment(token,postId,comment._id);
+          if(r.status===200)    setAllReply(r.data)
         }
         setLoad(false)
-        // replyRef.current.value=null;
+        replyRef.current.value=null;
     }
     const checkLike=async()=>{
         const res=await checkLikeInComment(token,postId,comment._id);

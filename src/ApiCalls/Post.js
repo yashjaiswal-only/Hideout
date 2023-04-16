@@ -280,6 +280,28 @@ export const addReply=async(token,postId,commentId,posterId,commenterId,data)=>{
     return returnval;
 }
 
+export const getRepliesOfComment=async(token,postId,commentId)=>{
+    const config={
+        headers:{
+            'Authorization':`Bearer ${token}`
+        }
+    }
+    let returnval;
+    try {
+        await axiosInstance.get(`/post/getRepliesOfComment?commentId=${commentId}&postId=${postId}`,config)
+        .then((res)=>{
+            returnval=res;
+        })
+        .catch((err)=>{
+            console.log('error in fetching replies',err)
+            returnval=err;
+        })
+    } catch (error) {
+        console.log('error in fetching replies',error)
+        returnval=error;
+    }
+    return returnval;
+}
 export const checkLikeInComment=async(token,postId,commentId)=>{
     const config={
         headers:{

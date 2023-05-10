@@ -1,13 +1,14 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Routes, Route, BrowserRouter } from 'react-router-dom'
 import './App.css';
-import { Main, Signin, Signup ,Auth} from './Pages';
+import { Main,Auth} from './Pages';
 import { AuthProvider } from './contexts/AuthContext';
 import Profile from './Pages/Profile';
 import Friends from './Pages/Friends';
 import CreateProfile from './Pages/CreateProfile';
 import MyPost from './Pages/MyPost';
 import PostPage from './Pages/Post';
+import Alert from './Components/Alert';
 function App() {
   return (
     <BrowserRouter>
@@ -24,7 +25,7 @@ function App() {
               <Route path='/post/:uid/:postId' element={<PostPage/>}/>
               <Route path='/create-profile' element={<CreateProfile/>}/>
             </Routes>
-
+            <Alert/>
       </div>
     </AuthProvider>
     </BrowserRouter>

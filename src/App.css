@@ -13,3 +13,6 @@ input[type="file"] {
     aspect-ratio:1/1;
     border-radius:50%;
 }
+.App{
+    height:max-content;
+}

@@ -37,7 +37,7 @@ import {mobile, tab} from '../responsive'
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useDateField } from '@mui/x-date-pickers/DateField/useDateField';
-import { removeUser } from '../Redux/UserRedux';
+import { addAlert, removeUser } from '../Redux/UserRedux';
 import { searchUser } from '../ApiCalls/User';
 import { NoUser } from './FriendsList';
 import FriendTab from './FriendTab';
@@ -182,6 +182,9 @@ const Topbar = ({handleOpen}) => {
     }
     setLoad(false)
   }
+  const openNews=()=>{
+    dispatch(addAlert('Welcome to Hideout News'));
+  }
   return (
     <Navbar>  
       <Logo><img src={hideout}/></Logo>
@@ -205,16 +208,16 @@ const Topbar = ({handleOpen}) => {
           </Fade>
         )}
       </Popper>
+
       <Icons>
       <IconItem onClick={()=>navigate('/home')}><HouseIcon/></IconItem>
-      <IconItem><NewspaperIcon/></IconItem>
+      <IconItem onClick={openNews}><NewspaperIcon/></IconItem>
       <IconItem><OndemandVideoIcon/></IconItem>
       <IconItem><WorkIcon/></IconItem>
       <IconItem onClick={()=>handleOpen()}> <AddBoxIcon/> </IconItem>
       </Icons>
 
       <Right>
-
       <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
        
         <Tooltip title="Account settings">

@@ -7,10 +7,16 @@ const userSlice=createSlice({
         email:"",
         token:null,
         loading:false,
-        details:null
+        details:null,
+        alert:null
     },
     reducers:{
-        
+        addAlert:(state,action)=>{
+            state.alert=action.payload;
+        },
+        deleteAlert:(state,action)=>{
+            state.alert=null;
+        },
         addUser:(state,action)=>{
             state.user=true;
             state.email=action.payload.email;
@@ -36,5 +42,5 @@ const userSlice=createSlice({
 });
 
 
-export const {addUser,removeUser,startLoading,endLoading,addUserDetails}=userSlice.actions;
+export const {addUser,removeUser,startLoading,endLoading,addUserDetails,addAlert,deleteAlert}=userSlice.actions;
 export default userSlice.reducer;

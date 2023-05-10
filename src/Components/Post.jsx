@@ -15,6 +15,7 @@ import { CircularProgress, Tooltip } from '@mui/material';
 import Comment from './Comment';
 import {convertDate}  from '../Service.js'
 import { MoreHoriz } from '@mui/icons-material';
+import { addAlert } from '../Redux/UserRedux';
 const Container=styled.div`
     width:90%;
     margin:0.5rem 0rem;
@@ -277,6 +278,7 @@ const Post = ({post}) => {
       const res=await deletePost(token,post._id);
       console.log(res)
       if(res.status===200){
+        addAlert('Post Deleted Successfully');
       }
   }
     useEffect(()=>{

@@ -9,6 +9,7 @@ import CreateProfile from './Pages/CreateProfile';
 import MyPost from './Pages/MyPost';
 import PostPage from './Pages/Post';
 import Alert from './Components/Alert';
+import NewsPage from './Pages/NewsPage';
 function App() {
   return (
     <BrowserRouter>
@@ -18,6 +19,7 @@ function App() {
             <Routes>
               <Route path='/' element={<Auth/>}/>
               <Route path='/home' element={<Main/>}/>
+              <Route path='/news' element={<NewsPage/>}/>
               <Route path='/profile' element={<Profile/>}/>
               <Route path='/profile/:uid' element={<Profile/>}/>
               <Route path='/friends' element={<Friends/>}/>

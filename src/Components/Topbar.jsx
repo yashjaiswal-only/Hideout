@@ -26,18 +26,13 @@ import Button from '@mui/material/Button';
 import Fade from '@mui/material/Fade';
 import Paper from '@mui/material/Paper';
 import AddBoxIcon from '@mui/icons-material/AddBox';
-import SaveIcon from '@mui/icons-material/Save';
-import PrintIcon from '@mui/icons-material/Print';
-import ShareIcon from '@mui/icons-material/Share';
 import React, { useRef, useState } from 'react'
 import styled from 'styled-components';
-import pic from '../Data/pic.png'
 import hideout from '../Data/hideout.png'
 import {mobile, tab} from '../responsive'
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { useDateField } from '@mui/x-date-pickers/DateField/useDateField';
-import { addAlert, removeUser } from '../Redux/UserRedux';
+import {removeUser } from '../Redux/UserRedux';
 import { searchUser } from '../ApiCalls/User';
 import { NoUser } from './FriendsList';
 import FriendTab from './FriendTab';
@@ -182,13 +177,12 @@ const Topbar = ({handleOpen}) => {
     }
     setLoad(false)
   }
-  const openNews=()=>{
-    dispatch(addAlert('Welcome to Hideout News'));
-  }
+
   return (
     <Navbar>  
       <Logo><img src={hideout}/></Logo>
       <Search type='text' placeholder='Search' onClick={handleClick2('bottom-start')} ref={searchRef} onChange={search}/>
+      {/* friend list for search */}
       <Popper open={open2} anchorEl={anchorE2} close={()=>setOpen2(false)} placement={placement} transition>
         {({ TransitionProps }) => (
           <Fade {...TransitionProps} timeout={350}>
@@ -211,7 +205,7 @@ const Topbar = ({handleOpen}) => {
 
       <Icons>
       <IconItem onClick={()=>navigate('/home')}><HouseIcon/></IconItem>
-      <IconItem onClick={openNews}><NewspaperIcon/></IconItem>
+      <IconItem onClick={()=>navigate('/news')}><NewspaperIcon/></IconItem>
       <IconItem><OndemandVideoIcon/></IconItem>
       <IconItem><WorkIcon/></IconItem>
       <IconItem onClick={()=>handleOpen()}> <AddBoxIcon/> </IconItem>

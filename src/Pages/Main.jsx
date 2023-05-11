@@ -11,7 +11,7 @@ import Modal from '@mui/material/Modal';
 import CreatePost from '../Components/CreatePost';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { addUserDetails, endLoading, removeUser, startLoading } from '../Redux/UserRedux';
+import { addAlert, addUserDetails, endLoading, removeUser, startLoading } from '../Redux/UserRedux';
 import { getUserDetails } from '../ApiCalls/User';
 import { getAllPosts } from '../ApiCalls/Post';
 import Loader from '../Components/Loader';
@@ -86,6 +86,7 @@ const Main = () => {
   }
   useEffect(()=>{
     console.log('fetching profile')
+    dispatch(addAlert('Welcome To Hideout'))
     if(details){
       setFetching(false)
       setDetailsFetched(true)

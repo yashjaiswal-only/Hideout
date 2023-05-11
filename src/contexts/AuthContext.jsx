@@ -264,13 +264,9 @@ export const AuthProvider = ({ children }) => {
             });
     }
 
-    // useEffect(()=>{
-    //     const stopAuthListener = onAuthStateChanged(auth,(user)=>{
-    //         setCurrentUser(user)
-    //     })
-
-    //     return stopAuthListener
-    // },[])
+    useEffect(()=>{
+        console.log('in autocontext')
+    },[])
     const value = {
         // currentUser,
         signup,

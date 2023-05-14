@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import pic from '../Data/pic.png'
+import Search from './SearchChat'
 
 
 const Wrapper=styled.div`
@@ -65,9 +66,14 @@ const Divider=styled.hr`
     margin:0;
     opacity:0.2;
 `
+const SearchInput=styled.input`
+    width:90%;
+`
 const ChatList = () => {
   return (
       <Wrapper>
+        {/* <SearchInput/> */}
+        <Search/>
             <ListItem>
                 <Image src={pic}/>
                 <Text><span>Sunny Graham</span>

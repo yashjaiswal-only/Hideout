@@ -11,12 +11,13 @@ import {
   uploadBytesResumable,
   getDownloadURL,
 } from "firebase/storage";
-import app from "../config/firebase-config";
-import { getUserDetails, updateUser } from '../ApiCalls/User';
+import app, { db } from "../config/firebase-config";
+import { checkUser, getUserDetails, updateUser } from '../ApiCalls/User';
 import { useDispatch, useSelector } from 'react-redux';
 import { endLoading, startLoading } from '../Redux/UserRedux';
 import { useNavigate } from 'react-router-dom';
 import FileUpload from '../Components/FileUpload';
+import { collection, doc, getDocs, query, setDoc, where } from 'firebase/firestore';
 
 const Container=styled.div`
     width:100%;
@@ -96,7 +97,7 @@ const CreateProfile = () => {
         (snapshot) => {},
         (error) => {
           // Handle unsuccessful uploads
-          console.log('error at image upload')
+          console.log('error at image upload'+error)
         },
         async() => {
           // Handle successful uploads on complete
@@ -143,7 +144,50 @@ const CreateProfile = () => {
     dispatch(endLoading());
     console.log(res);
     if(res.status==200){
+      const usercheck=await checkUser(token);
+      console.log(usercheck)
+      if(usercheck.status===200){
+          console.log({
+            uid: usercheck.data.uid,
+            displayName:data.name.toLowerCase(),
+            email:usercheck.data.email,
+            photoURL:data.photo,
+          })
+
+        //search for user on firestore
+        // const que='Jig'
+        // const queLen=que.length;
+        // var queFrontCode=que.slice(0,queLen-1)
+        // var queEndCode=que.slice(queLen-1,queLen);
+        // var endCode=queFrontCode+String.fromCharCode(queEndCode.charCodeAt(0)+1);
+        // const q = query(
+        //   collection(db, "users"),
+        //   where("displayName", ">=", que),where("displayName",'<',endCode)
+        // );
+        // try {
+        //   console.log('search result')
+        //   const querySnapshot = await getDocs(q);
+        //   console.log(querySnapshot)
+        //   querySnapshot.forEach((doc) => {
+        //     console.log(doc.data());
+        //   });
+        // } catch (err) {
+        // }
+
+        // create user on firestore
+        await setDoc(doc(db, "users",usercheck.data.uid), {
+          uid: usercheck.data.uid,
+          displayName:data.name.toLowerCase(),
+          email:usercheck.data.email,
+          photoURL:data.photo,
+        });
+        
+        //create empty user chats on firestore
+        await setDoc(doc(db, "userChats", usercheck.data.uid), {});
+      }
+
       navigate('/home');
+
     }
     else setError(res.error);
   }

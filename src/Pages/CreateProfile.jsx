@@ -154,25 +154,7 @@ const CreateProfile = () => {
             photoURL:data.photo,
           })
 
-        //search for user on firestore
-        // const que='Jig'
-        // const queLen=que.length;
-        // var queFrontCode=que.slice(0,queLen-1)
-        // var queEndCode=que.slice(queLen-1,queLen);
-        // var endCode=queFrontCode+String.fromCharCode(queEndCode.charCodeAt(0)+1);
-        // const q = query(
-        //   collection(db, "users"),
-        //   where("displayName", ">=", que),where("displayName",'<',endCode)
-        // );
-        // try {
-        //   console.log('search result')
-        //   const querySnapshot = await getDocs(q);
-        //   console.log(querySnapshot)
-        //   querySnapshot.forEach((doc) => {
-        //     console.log(doc.data());
-        //   });
-        // } catch (err) {
-        // }
+        
 
         // create user on firestore
         await setDoc(doc(db, "users",usercheck.data.uid), {

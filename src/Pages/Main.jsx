@@ -62,6 +62,7 @@ const Main = () => {
   // fetch profile and friends details
   const token=useSelector(state=>state.token);
   const details=useSelector(state=>state.details);
+  const chatUserList=useSelector(state=>state.chatUsers);
   const [detailsFetched,setDetailsFetched]=useState(false);
   const [fetching,setFetching]=useState(true);
   const dispatch=useDispatch();
@@ -122,11 +123,13 @@ const Main = () => {
            <Sidebar showList={showList}/>
            <Block list={list} showList={showList} />
             <Right/>
-            {/* <Chats>
-              <ChatBox count={1}/>
-              <ChatBox count={0}/>
-              <ChatBox count={2}/>
-            </Chats> */}
+            <Chats>
+              {chatUserList.map((chat,index)=>(
+              <ChatBox count={index} chat={chat}/>
+              ))}
+              {/* <ChatBox count={0}/> */}
+              {/* <ChatBox count={2}/> */}
+            </Chats>
             <Display>
               <Feed handleOpen={handleOpen}/>
             </Display>

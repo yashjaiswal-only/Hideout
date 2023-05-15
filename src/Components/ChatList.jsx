@@ -1,8 +1,12 @@
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import pic from '../Data/pic.png'
 import Search from './SearchChat'
-
+import { useDispatch, useSelector } from 'react-redux'
+import {ChatContext} from '../contexts/ChatContext'
+import { doc, onSnapshot } from 'firebase/firestore'
+import { db } from '../config/firebase-config'
+import { updateChatList } from '../Redux/UserRedux'
 
 const Wrapper=styled.div`
     width:95%;
@@ -70,83 +74,47 @@ const SearchInput=styled.input`
     width:90%;
 `
 const ChatList = () => {
+    const [chats, setChats] = useState([]);
+
+  const currentUser=useSelector(state=>state.details);
+  const chatUsers=useSelector(state=>state.chatUsers);
+  const dispatch=useDispatch();
+//   const { dispatch } = useContext(ChatContext);
+
+  useEffect(() => {
+    const getChats = () => {
+      const unsub = onSnapshot(doc(db, "userChats", currentUser.uid), (doc) => {
+        setChats(doc.data());
+        console.log(doc.data());
+      });
+
+      return () => {
+        unsub();
+      };
+    };
+    // dispatch(updateChatList([]))
+    currentUser.uid && getChats();
+  }, [currentUser.uid]);
+
+  const handleSelect = (u) => {
+    // dispatch({ type: "CHANGE_USER", payload: u });
+    dispatch(updateChatList([...chatUsers,u]))
+  };
+
   return (
       <Wrapper>
-        {/* <SearchInput/> */}
         <Search/>
-            <ListItem>
-                <Image src={pic}/>
-                <Text><span>Sunny Graham</span>
-                <div><p> he voted for  amazon Rainforest</p>
+        {Object.entries(chats)?.sort((a,b)=>b[1].date - a[1].date).map((chat) =>(
+            <>
+            <ListItem key={chat[0]} onClick={() => handleSelect(chat[1].userInfo)}>
+                <Image src={chat[1].userInfo.photoURL}/>
+                <Text><span>{chat[1].userInfo.displayName}</span>
+                <div><p> {chat[1].lastMessage?.text}</p>
                 <span>2h ago</span></div></Text>
             </ListItem>
             <Divider/>
-            <ListItem>
-                <Image src={pic}/>
-                <Text><span>Sunny Graham</span>
-                <div><p> he voted for  amazon Rainforest</p>
-                <span>2h ago</span></div></Text>
-            </ListItem>
-            <Divider/>
-            <ListItem>
-                <Image src={pic}/>
-                <Text><span>Sunny Graham</span>
-                <div><p> he voted for  amazon Rainforest</p>
-                <span>2h ago</span></div></Text>
-            </ListItem>
-            <Divider/>
-            <ListItem>
-                <Image src={pic}/>
-                <Text><span>Sunny Graham</span>
-                <div><p> he voted for  amazon Rainforest</p>
-                <span>2h ago</span></div></Text>
-            </ListItem>
-            <Divider/>
-            <ListItem>
-                <Image src={pic}/>
-                <Text><span>Sunny Graham</span>
-                <div><p> he voted for  amazon Rainforest</p>
-                <span>2h ago</span></div></Text>
-            </ListItem>
-            <Divider/>
-            <ListItem>
-                <Image src={pic}/>
-                <Text><span>Sunny Graham</span>
-                <div><p> he voted for  amazon Rainforest</p>
-                <span>2h ago</span></div></Text>
-            </ListItem>
-            <Divider/>
-            <ListItem>
-                <Image src={pic}/>
-                <Text><span>Sunny Graham</span>
-                <div><p> he voted for  amazon Rainforest</p>
-                <span>2h ago</span></div></Text>
-            </ListItem>
-            <Divider/>
-            <ListItem>
-                <Image src={pic}/>
-                <Text><span>Sunny Graham</span>
-                <div><p> he voted for  amazon Rainforest</p>
-                <span>2h ago</span></div></Text>
-            </ListItem>
-            <Divider/>
-      
-            <ListItem>
-                <Image src={pic}/>
-                <Text><span>Sunny Graham</span>
-                <div><p> he voted for  amazon Rainforest</p>
-                <span>2h ago</span></div></Text>
-            </ListItem>
-            <Divider/>
-      
-            <ListItem>
-                <Image src={pic}/>
-                <Text><span>Sunny Graham</span>
-                <div><p> he voted for  amazon Rainforest</p>
-                <span>2h ago</span></div></Text>
-            </ListItem>
-            <Divider/>
-      
+            </>
+            ))}
       </Wrapper>
   )
 }

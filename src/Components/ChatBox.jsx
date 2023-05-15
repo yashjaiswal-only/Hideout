@@ -1,12 +1,23 @@
-import pic from '../Data/pic.png'
 import styled from 'styled-components'
 import ClearIcon from '@mui/icons-material/Clear';
 import AttachmentIcon from '@mui/icons-material/Attachment';
-import MicIcon from '@mui/icons-material/Mic';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import SendIcon from '@mui/icons-material/Send';
 import { useEffect, useState } from 'react';
+import {
+    arrayUnion,
+    doc,
+    serverTimestamp,
+    Timestamp,
+    updateDoc,
+} from "firebase/firestore";
+import { db, storage } from "../config/firebase-config";
+import { v4 as uuid } from "uuid";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { useSelector } from 'react-redux';
+import Messages from './Messages';
+
 const Component=styled.div`
     height:70vh;
     width:25%;
@@ -90,6 +101,9 @@ const Bottom=styled.div`
     display: flex;
     justify-content: space-around;
     align-items: center;
+    >label{
+        cursor: pointer;
+    }
 `
 const Message=styled.input`
     width:70%;
@@ -102,20 +116,77 @@ const Message=styled.input`
 const Icon=styled.span` 
     width:10%;
 `
-const ChatBox = ({count}) => {
+const ChatBox = ({count,chat}) => {
     const [message,setMessage]=useState('')
     const [down,setDown]=useState(false)
-    const onChange=(e)=>{
-        setMessage(e.target.value);
-        console.log(e.target.value)
-    }
+    const [img, setImg] = useState(null);
+    const currentUser=useSelector(state=>state.details);
+    var [chatId,setChatId]=useState(currentUser.uid > chat.uid? currentUser.uid + chat.uid: chat.uid + currentUser.uid);
+    
+    useEffect(()=>{
+        console.log(chat)
+        console.log('chat')
+    },[])
+    const handleSend = async () => {
+        
+        if (img) {
+          const storageRef = ref(storage, uuid());
+    
+          const uploadTask = uploadBytesResumable(storageRef, img);
+    
+          uploadTask.on(
+            (error) => {
+              //TODO:Handle Error
+            },
+            () => {
+              getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
+                await updateDoc(doc(db, "chats", chatId), {
+                  messages: arrayUnion({
+                    id: uuid(),
+                    message,
+                    senderId: currentUser.uid,
+                    date: Timestamp.now(),
+                    img: downloadURL,
+                  }),
+                });
+              });
+            }
+          );
+        } else {
+          await updateDoc(doc(db, "chats", chatId), {
+            messages: arrayUnion({
+              id: uuid(),
+              message,
+              senderId: currentUser.uid,
+              date: Timestamp.now(),
+            }),
+          });
+        }
+    
+        await updateDoc(doc(db, "userChats", currentUser.uid), {
+          [chatId + ".lastMessage"]: {
+            message,
+          },
+          [chatId + ".date"]: serverTimestamp(),
+        });
+    
+        await updateDoc(doc(db, "userChats", chat.uid), {
+          [chatId + ".lastMessage"]: {
+            message,
+          },
+          [chatId + ".date"]: serverTimestamp(),
+        });
+    
+        setMessage("");
+        setImg(null);
+      };
   return (
     <Component count={count} down={down}>
     <Wrapper>
         <Top>
-            <Image src={pic}/>
+            <Image src={chat.photoURL}/>
             <Name>
-                <p>Yash Jaiswal</p>
+                <p>{chat.displayName}</p>
                 <span>Online</span>
             </Name>
             <Options>
@@ -125,12 +196,22 @@ const ChatBox = ({count}) => {
                 </Option>
                 </Options>
         </Top>
-        <Middle></Middle>
+        <Middle>
+            <Messages chatId={chatId} chat={chat}/>
+        </Middle>
         <Bottom>
+            <input
+            type="file"
+            style={{ display: "none" }}
+            id="file"
+            onChange={(e) => setImg(e.target.files[0])}
+            />
+            <label htmlFor="file">
             <AttachmentIcon sx={{color:'gray'}}/>
-            <Message type='text' onChange={onChange} />
+            </label>
+            <Message type='text' onChange={(e)=>setMessage(e.target.value)} value={message}/>
             <Icon>
-                {message.length?<SendIcon sx={{color:'green',fontSize:"2rem"}} />:<MicIcon sx={{color:'green',fontSize:"2rem"}} />}
+               <SendIcon onClick={handleSend} sx={{color:'green',fontSize:"2rem"}} />
             </Icon>
         </Bottom>
     </Wrapper> 

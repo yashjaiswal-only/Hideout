@@ -3,12 +3,13 @@ import {
     useContext,
     useReducer,
   } from "react";
-  import { AuthContext } from "./AuthContext";
+  // import { AuthContext } from "./AuthContext";
+import { useSelector } from "react-redux";
   
   export const ChatContext = createContext();
   
   export const ChatContextProvider = ({ children }) => {
-    const { currentUser } = useContext(AuthContext);
+    const  currentUser = useSelector(state=>state.details)
     console.log('giving'+currentUser);
     const INITIAL_STATE = {
       chatId: "null",

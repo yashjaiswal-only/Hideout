@@ -8,9 +8,13 @@ const userSlice=createSlice({
         token:null,
         loading:false,
         details:null,
-        alert:null
+        alert:null,
+        chatUsers:[]
     },
     reducers:{
+        updateChatList:(state,action)=>{
+            state.chatUsers=action.payload;
+        },
         addAlert:(state,action)=>{
             state.alert=action.payload;
         },
@@ -42,5 +46,5 @@ const userSlice=createSlice({
 });
 
 
-export const {addUser,removeUser,startLoading,endLoading,addUserDetails,addAlert,deleteAlert}=userSlice.actions;
+export const {addUser,removeUser,startLoading,endLoading,addUserDetails,addAlert,deleteAlert,updateChatList}=userSlice.actions;
 export default userSlice.reducer;

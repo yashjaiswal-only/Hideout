@@ -67,11 +67,8 @@ const Message = ({ message,chat }) => {
     ref.current?.scrollIntoView({ behavior: "smooth" });
     var total_miliseconds=(message.date.seconds+(message.date.nanoseconds)*0.00000001)*1000
     const messagedate=new Date(total_miliseconds);
-    console.log(messagedate);
     const now=new Date();
     var diff = now.getTime() - messagedate.getTime();   
-    console.log("dif"+diff)
-    var temp;
     if(diff>=60000 && diff<3.6e+6){
       setTimedif(Math.floor(diff / (1000*60))+"m ago")      
     } 

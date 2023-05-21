@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 const Container=styled.div`
@@ -7,7 +7,7 @@ const Container=styled.div`
           /* background-color: blue; */
           margin:0.2rem 0;
           .messageInfo {
-            margin:0.2rem 0.4rem;
+            margin:0rem 0.4rem;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -24,7 +24,7 @@ const Container=styled.div`
             }
           }
           .messageContent {
-            max-width: 80%;
+            max-width: 75%;
             display: flex;
             flex-direction: column;
             /* justify-content: flex-start; */
@@ -62,12 +62,31 @@ const Container=styled.div`
 const Message = ({ message,chat }) => {
   const currentUser =useSelector(state=>state.details)
   const ref = useRef();
-
+  const [timedif,setTimedif]=useState('Just now');
   useEffect(() => {
     ref.current?.scrollIntoView({ behavior: "smooth" });
     var total_miliseconds=(message.date.seconds+(message.date.nanoseconds)*0.00000001)*1000
     const messagedate=new Date(total_miliseconds);
     console.log(messagedate);
+    const now=new Date();
+    var diff = now.getTime() - messagedate.getTime();   
+    console.log("dif"+diff)
+    var temp;
+    if(diff>=60000 && diff<3.6e+6){
+      setTimedif(Math.floor(diff / (1000*60))+"m ago")      
+    } 
+    else if(diff>=3.6e+6 && diff<8.64e+7){
+      setTimedif(Math.floor(diff / (1000*60*60))+"h ago")      
+    }
+    else if(diff>8.64e+7 && diff<2.628e+9){
+      setTimedif(Math.floor(diff / (1000*60*60*24))+"d ago")      
+    }
+    else if(diff>2.628e+9 && diff<3.154e+10){
+      setTimedif(Math.floor(diff / (1000*60*60*24*30))+"mon ago")      
+    }
+    else if(diff>3.154e+10){
+      setTimedif(Math.floor(diff / (1000*60*60*24*30*365))+"y ago")
+    }
   }, [message]);
 
   return (
@@ -78,7 +97,7 @@ const Message = ({ message,chat }) => {
       >
       <div className="messageInfo">
         <img src={message.senderId === currentUser.uid? currentUser.photo: chat.photoURL} alt=""/>
-        <span>just now</span>
+        <span>{timedif}</span>
       </div>
       <div className="messageContent">
         {message.message&&<p>{message.message}</p>}

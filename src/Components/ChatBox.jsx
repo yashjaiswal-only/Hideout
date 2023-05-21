@@ -56,7 +56,8 @@ const Top=styled.div`
     justify-content: space-around;
 `
 const Image=styled.img`
-    width:20%;
+    width:40px;
+    height:40px;
     border-radius:50%;
     border:3px solid green;
 `
@@ -127,6 +128,9 @@ const ChatBox = ({count,chat}) => {
         console.log(chat)
         console.log('chat')
     },[])
+    useEffect(()=>{
+      console.log(img)
+    },[img])
     const handleSend = async () => {
         
         if (img) {

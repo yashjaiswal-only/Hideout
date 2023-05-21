@@ -4,18 +4,21 @@ import styled from "styled-components";
 const Container=styled.div`
         .message {
           display: flex;
-          gap: 20px;
-          margin-bottom: 20px;
+          margin:0.2rem 0.4rem;
+          /* background-color: blue; */
 
           .messageInfo {
             display: flex;
             flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
             color: gray;
             font-weight: 300;
+            font-size:0.6rem;
 
             img {
-              width: 40px;
-              height: 40px;
+              width: 30px;
+              height: 30px;
               border-radius: 50%;
               object-fit: cover;
             }
@@ -24,11 +27,14 @@ const Container=styled.div`
             max-width: 80%;
             display: flex;
             flex-direction: column;
+            /* justify-content: flex-start; */
             gap: 10px;
 
             p {
-              background-color: white;
-              padding: 10px 20px;
+              background-color: #f87979;
+              /* color:white; */
+              margin:0;
+              padding: 5px 10px;
               border-radius: 0px 10px 10px 10px;
               max-width: max-content;
             }
@@ -59,6 +65,9 @@ const Message = ({ message,chat }) => {
 
   useEffect(() => {
     ref.current?.scrollIntoView({ behavior: "smooth" });
+    var total_miliseconds=(message.date.seconds+(message.date.nanoseconds)*0.00000001)*1000
+    const messagedate=new Date(total_miliseconds);
+    console.log(messagedate);
   }, [message]);
 
   return (

@@ -15,8 +15,9 @@ import {
 import { db, storage } from "../config/firebase-config";
 import { v4 as uuid } from "uuid";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Messages from './Messages';
+import { updateChatList } from '../Redux/UserRedux';
 
 const Component=styled.div`
     height:70vh;
@@ -116,7 +117,8 @@ const Message=styled.input`
     background-color: #e9f1f1;
 `
 const Icon=styled.span` 
-    width:10%;
+    /* width:10%; */
+    cursor: pointer;
 `
 const ImgPreview=styled.img`
     position: absolute;
@@ -128,6 +130,8 @@ const ChatBox = ({count,chat}) => {
     const [down,setDown]=useState(false)
     const [img, setImg] = useState(null);
     const [imgUrl, setImgUrl] = useState(null);
+    const dispatch=useDispatch();
+    const chatlist=useSelector(state=>state.chatUsers);
     const currentUser=useSelector(state=>state.details);
     var [chatId,setChatId]=useState(currentUser.uid > chat.uid? currentUser.uid + chat.uid: chat.uid + currentUser.uid);
     
@@ -151,12 +155,13 @@ const ChatBox = ({count,chat}) => {
       }
     },[img])
     const handleSend = async () => {
-        
+        const tempmsg=message
+        setMessage("");
         if (img) {
           await updateDoc(doc(db, "chats", chatId), {
             messages: arrayUnion({
               id: uuid(),
-              message:message?message:null,
+              message:tempmsg?tempmsg:null,
               senderId: currentUser.uid,
               date: Timestamp.now(),
               img: imgUrl,
@@ -167,7 +172,7 @@ const ChatBox = ({count,chat}) => {
           await updateDoc(doc(db, "chats", chatId), {
             messages: arrayUnion({
               id: uuid(),
-              message:message?message:null,
+              message:tempmsg?tempmsg:null,
               senderId: currentUser.uid,
               date: Timestamp.now(),
             }),
@@ -176,23 +181,29 @@ const ChatBox = ({count,chat}) => {
     
         await updateDoc(doc(db, "userChats", currentUser.uid), {
           [chatId + ".lastMessage"]: {
-            message,
+            message:tempmsg?tempmsg:null,
           },
           [chatId + ".date"]: serverTimestamp(),
         });
     
         await updateDoc(doc(db, "userChats", chat.uid), {
           [chatId + ".lastMessage"]: {
-            message,
+            message:tempmsg?tempmsg:null,
           },
           [chatId + ".date"]: serverTimestamp(),
         });
-    
-        setMessage("");
+        console.log('message sent')
         setImg(null);
         setImgUrl(null);
       };
-
+    const handleClose=()=>{
+      var temp=[];
+      chatlist.forEach(ele => {
+          if(ele.uid!=chat.uid) temp.push(ele);
+      });
+      console.log(temp)
+      dispatch(updateChatList(temp));
+    }
     
   return (
     <Component count={count} down={down}>
@@ -204,7 +215,7 @@ const ChatBox = ({count,chat}) => {
                 <span>Online</span>
             </Name>
             <Options>
-                <Option><ClearIcon/></Option>
+                <Option><ClearIcon onClick={handleClose}/></Option>
                 <Option onClick={()=>{down?setDown(false):setDown(true)}}>
                 {!down?<KeyboardArrowDownIcon />:<KeyboardArrowUpIcon/>}
                 </Option>

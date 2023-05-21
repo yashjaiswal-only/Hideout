@@ -79,7 +79,6 @@ const ChatList = () => {
   const currentUser=useSelector(state=>state.details);
   const chatUsers=useSelector(state=>state.chatUsers);
   const dispatch=useDispatch();
-//   const { dispatch } = useContext(ChatContext);
 
   useEffect(() => {
     const getChats = () => {
@@ -97,8 +96,10 @@ const ChatList = () => {
   }, [currentUser.uid]);
 
   const handleSelect = (u) => {
-    // dispatch({ type: "CHANGE_USER", payload: u });
-    dispatch(updateChatList([...chatUsers,u]))
+    if(chatUsers.filter(e=>e.uid==u.uid).length===0){
+      if(chatUsers.length<=3)      dispatch(updateChatList([...chatUsers,u]))
+      else dispatch(updateChatList([chatUsers[1],chatUsers[2],u]));
+    }
   };
 
   return (

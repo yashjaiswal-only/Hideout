@@ -127,8 +127,6 @@ const Main = () => {
               {chatUserList.map((chat,index)=>(
               <ChatBox count={index} chat={chat}/>
               ))}
-              {/* <ChatBox count={0}/> */}
-              {/* <ChatBox count={2}/> */}
             </Chats>
             <Display>
               <Feed handleOpen={handleOpen}/>

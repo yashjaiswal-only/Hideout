@@ -96,12 +96,58 @@ const ChatList = () => {
   }, [currentUser.uid]);
 
   const handleSelect = (u) => {
-    if(chatUsers.filter(e=>e.uid==u.uid).length===0){
-      if(chatUsers.length<=3)      dispatch(updateChatList([...chatUsers,u]))
-      else dispatch(updateChatList([chatUsers[1],chatUsers[2],u]));
+    if(screenSize.width>600){
+      if(chatUsers.filter(e=>e.uid==u.uid).length===0){
+        if(chatUsers.length<=3)      dispatch(updateChatList([...chatUsers,u]))
+        else dispatch(updateChatList([chatUsers[1],chatUsers[2],u]));
+      }
+    }
+    else{
+      dispatch(updateChatList([u]))
     }
   };
 
+  //to dimensions
+  const [screenSize, setScreenSize] = useState(getCurrentDimension());
+  function getCurrentDimension(){
+    return {
+        width: window.innerWidth,
+        height: window.innerHeight
+    }
+  }
+  useEffect(() => {
+      const updateDimension = () => {
+          setScreenSize(getCurrentDimension())
+      }
+      console.log(screenSize)
+      window.addEventListener('resize', updateDimension);
+      return(() => {
+          window.removeEventListener('resize', updateDimension);
+      })
+  }, [screenSize])
+  console.log(screenSize)
+  const getDate=(param)=>{
+    if(!param)  return ;
+    var total_miliseconds=(param.seconds+(param.nanoseconds)*0.00000001)*1000
+    const messagedate=new Date(total_miliseconds);
+    const now=new Date();
+    var diff = now.getTime() - messagedate.getTime();
+    if(diff>=60000 && diff<3.6e+6){
+      return(Math.floor(diff / (1000*60))+"m ago")      
+    } 
+    else if(diff>=3.6e+6 && diff<8.64e+7){
+      return(Math.floor(diff / (1000*60*60))+"h ago")      
+    }
+    else if(diff>8.64e+7 && diff<2.628e+9){
+      return(Math.floor(diff / (1000*60*60*24))+"d ago")      
+    }
+    else if(diff>2.628e+9 && diff<3.154e+10){
+      return(Math.floor(diff / (1000*60*60*24*30))+"mon ago")      
+    }
+    else if(diff>3.154e+10){
+      return(Math.floor(diff / (1000*60*60*24*30*365))+"y ago")
+    }
+  }
   return (
       <Wrapper>
         <Search/>
@@ -110,8 +156,8 @@ const ChatList = () => {
             <ListItem key={chat[0]} onClick={() => handleSelect(chat[1].userInfo)}>
                 <Image src={chat[1].userInfo.photoURL}/>
                 <Text><span>{chat[1].userInfo.displayName}</span>
-                <div><p> {chat[1].lastMessage?.text}</p>
-                <span>2h ago</span></div></Text>
+                <div><p> {chat[1].lastMessage?.message}</p>
+                <span>{getDate(chat[1].date)}</span></div></Text>
             </ListItem>
             <Divider/>
             </>

@@ -18,22 +18,29 @@ import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { useDispatch, useSelector } from 'react-redux';
 import Messages from './Messages';
 import { updateChatList } from '../Redux/UserRedux';
+import mobile, { tab } from '../responsive';
 
 const Component=styled.div`
     height:70vh;
-    width:25%;
+    width:30%;
     bottom:${props=>props.down?'-60vh':'0.2rem'};
-    /* bottom:-60vh; */
-    right:${props=>`${props.count*25}%`};
+    transition:bottom 1s ease;
+    right:${props=>`${props.count*30}%`};
     position:fixed;
-    z-index:8;
+    z-index:800;
     border-radius:15px;
     display: flex;
     flex-direction:row-reverse;
-    /* background-color: black; */
-    @media  (max-width:600px){
-      
-    }
+    ${tab({
+      // right:`${props=>`${props.count*30}%`}`,
+      // width:'30%',
+    })}
+    ${mobile({
+      right:'0%',
+      width:'85%',
+      height:`${"90vh"}`,
+      // bottom:`${props=>props.down?-90:0.2}vh`
+    })}
 `
 const Wrapper=styled.div`
     margin:0 0.2rem ;

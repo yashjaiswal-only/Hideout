@@ -6,6 +6,21 @@ import styled from "styled-components";
 const Container=styled.div`
     display: flex;
     flex-direction: column;
+    overflow-y:scroll;
+    max-height:100%;
+    &::-webkit-scrollbar {
+      width: 0.3rem;               /* width of the entire scrollbar */
+    }
+
+    &::-webkit-scrollbar-track {
+      background: outset;        /* color of the tracking area */
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: #b6b6e4;    /* color of the scroll thumb */
+      border-radius: 50px;       /* roundness of the scroll thumb */
+      border: 1px solid white;  /* creates padding around scroll thumb */
+    }
 `
 const Messages = ({chatId,chat}) => {
   const [messages, setMessages] = useState([]);

@@ -4,10 +4,10 @@ import styled from "styled-components";
 const Container=styled.div`
         .message {
           display: flex;
-          margin:0.2rem 0.4rem;
           /* background-color: blue; */
-
+          margin:0.2rem 0;
           .messageInfo {
+            margin:0.2rem 0.4rem;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -81,7 +81,7 @@ const Message = ({ message,chat }) => {
         <span>just now</span>
       </div>
       <div className="messageContent">
-        <p>{message.message}</p>
+        {message.message&&<p>{message.message}</p>}
         {message.img && <img src={message.img} alt="" />}
       </div>
     </div>

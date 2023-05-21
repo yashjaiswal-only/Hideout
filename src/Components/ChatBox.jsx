@@ -92,6 +92,7 @@ const Middle=styled.div`
     height:80%;
     width:100%;
     background-color: white;
+    position: relative;
 `
 const Bottom=styled.div`
     height:15%;
@@ -117,50 +118,56 @@ const Message=styled.input`
 const Icon=styled.span` 
     width:10%;
 `
+const ImgPreview=styled.img`
+    position: absolute;
+    bottom:1rem;
+    width:50%;
+`
 const ChatBox = ({count,chat}) => {
     const [message,setMessage]=useState('')
     const [down,setDown]=useState(false)
     const [img, setImg] = useState(null);
+    const [imgUrl, setImgUrl] = useState(null);
     const currentUser=useSelector(state=>state.details);
     var [chatId,setChatId]=useState(currentUser.uid > chat.uid? currentUser.uid + chat.uid: chat.uid + currentUser.uid);
     
     useEffect(()=>{
-        console.log(chat)
-        console.log('chat')
-    },[])
-    useEffect(()=>{
       console.log(img)
+      if (img) {
+        const storageRef = ref(storage, uuid());
+  
+        const uploadTask = uploadBytesResumable(storageRef, img);
+  
+        uploadTask.on(
+          (error) => {
+            //TODO:Handle Error
+          },
+          () => {
+            getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
+              setImgUrl(downloadURL)
+            });
+          }
+        );
+      }
     },[img])
     const handleSend = async () => {
         
         if (img) {
-          const storageRef = ref(storage, uuid());
-    
-          const uploadTask = uploadBytesResumable(storageRef, img);
-    
-          uploadTask.on(
-            (error) => {
-              //TODO:Handle Error
-            },
-            () => {
-              getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
-                await updateDoc(doc(db, "chats", chatId), {
-                  messages: arrayUnion({
-                    id: uuid(),
-                    message,
-                    senderId: currentUser.uid,
-                    date: Timestamp.now(),
-                    img: downloadURL,
-                  }),
-                });
-              });
-            }
-          );
+          await updateDoc(doc(db, "chats", chatId), {
+            messages: arrayUnion({
+              id: uuid(),
+              message:message?message:null,
+              senderId: currentUser.uid,
+              date: Timestamp.now(),
+              img: imgUrl,
+            }),
+          });
+
         } else {
           await updateDoc(doc(db, "chats", chatId), {
             messages: arrayUnion({
               id: uuid(),
-              message,
+              message:message?message:null,
               senderId: currentUser.uid,
               date: Timestamp.now(),
             }),
@@ -183,7 +190,10 @@ const ChatBox = ({count,chat}) => {
     
         setMessage("");
         setImg(null);
+        setImgUrl(null);
       };
+
+    
   return (
     <Component count={count} down={down}>
     <Wrapper>
@@ -202,6 +212,7 @@ const ChatBox = ({count,chat}) => {
         </Top>
         <Middle>
             <Messages chatId={chatId} chat={chat}/>
+            {img&&<ImgPreview src={imgUrl}/>}
         </Middle>
         <Bottom>
             <input
@@ -213,7 +224,7 @@ const ChatBox = ({count,chat}) => {
             <label htmlFor="file">
             <AttachmentIcon sx={{color:'gray'}}/>
             </label>
-            <Message type='text' onChange={(e)=>setMessage(e.target.value)} value={message}/>
+            <Message type='text' onKeyUp={(e)=>(e.key==='Enter')?handleSend():""} onChange={(e)=>setMessage(e.target.value)} value={message}/>
             <Icon>
                <SendIcon onClick={handleSend} sx={{color:'green',fontSize:"2rem"}} />
             </Icon>

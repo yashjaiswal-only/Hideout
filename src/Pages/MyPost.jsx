@@ -44,11 +44,16 @@ const Display=styled.div`
       justifyContent:'center'
     })}
 `
+const Chats=styled.div`
+  background-color: black;
+`
 const MyPost = () => {
   const [list,setList]=useState('');
   const [postList,setPostList]=useState([]);
   const token=useSelector(state=>state.token)
   const showList=(val)=>setList(val);
+  const chatUserList=useSelector(state=>state.chatUsers);
+
 
   //404 error 
   const [fails,setFails]=useState(false);
@@ -82,6 +87,11 @@ const MyPost = () => {
          <Sidebar showList={showList}/>
          <Block list={list} showList={showList}/>
           <Right/>
+          <Chats>
+              {chatUserList.map((chat,index)=>(
+              <ChatBox count={index} chat={chat}/>
+              ))}
+            </Chats>
         <Display>
         {postList.map(p=>(<Post key={p._id} post={p} />))}
         </Display>

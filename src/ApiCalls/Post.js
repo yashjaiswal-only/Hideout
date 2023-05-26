@@ -100,6 +100,28 @@ export const getAllPosts=async(token)=>{
     }
     return returnval;
 }
+export const getApost=async(token,postId,userId)=>{
+    const config={
+        headers:{
+            'Authorization':`Bearer ${token}`
+        }
+    }
+    let returnval;
+    try {
+        await axiosInstance.get(`/post/getSpecificPost?uid=${userId}&postId=${postId}`,config)
+        .then((res)=>{
+            returnval=res;
+        })
+        .catch((err)=>{
+            console.log('error in  getting a post',err)
+            returnval=err;
+        })
+    } catch (error) {
+        console.log('error in getting a post',error)
+        returnval=error;
+    }
+    return returnval;
+}
 export const addLike=async(token,postId,userId)=>{
     const config={
         headers:{

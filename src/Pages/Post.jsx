@@ -14,7 +14,7 @@ import Warning from '../Components/Warning';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { removeUser } from '../Redux/UserRedux';
-import { getMyPosts } from '../ApiCalls/Post';
+import { getApost, getMyPosts } from '../ApiCalls/Post';
 import Post from '../Components/Post';
 const Container=styled.div`
     width: 100%;
@@ -46,7 +46,7 @@ const Display=styled.div`
 `
 const PostPage = () => {
   const [list,setList]=useState('');
-  const [postList,setPostList]=useState([]);
+  const [post,setPost]=useState(null);
   const token=useSelector(state=>state.token)
   const showList=(val)=>setList(val);
   const location=useLocation();
@@ -73,9 +73,16 @@ const PostPage = () => {
 //         setPostList(res.data)
 //     }
 //   }
-  useEffect(()=>{
+  useEffect(async()=>{
     // getPosts();
-    console.log(location.pathname.split('/'))
+    var x=location.pathname.split('/');
+    var userid=x[2],postid=x[3];
+    console.log(userid+postid)
+    const res=await getApost(token,postid,userid);
+    console.log(res)
+    if(res.status===200){
+      setPost(res.data);
+    }
   },[])
   return (<>
     <Container>
@@ -85,7 +92,7 @@ const PostPage = () => {
          <Block list={list} showList={showList}/>
           <Right/>
         <Display>
-        {/* {postList.map(p=>(<Post key={p._id} post={p} />))} */}
+          {post?<Post post={post}/>:""}
         </Display>
     </Content>
     {/* <Warning fails={fails}/> */}

@@ -86,6 +86,7 @@ const Main = () => {
     setFetching(false);
   }
   useEffect(()=>{
+    console.log(chatUserList)
     console.log('fetching profile')
     dispatch(addAlert('Welcome To Hideout'))
     if(details){

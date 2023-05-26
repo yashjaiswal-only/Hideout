@@ -24,7 +24,7 @@ const Component=styled.div`
     height:70vh;
     width:30%;
     bottom:${props=>props.down?'-60vh':'0.2rem'};
-    transition:bottom 1s ease;
+    transition:bottom 0.5s ease;
     right:${props=>`${props.count*30}%`};
     position:fixed;
     z-index:800;

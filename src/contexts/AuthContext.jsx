@@ -26,7 +26,7 @@ export const AuthProvider = ({ children }) => {
                 //Signed up
                 console.log(userCredential)
                 const user = userCredential.user;
-                dispatch(setFirebaseUser(user))
+                //  
                 await user.getIdToken()
                     .then(async (tkn) => {
                         setAuthorizedUser(true);
@@ -75,7 +75,7 @@ export const AuthProvider = ({ children }) => {
                 const credential = GoogleAuthProvider.credentialFromResult(result);
                 // The signed-in user info.
                 const user = result.user;
-                dispatch(setFirebaseUser(user))
+                 
                 const details = {
                     uid: user.uid,
                     token: user.accessToken
@@ -140,7 +140,7 @@ export const AuthProvider = ({ children }) => {
             .then(async(result) => {
                 // The signed-in user info.
                 const user = result.user;
-                dispatch(setFirebaseUser(user))
+                 
                 // This gives you a Facebook Access Token. You can use it to access the Facebook API.
                 const credential = FacebookAuthProvider.credentialFromResult(result);
                 const accessToken = credential.accessToken;
@@ -203,7 +203,7 @@ export const AuthProvider = ({ children }) => {
                 const user = userCredential.user;
                 const accessToken = user.accessToken;
                 console.log(user)
-                dispatch(setFirebaseUser(user))
+                 
                 // if(user){
                 // setCurrentUser(user);
                 await user.getIdToken()

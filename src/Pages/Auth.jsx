@@ -270,7 +270,6 @@ const Auth = () => {
   const passwordLoginRef= useRef();
   const {signup, signin, signInWithGoogle, signInWithFacebook, currentUser} = useAuth();
   const [error, setError]= useState(null);
-  const [loadin, setLoading]= useState(false);
   const loading=useSelector(state=>state.loading)
   const dispatch=useDispatch();
     // dispatch(removeUser())
@@ -283,7 +282,6 @@ const Auth = () => {
       console.log(log)
       dispatch(endLoading());
       if(log.status){
-        setLoading(false)
         if(log.found)        navigate('/home');
         else        navigate('/create-profile');
         console.log("login successful")
@@ -356,7 +354,6 @@ const Auth = () => {
     e.preventDefault()
     try{
       setError('')
-      setLoading(true)
       const log = await signInWithFacebook()
       console.log(log)
       dispatch(endLoading());
@@ -372,7 +369,6 @@ const Auth = () => {
     }catch(error){
       setError('Failed to sign in!! Please try again')
     }
-    setLoading(false)
   }
 
   const user=useSelector(state=>state.user);

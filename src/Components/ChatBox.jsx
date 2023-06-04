@@ -35,12 +35,12 @@ const Component=styled.div`
       // right:`${props=>`${props.count*30}%`}`,
       // width:'30%',
     })}
-    ${mobile({
-      right:'0%',
-      width:'85%',
-      height:`${"90vh"}`,
-      // bottom:`${props=>props.down?-90:0.2}vh`
-    })}
+    @media only screen and (max-width:600px){
+      right:0%;
+      width:85%;
+      height:90vh;
+      bottom:${props=>props.down?'-80vh':'0.2rem'};
+    }
 `
 const Wrapper=styled.div`
     margin:0 0.2rem ;

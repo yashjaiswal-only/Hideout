@@ -30,6 +30,9 @@ const Component=styled.div`
     z-index:800;
     border-radius:15px;
     display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
     flex-direction:row-reverse;
     ${tab({
       // right:`${props=>`${props.count*30}%`}`,
@@ -219,7 +222,7 @@ const ChatBox = ({count,chat}) => {
             <Image src={chat.photoURL}/>
             <Name>
                 <p>{chat.displayName}</p>
-                <span>Online</span>
+                {/* <span>Online</span> */}
             </Name>
             <Options>
                 <Option><ClearIcon onClick={handleClose}/></Option>

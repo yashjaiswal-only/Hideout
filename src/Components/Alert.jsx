@@ -17,6 +17,7 @@ const Container=styled.div`
 `
 const Alert = () => {
   const alert=useSelector(state=>state.alert);
+  console.log(alert)
   const dispatch=useDispatch();
   const [showAlert,setShowAlert]=useState(true);
   useEffect(()=>{

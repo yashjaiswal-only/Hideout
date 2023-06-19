@@ -106,6 +106,7 @@ const Main = () => {
       },5000)
     }
   },[fetching])
+  
   return (
     <>
  {fetching?<HomeLoader/>:(

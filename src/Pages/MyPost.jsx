@@ -16,6 +16,8 @@ import { useNavigate } from 'react-router-dom';
 import { removeUser } from '../Redux/UserRedux';
 import { getMyPosts } from '../ApiCalls/Post';
 import Post from '../Components/Post';
+import { Modal } from '@mui/material';
+import CreatePost from '../Components/CreatePost';
 const Container=styled.div`
     width: 100%;
     /* overflow-y:hidden;
@@ -80,9 +82,24 @@ const MyPost = () => {
   useEffect(()=>{
     getPosts();
   },[])
+
+  //create post
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () =>{
+    setOpen(false);
+  }
   return (<>
     <Container>
-    <Topbar/>
+    <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+          <CreatePost handleClose={handleClose}/>
+      </Modal>
+    <Topbar handleOpen={handleOpen}/>
     <Content>
          <Sidebar showList={showList}/>
          <Block list={list} showList={showList}/>

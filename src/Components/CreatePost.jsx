@@ -11,7 +11,7 @@ import app from "../config/firebase-config";
 import { useDispatch, useSelector } from 'react-redux';
 import { makePost } from '../ApiCalls/Post';
 import { CircularProgress } from '@mui/material';
-import { endLoading, startLoading } from '../Redux/UserRedux';
+import { addAlert, endLoading, startLoading } from '../Redux/UserRedux';
 
 const Container=styled.div`
     position: absolute;
@@ -77,31 +77,31 @@ const CreatePost = ({handleClose}) => {
   const [fileList, setFileList] = useState([]);
   const [countUploaded,setCountUploaded]=useState(0);
   const token=useSelector(state=>state.token);
-  const loading=useSelector(state=>state.loading);
+  // const loading=useSelector(state=>state.loading);
+  const [loading,setLoading]=useState(false);
   const dispatch=useDispatch();
   const captionRef=useRef();
-  //submit the post
 
+  //submit the post
   const handleSubmit=async()=>{
+    // setLoading(true)
     if(!fileList.length){
-      console.log('posting')
       const data={
       caption:captionRef.current.value,
         likes:[],
         comments:[],
       }
       console.log(data)
-      dispatch(startLoading());
       const res=await makePost(token,data);
-      dispatch(endLoading())
+      setLoading(false)
       console.log(res)
       if(res.status===200){
-        // handleClose();
+        handleClose();  
+        dispatch(addAlert('Post Created Successfully'));
       }
     }
     else{
       var Images=[];
-      dispatch(startLoading())
       fileList.forEach(file=>{
         const fileName=new Date().getTime()+file.name;  
         const storage=getStorage(app);
@@ -141,11 +141,13 @@ const CreatePost = ({handleClose}) => {
                   likes:[],
                   comments:[],
                 }
+                console.log(data)
                 const res=await makePost(token,data);
+                setLoading(false)
                 console.log(res);
                 if(res.status===200){
                   handleClose();
-                  dispatch(endLoading());
+                  dispatch(addAlert('Post Created Successfully'));
                 }
                 setCountUploaded(0);
               }
@@ -156,7 +158,7 @@ const CreatePost = ({handleClose}) => {
       })
     }
   }
- 
+  
   //for auto expand input
   const autoExpand = (e)=>{
         var element = typeof e === 'object' ? e.target : document.getElementById(e);
@@ -168,7 +170,7 @@ const CreatePost = ({handleClose}) => {
     <Container>
     {loading?<CircularProgress sx={{margin:'auto'}}/>
       :<>
-          <h2>New Post</h2>
+        <h2>New Post</h2>
         <TextArea id="TextArea" ng-model="loremIpsum" ref={captionRef}  onKeyUp={autoExpand} placeholder="Write something here..."/>
         <FileUpload fileList={fileList} setFileList={setFileList}/>
         <Button onClick={handleSubmit}>Create</Button>

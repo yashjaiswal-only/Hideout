@@ -48,7 +48,7 @@ const Display=styled.div`
 const Chats=styled.div`
   background-color: black;
 `
-const MyPost = () => {
+const MyPost = ({handleOpen}) => {
   const [list,setList]=useState('');
   const [postList,setPostList]=useState([]);
   const token=useSelector(state=>state.token)
@@ -69,22 +69,9 @@ const MyPost = () => {
     getPosts();
   },[])
 
-  //create post
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () =>{
-    setOpen(false);
-  }
+
   return (<>
     <Container>
-    <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-          <CreatePost handleClose={handleClose}/>
-      </Modal>
     <Topbar handleOpen={handleOpen}/>
     <Content>
          <Sidebar showList={showList}/>

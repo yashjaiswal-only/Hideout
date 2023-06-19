@@ -110,7 +110,6 @@ const FriendsList = ({setFails}) => {
     setIndex(newIndex);
   };
   
-
   //get my friends
   const [load,setLoad]=useState(false);
   const [friends,setFriends]=useState([]);
@@ -121,6 +120,10 @@ const FriendsList = ({setFails}) => {
   const searchRef=useRef();
   const searchFindFriend=async()=>{
     setLoad(true)
+    if(searchRef.current.value===""){
+      getPossibleFriends();
+      return;
+    }
     console.log(searchRef.current.value);
     const res=await searchInFindFriends(token,searchRef.current.value)
     console.log(res)
@@ -141,7 +144,6 @@ const FriendsList = ({setFails}) => {
     else if(res.status===404) dispatch(updateFails(true));
     else{
       console.log(res);
-      setFails(true);
     }
     setLoad(false)
   }
@@ -156,7 +158,6 @@ const FriendsList = ({setFails}) => {
     else if(res.status===404) dispatch(updateFails(true));
     else{
       console.log(res);
-      setFails(true);
     }
     setLoad(false)
   }

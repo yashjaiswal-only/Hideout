@@ -46,17 +46,10 @@ const Display=styled.div`
 const Chats=styled.div`
   background-color: black;
 `
-const Main = () => {
+const Main = ({handleOpen}) => {
   const [list,setList]=useState('');
   const showList=(val)=>setList(val);
   const navigate=useNavigate();
-  
-  //create post
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () =>{
-    setOpen(false);
-  }
 
   // fetch profile and friends details
   const token=useSelector(state=>state.token);
@@ -113,14 +106,6 @@ const Main = () => {
  {fetching?<HomeLoader/>:(
       detailsFetched?
       (<Container>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-          <CreatePost handleClose={handleClose}/>
-      </Modal>
       <Topbar handleOpen={handleOpen}/>
       <Content>
            <Sidebar showList={showList}/>

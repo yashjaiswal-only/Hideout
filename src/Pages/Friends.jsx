@@ -47,47 +47,19 @@ const Display=styled.div`
       marginLeft:'15%',
     })}
 `
-const Friends = () => {
+const Friends = ({handleOpen}) => {
   const [list,setList]=useState('');
   const showList=(val)=>setList(val);
-
-  //404 error 
-  const [fails,setFails]=useState(false);
-  const dispatch=useDispatch();
-  const navigate=useNavigate();
-  useEffect(()=>{
-    if(fails){
-      console.log('navigating')
-      setTimeout(()=>{
-        dispatch(removeUser());
-        navigate('/')
-      },3000)
-    }
-  },[fails])
-
-  //create post
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () =>{
-    setOpen(false);
-  }
+ 
   return (<>
     <Container>
-    <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-          <CreatePost handleClose={handleClose}/>
-      </Modal>
     <Topbar handleOpen={handleOpen}/>
     <Content>
          <Sidebar showList={showList}/>
          <Block list={list} showList={showList}/>
          <Display>
-            <FriendsList setFails={setFails}/> 
-            <FriendsRequest setFails={setFails}/>
+            <FriendsList /> 
+            <FriendsRequest />
           </Display>
     </Content>
   </Container>

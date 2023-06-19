@@ -429,7 +429,7 @@ const MenuListComposition=({friend,uid})=>{
     </Stack>
   );
 }
-const Profile = () => {
+const Profile = ({handleOpen}) => {
   //show index ,post vs friends
   const [index,setIndex]=useState(0);
   const navigate=useNavigate()
@@ -522,7 +522,7 @@ useEffect(()=>{
       {
         profileFetched?
         <>
-         <Topbar/>
+         <Topbar handleOpen={handleOpen}/>
          <Content>
          {/* <Sidebar/> */}
 

@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import pic from '../Data/pic.png';
 import cover from '../Data/cover.jfif'
 import { mobile } from '../responsive';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getFriendsCount } from '../ApiCalls/Friend';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { CircularProgress } from '@mui/material';
@@ -74,11 +74,13 @@ const Mysection = () => {
   const details=useSelector(state=>state.details);
   const token=useSelector(state=>state.token)
   const navigate=useNavigate();
+  const dispatch=useDispatch();
   const [count,setCount]=useState(0);
   useEffect(()=>{
-    const getCount=async()=>{
+    const getCount=async()=>{ //get friends count
       const res=await getFriendsCount(token)
-      setCount(res.data)
+      if(res.status===200)      setCount(res.data)
+      else if(res.status===404)      dispatch(updateFails(true))
     }
     getCount();
   },[])

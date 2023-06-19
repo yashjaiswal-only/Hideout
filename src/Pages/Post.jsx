@@ -10,7 +10,6 @@ import Right from '../Components/Right';
 import Sidebar from '../Components/Sidebar';
 import {mobile, tab} from '../responsive'
 import HomeLoader from '../Components/HomePageLoader';
-import Warning from '../Components/Warning';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { removeUser } from '../Redux/UserRedux';

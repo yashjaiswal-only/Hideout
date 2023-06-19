@@ -11,11 +11,10 @@ import Modal from '@mui/material/Modal';
 import CreatePost from '../Components/CreatePost';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { addAlert, addUserDetails, endLoading, removeUser, startLoading } from '../Redux/UserRedux';
+import { addAlert, addUserDetails, endLoading, removeUser, startLoading, updateFails } from '../Redux/UserRedux';
 import { getUserDetails } from '../ApiCalls/User';
 import { getAllPosts } from '../ApiCalls/Post';
 import Loader from '../Components/Loader';
-import Warning from '../Components/Warning';
 import HomeLoader from '../Components/HomePageLoader';
 
 
@@ -80,6 +79,8 @@ const Main = () => {
       setDetailsFetched(true);
     }
     else if(res.status===404){
+      console.log(404)
+      dispatch(updateFails(true))
       // dispatch(removeUser());
     }
     else{}
@@ -135,7 +136,7 @@ const Main = () => {
             </Display>
       </Content>
       </Container>):
-      <HomeLoader warning />
+      <HomeLoader />
     )
   }
     </>

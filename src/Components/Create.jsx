@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import styled from 'styled-components'
 import VideoCameraFrontIcon from '@mui/icons-material/VideoCameraFront';
 import PermMediaIcon from '@mui/icons-material/PermMedia';
@@ -7,7 +7,7 @@ import SendIcon from '@mui/icons-material/Send';
 import pic from '../Data/pic.png';
 import {mobile, tab} from '../responsive'
 import { makePost } from '../ApiCalls/Post';
-import { endLoading, startLoading } from '../Redux/UserRedux';
+import { endLoading, startLoading, updateFails } from '../Redux/UserRedux';
 import { useDispatch, useSelector } from 'react-redux';
 import { CircularProgress } from '@mui/material';
 
@@ -134,7 +134,7 @@ const TextArea=styled.textarea`
 `
 const Create = ({handleOpen}) => {
   const dispatch=useDispatch();
-  const loading=useSelector(state=>state.loading);
+  const [loading,setLoading]=useState(false);
   const token=useSelector(state=>state.token);
   const details=useSelector(state=>state.details);
   const captionRef=useRef();
@@ -145,16 +145,19 @@ const Create = ({handleOpen}) => {
         likes:[],
         comments:[],
       }
-      dispatch(startLoading());
+      setLoading(true)
       const res=await makePost(token,data);
-      dispatch(endLoading())
+      setLoading(false)
       console.log(res)
       if(res.status===200){
         captionRef.current.value="";
       }
+      else if(res.status===404){
+        dispatch(updateFails(true))
+        captionRef.current.value="";
+      }
     }
   }
-  dispatch(endLoading());
 
   //for auto expand input
   const autoExpand = (e)=>{

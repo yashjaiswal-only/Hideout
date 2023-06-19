@@ -90,7 +90,6 @@ const Friends = () => {
             <FriendsRequest setFails={setFails}/>
           </Display>
     </Content>
-    <Warning fails={fails}/>
   </Container>
   </>
   )

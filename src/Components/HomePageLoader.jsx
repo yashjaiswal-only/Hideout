@@ -15,7 +15,7 @@ const HomeLoader = ({warning}) => {
               <Skeleton style={{padding:"5rem",width:'60%',margin:'0% 0 0 30%'}}/>
               <Skeleton style={{padding:"5rem",width:'60%',height:'50%',margin:'0% 0 0 30%'}}/>
             </Box>
-        {warning&&<Warning/>}
+        {/* {warning&&<Warning/>} */}
     </div>
   )
 }

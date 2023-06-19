@@ -4,7 +4,7 @@ import Create from './Create'
 import Post from './Post'
 import {mobile} from '../responsive'
 import { getAllPosts } from '../ApiCalls/Post'
-import { endLoading, startLoading } from '../Redux/UserRedux'
+import { endLoading, startLoading, updateFails } from '../Redux/UserRedux'
 import { useDispatch, useSelector } from 'react-redux'
 
 const Container=styled.div`
@@ -24,12 +24,12 @@ const Feed = ({handleOpen}) => {
   const getAllPost=async()=>{
     dispatch(startLoading());
     var res=await getAllPosts(token);  //put await here to stop further execution untill you get response
+    console.log(res)
     if(res.status===200){
-      console.log(res.data)
       setPosts(res.data)
     }
-    else{
-      console.log(res);
+    else if(res.status===404){
+      dispatch(updateFails(true))
     }
     dispatch(endLoading());
   }

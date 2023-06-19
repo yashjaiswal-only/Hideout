@@ -42,13 +42,13 @@ const Top=styled.div`
     font-weight:700;
 `
 const Block = ({list,showList}) => {
-    const [title,setTitle]=useState('');
-    useEffect(()=>{
-        if(list!=''){
-            setTitle(list[0].toUpperCase()+list.slice(1))
-        }
-        else setTitle(list);
-    },[list])
+  const [title,setTitle]=useState('');
+  useEffect(()=>{
+      if(list!=''){
+          setTitle(list[0].toUpperCase()+list.slice(1))
+      }
+      else setTitle(list);
+  },[list])
   return (
     <Component list={list}>
       <Top><span>{title!=='' && title}</span>

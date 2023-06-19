@@ -9,10 +9,14 @@ const userSlice=createSlice({
         loading:false,
         details:null,
         alert:null,
+        fails:null,
         chatUsers:[],
         firebaseUser:null
     },
     reducers:{
+        updateFails:(state,action)=>{
+            state.fails=action.payload
+        },
         setFirebaseUser:(state,action)=>{
             state.firebaseUser=action.payload
         },
@@ -50,5 +54,5 @@ const userSlice=createSlice({
 });
 
 
-export const {addUser,removeUser,startLoading,endLoading,addUserDetails,addAlert,deleteAlert,updateChatList,setFirebaseUser}=userSlice.actions;
+export const {updateFails,addUser,removeUser,startLoading,endLoading,addUserDetails,addAlert,deleteAlert,updateChatList,setFirebaseUser}=userSlice.actions;
 export default userSlice.reducer;

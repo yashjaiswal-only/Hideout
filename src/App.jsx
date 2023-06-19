@@ -10,11 +10,13 @@ import MyPost from './Pages/MyPost';
 import PostPage from './Pages/Post';
 import Alert from './Components/Alert';
 import NewsPage from './Pages/NewsPage';
+import Warning from './Components/Warning';
+import { useSelector } from 'react-redux';
 function App() {
+  const fails=useSelector(state=>state.fails)
   return (
     <BrowserRouter>
     <AuthProvider>
-      
       <div className="App">        
             <Routes>
               <Route path='/' element={<Auth/>}/>
@@ -28,6 +30,7 @@ function App() {
               <Route path='/create-profile' element={<CreateProfile/>}/>
             </Routes>
             <Alert/>
+            <Warning fails={fails}/>
       </div>
     </AuthProvider>
     </BrowserRouter>

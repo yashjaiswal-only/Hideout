@@ -12,7 +12,7 @@ import {mobile, tab} from '../responsive'
 import HomeLoader from '../Components/HomePageLoader';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { removeUser } from '../Redux/UserRedux';
+import { removeUser, updateFails } from '../Redux/UserRedux';
 import { getMyPosts } from '../ApiCalls/Post';
 import Post from '../Components/Post';
 import { Modal } from '@mui/material';
@@ -54,21 +54,7 @@ const MyPost = () => {
   const token=useSelector(state=>state.token)
   const showList=(val)=>setList(val);
   const chatUserList=useSelector(state=>state.chatUsers);
-
-
-  //404 error 
-  const [fails,setFails]=useState(false);
   const dispatch=useDispatch();
-  const navigate=useNavigate();
-  useEffect(()=>{
-    if(fails){
-      console.log('navigating')
-      setTimeout(()=>{
-        dispatch(removeUser());
-        navigate('/')
-      },3000)
-    }
-  },[fails])
 
   //get all my post
   const getPosts=async()=>{
@@ -77,6 +63,7 @@ const MyPost = () => {
     if(res.status===200){   
         setPostList(res.data)
     }
+    else if(res.status===404) dispatch(updateFails(true));
   }
   useEffect(()=>{
     getPosts();

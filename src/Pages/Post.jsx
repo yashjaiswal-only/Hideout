@@ -49,31 +49,9 @@ const PostPage = () => {
   const token=useSelector(state=>state.token)
   const showList=(val)=>setList(val);
   const location=useLocation();
+  const dispatch=useDispatch();
 
-  //404 error 
-//   const [fails,setFails]=useState(false);
-//   const dispatch=useDispatch();
-//   const navigate=useNavigate();
-//   useEffect(()=>{
-//     if(fails){
-//       console.log('navigating')
-//       setTimeout(()=>{
-//         dispatch(removeUser());
-//         navigate('/')
-//       },3000)
-//     }
-//   },[fails])
-
-  //get all my post
-//   const getPosts=async()=>{
-//     const res=await getMyPosts(token);
-//     console.log(res)
-//     if(res.status===200){   
-//         setPostList(res.data)
-//     }
-//   }
   useEffect(async()=>{
-    // getPosts();
     var x=location.pathname.split('/');
     var userid=x[2],postid=x[3];
     console.log(userid+postid)
@@ -82,6 +60,8 @@ const PostPage = () => {
     if(res.status===200){
       setPost(res.data);
     }
+    else if(res.status===404) dispatch(updateFails(true));
+
   },[])
   return (<>
     <Container>
@@ -94,7 +74,6 @@ const PostPage = () => {
           {post?<Post post={post}/>:""}
         </Display>
     </Content>
-    {/* <Warning fails={fails}/> */}
   </Container>
   </>
   )

@@ -5,7 +5,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import styled from 'styled-components';
 import FriendTab from './FriendTab';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getAllRequest } from '../ApiCalls/Friend';
 const Container=styled.div`
     width: 50%;
@@ -69,9 +69,10 @@ function LinkTab(props) {
 const FriendsRequest = ({setFails}) => {
   const [value, setValue] = React.useState(1);
   const [load, setLoad] = React.useState(1);
+  const dispatch=useDispatch();
   const handleChange = (event, newValue) => {
     setValue(newValue);
-  };
+  };  
 
   //get all requests
   const [requests,setRequests]=useState([]);
@@ -83,6 +84,7 @@ const FriendsRequest = ({setFails}) => {
       console.log(res.data)
       setRequests(res.data);  
     }
+    else if(res.status===404) dispatch(updateFails(true));
     else{
       console.log(res)
       setFails(true)

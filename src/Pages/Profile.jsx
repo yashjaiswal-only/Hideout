@@ -23,7 +23,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import noprofile from '../assets/Forgot password.gif'
 import Loader from '../Components/Loader'; 
-import { endLoading, startLoading } from '../Redux/UserRedux';
+import { endLoading, startLoading, updateFails } from '../Redux/UserRedux';
 import { getUserDetails } from '../ApiCalls/User';
 import Post from '../Components/Post';
 import FriendCard from '../Components/FriendCard';
@@ -432,12 +432,11 @@ const MenuListComposition=({friend,uid})=>{
 const Profile = () => {
   //show index ,post vs friends
   const [index,setIndex]=useState(0);
-
   const navigate=useNavigate()
   const location=useLocation();
   const profileUID=location.pathname.slice(9);
-  const loading=useSelector(state=>state.loading);
-  const token=useSelector(state=>state.token);
+  const token=useSelector(state=>state.token)
+  const [loading,setLoading]=useState(false)
   const dispatch=useDispatch();
   const [profileFetched,setProfileFetched]=useState(1);
   const [friends,setFriends]=useState([]);
@@ -470,6 +469,7 @@ const Profile = () => {
       setPosts(res.data);
       console.log(res.data);
     }
+    else if(res.status===404)  dispatch(updateFails(true))
     else{
       console.log(res);
       setProfileFetched(0);
@@ -477,7 +477,7 @@ const Profile = () => {
   }
   //load profile details
  const loadProfile=async()=>{
-  dispatch(startLoading());
+  setLoading(true)
   if(profileUID && details.uid!=profileUID){
     //get profile
     let res=await getUserDetails(token,profileUID);
@@ -485,6 +485,7 @@ const Profile = () => {
       setDetails(res.data)
       console.log(res.data)
     }
+    else if(res.status===404)  dispatch(updateFails(true))
     else{
       console.log(res);
       setProfileFetched(0);
@@ -493,18 +494,6 @@ const Profile = () => {
   else{
     setDetails(mydetails);
   }
-  // //get posts
-  // var res=await getMyPosts(token,profileUID);
-  // // console.log(res);
-  // if(res.status==200){
-  //   setPosts(res.data);
-  //   console.log(res.data);
-  // }
-  // else{
-  //   console.log(res);
-  //   setProfileFetched(0);
-  // }
-  fetchAllPosts();
   //get friends
   const res=await getAllFriends(token,profileUID);
   // console.log(res)
@@ -512,14 +501,16 @@ const Profile = () => {
     setFriends(res.data)
     console.log(res.data) 
   }
+  else if(res.status===404)  dispatch(updateFails(true))
   else{
-    console.log(res);
+    console.log(res); 
     setProfileFetched(0);
   }
-  dispatch(endLoading());
+  
+  fetchAllPosts();    //get all posts
+  setLoading(false)
 }
 useEffect(()=>{  
-   dispatch(endLoading());
     loadProfile();
  },[])
 

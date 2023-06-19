@@ -6,7 +6,8 @@ import {Box, CircularProgress} from '@mui/material';
 import styled from 'styled-components';
 import FriendTab from './FriendTab';
 import { findFriends, getAllFriends, searchInFindFriends } from '../ApiCalls/Friend';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateFails } from '../Redux/UserRedux';
 const Container=styled.div`
     width: 50%;
     margin:1rem;
@@ -116,6 +117,7 @@ const FriendsList = ({setFails}) => {
   const [possibleFriends,setPossibleFriends]=useState([]);
   const loading=useSelector(state=>state.loading);
   const token=useSelector(state=>state.token);
+  const dispatch=useDispatch();
   const searchRef=useRef();
   const searchFindFriend=async()=>{
     setLoad(true)
@@ -125,6 +127,7 @@ const FriendsList = ({setFails}) => {
     if(res.status===200){
       setPossibleFriends(res.data)
     }
+    else if(res.status===404) dispatch(updateFails(true));
     setLoad(false)
   }
   const getFriends=async()=>{
@@ -135,6 +138,7 @@ const FriendsList = ({setFails}) => {
       setFriends(res.data)
       console.log(res.data) 
     }
+    else if(res.status===404) dispatch(updateFails(true));
     else{
       console.log(res);
       setFails(true);
@@ -149,6 +153,7 @@ const FriendsList = ({setFails}) => {
       setPossibleFriends(res.data)
       console.log(res.data) 
     }
+    else if(res.status===404) dispatch(updateFails(true));
     else{
       console.log(res);
       setFails(true);

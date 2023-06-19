@@ -1,7 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {Box, CircularProgress} from '@mui/material';
 import styled from 'styled-components';
 import mobile from '../responsive';
+import { removeUser, updateFails } from '../Redux/UserRedux';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 const Container=styled.section`
     position: absolute;
     width:100%;
@@ -29,7 +32,18 @@ const Container=styled.section`
     
 `
 const Warning = ({fails}) => {
-    console.log(fails)
+    const dispatch=useDispatch()
+    const navigate=useNavigate()
+    useState(()=>{
+        console.log(fails)
+        if(fails){
+            setTimeout(()=>{
+                dispatch(removeUser());
+                dispatch(updateFails(false));
+                navigate('/')
+            },3000)
+        }
+    },[fails])
   return (
     <Container fails={fails}>
         <div>

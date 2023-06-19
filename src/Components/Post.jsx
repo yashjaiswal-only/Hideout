@@ -9,7 +9,7 @@ import SendIcon from '@mui/icons-material/Send';
 import pic from '../Data/pic.png';
 import picture from '../Data/pexels-maria-loznevaya-15237253.jpg'
 import { mobile,tab } from '../responsive';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addComment, addLike, checkLike, countComment, countLike, deletePost, getAllCommentsOfPost, removeLike } from '../ApiCalls/Post';
 import { CircularProgress, Tooltip } from '@mui/material';
 import Comment from './Comment';
@@ -202,6 +202,7 @@ const Post = ({post,fetchAllPosts}) => {
     const [dateofpost,setdateofpost]=useState("");
     const myDetails=useSelector(state=>state.details)
     const commentRef=useRef();
+    const dispatch=useDispatch();
      //for auto expand input
     const autoExpand = (e)=>{
       var element = typeof e === 'object' ? e.target : document.getElementById(e);
@@ -274,7 +275,7 @@ const Post = ({post,fetchAllPosts}) => {
       console.log(res)
       if(res.status===200){
         fetchAllPosts();
-        addAlert('Post Deleted Successfully');
+        dispatch(addAlert('Post Deleted Successfully'));
       }
   }
     useEffect(()=>{

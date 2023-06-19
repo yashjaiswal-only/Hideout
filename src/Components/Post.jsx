@@ -194,7 +194,7 @@ const CommentBox=styled.div`
 `
 
 
-const Post = ({post}) => {
+const Post = ({post,fetchAllPosts}) => {
     let width = window.innerWidth;
     const cap=post.caption;
     const [wholeCap,setWholeCap]=useState(false);
@@ -218,16 +218,11 @@ const Post = ({post}) => {
     const [allComments,setAllComments]=useState([]);
     const count=async()=>{
       var res=await countLike(token,post._id,post.uid)
-      // console.log(res)
       if(res.status===200){
         setCountLikes(res.data);
-        // console.log(res.data+'likes')
       }
-      // console.log('counting')
       res=await countComment(token,post._id)
       if(res.status===200)  setCountComments(res.data)
-      // console.log(res)
-      // console.log(res.data+'comments')
     }
     const likesPost=async()=>{
       console.log('liking a post')
@@ -278,6 +273,7 @@ const Post = ({post}) => {
       const res=await deletePost(token,post._id);
       console.log(res)
       if(res.status===200){
+        fetchAllPosts();
         addAlert('Post Deleted Successfully');
       }
   }

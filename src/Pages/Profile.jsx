@@ -462,7 +462,19 @@ const Profile = () => {
   });
   const mydetails=useSelector(state=>state.details)
 
-
+  const fetchAllPosts=async()=>{
+    //get posts
+    var res=await getMyPosts(token,profileUID);
+    // console.log(res);
+    if(res.status==200){
+      setPosts(res.data);
+      console.log(res.data);
+    }
+    else{
+      console.log(res);
+      setProfileFetched(0);
+    }
+  }
   //load profile details
  const loadProfile=async()=>{
   dispatch(startLoading());
@@ -481,20 +493,20 @@ const Profile = () => {
   else{
     setDetails(mydetails);
   }
-  //get posts
-  var res=await getMyPosts(token,profileUID);
-  // console.log(res);
-  if(res.status==200){
-    setPosts(res.data);
-    console.log(res.data);
-  }
-  else{
-    console.log(res);
-    setProfileFetched(0);
-  }
-
+  // //get posts
+  // var res=await getMyPosts(token,profileUID);
+  // // console.log(res);
+  // if(res.status==200){
+  //   setPosts(res.data);
+  //   console.log(res.data);
+  // }
+  // else{
+  //   console.log(res);
+  //   setProfileFetched(0);
+  // }
+  fetchAllPosts();
   //get friends
-  res=await getAllFriends(token,profileUID);
+  const res=await getAllFriends(token,profileUID);
   // console.log(res)
   if(res.status==200){
     setFriends(res.data)
@@ -546,7 +558,8 @@ useEffect(()=>{
               <CalendarMonthIcon /> Joined {details.createdAt.slice(0,10)}
               </div>
               <p>
-                <span>{friends.length}</span> Friends &bull; <span> 45</span> Mutual Friends
+                <span>{friends.length}</span> Friends &bull; 
+                {/* <span> 45</span> Mutual Friends */}
               </p>
             </Info>
 
@@ -563,7 +576,7 @@ useEffect(()=>{
             {index===0?
             <Show>
               {posts.map((p)=>(
-                <Post post={p}  key={p._id}/>
+                <Post post={p}  key={p._id} fetchAllPosts={fetchAllPosts}/>
               ))
               }
             </Show>:

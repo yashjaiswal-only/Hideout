@@ -62,6 +62,8 @@ const NotificationList = () => {
             setAllNotifications(res.data.notifications)
             console.log(res.data.notifications)
         }   
+        else if(res.response.status===404) dispatch(updateFails(true));
+        
         setLoad(false)
     }
     useEffect(()=>{

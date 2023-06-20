@@ -159,6 +159,7 @@ const FriendTab = ({myfriend,request,user,getRequests,getPossibleFriends}) => {
     if(res.status===200){
       setIsFriend(res.data);
     }
+    else if(res.response.status===404) dispatch(updateFails(true));
   }
   useEffect(()=>{
     if(!request){

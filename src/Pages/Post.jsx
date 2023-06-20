@@ -12,7 +12,7 @@ import {mobile, tab} from '../responsive'
 import HomeLoader from '../Components/HomePageLoader';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { removeUser } from '../Redux/UserRedux';
+import { addAlert, removeUser } from '../Redux/UserRedux';
 import { getApost, getMyPosts } from '../ApiCalls/Post';
 import Post from '../Components/Post';
 const Container=styled.div`
@@ -43,7 +43,7 @@ const Display=styled.div`
       justifyContent:'center'
     })}
 `
-const PostPage = () => {
+const PostPage = ({handleOpen}) => {
   const [list,setList]=useState('');
   const [post,setPost]=useState(null);
   const token=useSelector(state=>state.token)
@@ -56,22 +56,27 @@ const PostPage = () => {
     var userid=x[2],postid=x[3];
     console.log(userid+postid)
     const res=await getApost(token,postid,userid);
-    console.log(res)
-    if(res.status===200){
-      setPost(res.data);
+    console.log(res.response)
+    if(res.status===200 ){
+      console.log('hie')
+      if(res.data.length){
+        setPost(res.data);
+      } 
+      else{
+        dispatch(addAlert('Post Unavailable'))
+      } 
     }
-    else if(res.status===404) dispatch(updateFails(true));
-
+    // else if(res.response.status===404) dispatch(updateFails(true));
   },[])
   return (<>
     <Container>
-    <Topbar/>
+    <Topbar handleOpen={handleOpen}/>
     <Content>
          <Sidebar showList={showList}/>
          <Block list={list} showList={showList}/>
           <Right/>
         <Display>
-          {post?<Post post={post}/>:""}
+          {post&&post!={}?<Post post={post}/>:""}
         </Display>
     </Content>
   </Container>

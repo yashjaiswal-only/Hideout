@@ -1,7 +1,6 @@
 import React from 'react'
 import {Box, Skeleton} from '@mui/material';
 import LinearProgress from '@mui/material/LinearProgress';
-import Warning from './Warning';
 
 const HomeLoader = ({warning}) => {
   
@@ -15,7 +14,6 @@ const HomeLoader = ({warning}) => {
               <Skeleton style={{padding:"5rem",width:'60%',margin:'0% 0 0 30%'}}/>
               <Skeleton style={{padding:"5rem",width:'60%',height:'50%',margin:'0% 0 0 30%'}}/>
             </Box>
-        {/* {warning&&<Warning/>} */}
     </div>
   )
 }

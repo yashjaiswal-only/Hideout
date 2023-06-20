@@ -63,9 +63,10 @@ const MyPost = ({handleOpen}) => {
     if(res.status===200){   
         setPostList(res.data)
     }
-    else if(res.status===404) dispatch(updateFails(true));
+    // else if(res.response.status===404) dispatch(updateFails(true));
   }
   useEffect(()=>{
+    console.log('my post me hu')
     getPosts();
   },[])
 
@@ -83,7 +84,7 @@ const MyPost = ({handleOpen}) => {
               ))}
             </Chats>
         <Display>
-        {postList.map(p=>(<Post key={p._id} post={p} />))}
+        {/* {postList.map(p=>(<Post key={p._id} post={p} />))} */}
         </Display>
     </Content>
   </Container>

@@ -130,18 +130,18 @@ const FriendsList = ({setFails}) => {
     if(res.status===200){
       setPossibleFriends(res.data)
     }
-    else if(res.status===404) dispatch(updateFails(true));
+    else if(res.response.status===404) dispatch(updateFails(true));
     setLoad(false)
   }
   const getFriends=async()=>{
     setLoad(true);
     const res=await getAllFriends(token);
-    // console.log(res)
+    console.log(res)
     if(res.status==200){
       setFriends(res.data)
       console.log(res.data) 
     }
-    else if(res.status===404) dispatch(updateFails(true));
+    else if(res.response.status===404) dispatch(updateFails(true));
     else{
       console.log(res);
     }
@@ -155,7 +155,7 @@ const FriendsList = ({setFails}) => {
       setPossibleFriends(res.data)
       console.log(res.data) 
     }
-    else if(res.status===404) dispatch(updateFails(true));
+    else if(res.response.status===404) dispatch(updateFails(true));
     else{
       console.log(res);
     }

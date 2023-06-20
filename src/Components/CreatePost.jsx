@@ -99,6 +99,7 @@ const CreatePost = ({handleClose}) => {
         handleClose();  
         dispatch(addAlert('Post Created Successfully'));
       }
+      else if(res.response.status===404)       dispatch(updateFails(true))
     }
     else{
       var Images=[];
@@ -149,6 +150,7 @@ const CreatePost = ({handleClose}) => {
                   handleClose();
                   dispatch(addAlert('Post Created Successfully'));
                 }
+                else if(res.response.status===404)       dispatch(updateFails(true))
                 setCountUploaded(0);
               }
               setCountUploaded(countUploaded+1);

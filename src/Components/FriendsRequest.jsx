@@ -84,7 +84,7 @@ const FriendsRequest = ({setFails}) => {
       console.log(res.data)
       setRequests(res.data);  
     }
-    else if(res.status===404) dispatch(updateFails(true));
+    else if(res.response.status===404) dispatch(updateFails(true));
     else{
       console.log(res)
       setFails(true)

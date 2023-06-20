@@ -80,7 +80,7 @@ const Mysection = () => {
     const getCount=async()=>{ //get friends count
       const res=await getFriendsCount(token)
       if(res.status===200)      setCount(res.data)
-      else if(res.status===404)      dispatch(updateFails(true))
+      else if(res.response.status===404)      dispatch(updateFails(true))
     }
     getCount();
   },[])

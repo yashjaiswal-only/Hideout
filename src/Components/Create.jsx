@@ -152,7 +152,7 @@ const Create = ({handleOpen}) => {
       if(res.status===200){
         captionRef.current.value="";
       }
-      else if(res.status===404){
+      else if(res.response.status===404){
         dispatch(updateFails(true))
         captionRef.current.value="";
       }

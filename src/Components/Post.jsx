@@ -78,7 +78,7 @@ const Date=styled.span`
 `
 const Caption=styled.div`
     width:100%;
-    font-size:${props=>props.noImage?'2rem':'1rem'};
+    font-size:${props=>props.noImage?'2rem':'1.5rem'};
     margin:${props=>props.noImage?'1rem':'0rem'};
     font-weight:600;
     text-align:justify;
@@ -94,7 +94,7 @@ const Caption=styled.div`
 `
 const Picture=styled.img`
     width:100%;
-    height:25rem;
+    max-height:40rem;
     margin: 0.5rem 0;
     object-fit:fill;
     /* border-radius:15px; */
@@ -279,6 +279,7 @@ const Post = ({post,fetchAllPosts}) => {
       }
   }
     useEffect(()=>{
+      console.log(post+"post")
       count();
       isLike();
       setdateofpost(convertDate(post.createdAt));

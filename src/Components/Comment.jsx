@@ -188,7 +188,7 @@ const Comment = ({comment,posterId,postId,setAllComments,count,allComments}) => 
     const autoExpand = (e)=>{
     var element = typeof e === 'object' ? e.target : document.getElementById(e);
     var scrollHeight = element.scrollHeight; 
-    element.style.height =  scrollHeight + "px";    
+    element.style.height =  scrollHeight + "px";
     };
     const getMinDetails=async()=>{
         const res=await getUserMinDetails(token,comment.uid)

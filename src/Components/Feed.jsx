@@ -28,7 +28,7 @@ const Feed = ({handleOpen}) => {
     if(res.status===200){
       setPosts(res.data)
     }
-    else if(res.status===404){
+    else if(res.response.status===404){
       dispatch(updateFails(true))
     }
     dispatch(endLoading());

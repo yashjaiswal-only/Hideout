@@ -84,7 +84,7 @@ const MyPost = ({handleOpen}) => {
               ))}
             </Chats>
         <Display>
-        {/* {postList.map(p=>(<Post key={p._id} post={p} />))} */}
+        {postList.map(p=>(<Post key={p._id} post={p} />))}
         </Display>
     </Content>
   </Container>

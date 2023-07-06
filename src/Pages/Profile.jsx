@@ -434,34 +434,16 @@ const Profile = ({handleOpen}) => {
   const [index,setIndex]=useState(0);
   const navigate=useNavigate()
   const location=useLocation();
-  const profileUID=location.pathname.slice(9);
   const token=useSelector(state=>state.token)
   const [loading,setLoading]=useState(false)
   const dispatch=useDispatch();
-  const [profileFetched,setProfileFetched]=useState(1);
+  const [profileFetched,setProfileFetched]=useState(0);
   const [friends,setFriends]=useState([]);
   const [posts,setPosts]=useState([]);
-  const [details,setDetails]=useState({
-    about:"wqwerty",
-    address:{city: 'New ', country: 'India', state: 'Delhi', pincode: '110092'},
-    coverPhoto:"",
-    createdAt:"2023-04-04T18:10:49.579Z",
-    designation:"mnit",
-    dob:"2023-04-02T00:00:00.000Z",
-    email:"jigar@jigar.com",
-    isAdmin:false,
-    name: "yash_jaiswal11",
-    phone: "8130060493",
-    photo:"https://avatars.githubusercontent.com/u/77572477?s=400&u=d9f7570507aedfc8cfbda0a13fa98913fdfd1d17&v=4",
-    social_links:{github: 'huio', instagram: 'yuio', linkedIn: 'poiu', otherLinks: Array(0)},
-    uid:"6fXyEKfReeP7KLWmhrnGDSFtEhD3",
-    updatedAt:"2023-04-04T20:08:53.210Z",
-    __v:0,
-    _id:"642c6829185c6ea9fdf4c3ab"
-  });
+  const [details,setDetails]=useState(null);
   const mydetails=useSelector(state=>state.details)
 
-  const fetchAllPosts=async()=>{
+  const fetchAllPosts=async(profileUID)=>{
     //get posts
     var res=await getMyPosts(token,profileUID);
     // console.log(res);
@@ -469,50 +451,60 @@ const Profile = ({handleOpen}) => {
       setPosts(res.data);
       console.log(res.data);
     }
-    else if(res.status===404)  dispatch(updateFails(true))
+    else if(res.response.status===404)  dispatch(updateFails(true))
     else{
       console.log(res);
+      setProfileFetched(0);
+    }
+  }
+  const getFriends=async(profileUID)=>{
+    const res=await getAllFriends(token,profileUID);
+    // console.log(res)
+    if(res.status==200){
+      setFriends(res.data)
+      console.log(res.data)
+    }
+    else if(res.response.status===404)  dispatch(updateFails(true))
+    else{
+      console.log(res); 
       setProfileFetched(0);
     }
   }
   //load profile details
- const loadProfile=async()=>{
+ const loadProfile=async(profileUID)=>{
+  setFriends([])
+  setPosts([])
   setLoading(true)
-  if(profileUID && details.uid!=profileUID){
+  if(profileUID && mydetails.uid!=profileUID){
     //get profile
     let res=await getUserDetails(token,profileUID);
+    console.log('userdetalis')
+    console.log(res)
     if(res.status==200){
       setDetails(res.data)
-      console.log(res.data)
+      setProfileFetched(1);
     }
-    else if(res.status===404)  dispatch(updateFails(true))
+    else if(res.response.status===404)  dispatch(updateFails(true))
     else{
       console.log(res);
       setProfileFetched(0);
     }
   }
   else{
+    console.log('already exist')
     setDetails(mydetails);
   }
-  //get friends
-  const res=await getAllFriends(token,profileUID);
-  // console.log(res)
-  if(res.status==200){
-    setFriends(res.data)
-    console.log(res.data) 
-  }
-  else if(res.status===404)  dispatch(updateFails(true))
-  else{
-    console.log(res); 
-    setProfileFetched(0);
-  }
-  
-  fetchAllPosts();    //get all posts
+  getFriends(profileUID)
+  fetchAllPosts(profileUID);    //get all posts 
   setLoading(false)
 }
 useEffect(()=>{  
-    loadProfile();
- },[])
+  const profileUID=location.pathname.slice(9);
+  console.log(profileUID)
+    loadProfile(profileUID);
+    window.scrollTo(0,0)
+    console.log('my profile')
+ },[location])
 
   return (
    <>
@@ -566,20 +558,27 @@ useEffect(()=>{
             <Bottom>
             {index===0?
             <Show>
+              {
+                posts.length==0?<div style={{margin: '2rem',fontSize: 'xx-large',fontWeight: '600'}}>
+                  No Post to display 
+                </div>:''
+              }
               {posts.map((p)=>(
                 <Post post={p}  key={p._id} fetchAllPosts={fetchAllPosts}/>
               ))
               }
             </Show>:
             <ShowFriends> 
+              {
+                friends.length==0?<div style={{margin: '2rem',fontSize: 'xx-large',fontWeight: '600'}}>
+                  No friends to display 
+                </div>:''
+              }
               {friends.map(f=>(
                 <FriendCard friend={f} key={f._id}/>
               ))}
             </ShowFriends>}
             </Bottom>
-
-         yash adjo  
-
         </>:
         <Error>
          No Profile Available , Kindly  <span 

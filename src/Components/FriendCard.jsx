@@ -9,6 +9,7 @@ import MenuItem from '@mui/material/MenuItem';
 import MenuList from '@mui/material/MenuList';
 import Stack from '@mui/material/Stack';
 import {mobile} from '../responsive'
+import { useNavigate } from 'react-router-dom';
 const Container=styled.div`
   width:200px;
   height:200px;
@@ -162,11 +163,15 @@ const MenuListComposition=()=>{
   );
 }
 const FriendCard = ({friend}) => {
-
+  console.log(friend)
+  const navigate=useNavigate();
+  const gotoProfile=()=>{
+      navigate('/profile/'+friend.uid)
+  }
   return (
-    <Container>
+    <Container onClick={gotoProfile}>
       <img src={friend.photo}/>
-       <MenuListComposition/>
+       {/* <MenuListComposition/> */}
       <Details>
           {friend.name}
           <span>{friend.designation}</span>

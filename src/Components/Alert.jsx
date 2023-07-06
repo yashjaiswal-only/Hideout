@@ -19,7 +19,7 @@ const Alert = () => {
   const alert=useSelector(state=>state.alert);
   // console.log(alert)
   const dispatch=useDispatch();
-  const [showAlert,setShowAlert]=useState(true);
+  const [showAlert,setShowAlert]=useState(false);
   useEffect(()=>{
     if(alert){
         setShowAlert(true)

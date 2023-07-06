@@ -111,11 +111,6 @@ const Main = ({handleOpen}) => {
            <Sidebar showList={showList}/>
            <Block list={list} showList={showList} />
             <Right/>
-            <Chats>
-              {chatUserList.map((chat,index)=>(
-              <ChatBox count={index} chat={chat}/>
-              ))}
-            </Chats>
             <Display>
               <Feed handleOpen={handleOpen}/>
             </Display>

@@ -26,6 +26,7 @@ const Component=styled.div`
     bottom:${props=>props.down?'-60vh':'0.2rem'};
     transition:bottom 0.5s ease;
     right:${props=>`${props.count*30}%`};
+    /* transition:right 1s ease; */
     position:fixed;
     z-index:800;
     border-radius:15px;
@@ -136,6 +137,7 @@ const ImgPreview=styled.img`
     width:50%;
 `
 const ChatBox = ({count,chat}) => {
+  console.log(count)
     const [message,setMessage]=useState('')
     const [down,setDown]=useState(false)
     const [img, setImg] = useState(null);

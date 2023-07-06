@@ -50,7 +50,9 @@ const Display=styled.div`
 const Friends = ({handleOpen}) => {
   const [list,setList]=useState('');
   const showList=(val)=>setList(val);
- 
+  useEffect(()=>{
+    window.scrollTo(0, 0);
+  },[])
   return (<>
     <Container>
     <Topbar handleOpen={handleOpen}/>

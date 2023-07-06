@@ -14,8 +14,14 @@ import Warning from './Components/Warning';
 import { useSelector } from 'react-redux';
 import CreatePost from './Components/CreatePost';
 import { Modal } from '@mui/material';
+import styled from 'styled-components';
+import ChatBox from './Components/ChatBox';
+const Chats=styled.div`
+  background-color: black;
+`
 function App() {
   const fails=useSelector(state=>state.fails)
+  const chatUserList=useSelector(state=>state.chatUsers);
   //create post
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -45,6 +51,11 @@ function App() {
               <Route path='/post/:uid/:postId' element={<PostPage handleOpen={handleOpen}/>}/>
               <Route path='/create-profile' element={<CreateProfile/>}/>
             </Routes>
+            <Chats>
+              {chatUserList.map((chat,index)=>(
+              <ChatBox count={index} chat={chat}/>
+              ))}
+            </Chats>
             <Alert/>
             <Warning fails={fails}/>
       </div>

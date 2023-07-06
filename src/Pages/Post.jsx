@@ -52,13 +52,13 @@ const PostPage = ({handleOpen}) => {
   const dispatch=useDispatch();
 
   useEffect(async()=>{
+    window.scrollTo(0, 0);
     var x=location.pathname.split('/');
     var userid=x[2],postid=x[3];
     console.log(userid+postid)
     const res=await getApost(token,postid,userid);
     console.log(res.response)
     if(res.status===200 ){
-      console.log('hie')
       if(res.data.length){
         setPost(res.data);
       } 

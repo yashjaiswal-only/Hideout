@@ -48,12 +48,14 @@ const Display=styled.div`
 const MyPost = ({handleOpen}) => {
   const [list,setList]=useState('');
   const [postList,setPostList]=useState([]);
+  const [contentLoading,setContentLoading]=useState(true);
   const token=useSelector(state=>state.token)
   const showList=(val)=>setList(val);
   const dispatch=useDispatch();
 
   //get all my post
   const getPosts=async()=>{
+
     const res=await getMyPosts(token);
     console.log(res)
     if(res.status===200){   
@@ -63,8 +65,8 @@ const MyPost = ({handleOpen}) => {
   }
   useEffect(()=>{
     console.log('my post me hu')
-    getPosts();
-      window.scrollTo(0, 0);
+    window.scrollTo(0, 0);
+    // getPosts();
   },[])
 
 
@@ -72,12 +74,13 @@ const MyPost = ({handleOpen}) => {
     <Container>
     <Topbar handleOpen={handleOpen}/>
     <Content>
-         <Sidebar showList={showList}/>
-         <Block list={list} showList={showList}/>
-          <Right/>
-        <Display>
+        <Sidebar showList={showList}/>
+        <Block list={list} showList={showList}/>
+        <Right/>
+        
+        {/* <Display>
         {postList.map(p=>(<Post key={p._id} post={p} />))}
-        </Display>
+        </Display> */}
     </Content>
   </Container>
   </>

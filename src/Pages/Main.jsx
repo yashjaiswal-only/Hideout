@@ -82,7 +82,6 @@ const Main = ({handleOpen}) => {
   useEffect(()=>{
     console.log(chatUserList)
     console.log('fetching profile')
-    dispatch(addAlert('Welcome To Hideout'))
     if(details){
       setFetching(false)
       setDetailsFetched(true)

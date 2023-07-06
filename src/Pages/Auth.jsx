@@ -7,7 +7,8 @@ import Welcome from '../Components/Welcome'
 import { mobile, tab } from '../responsive';
 import { useDispatch, useSelector } from 'react-redux';
 import Loader from '../Components/Loader';
-import { endLoading, removeUser, startLoading } from '../Redux/UserRedux';
+import { addAlert, endLoading, removeUser, startLoading } from '../Redux/UserRedux';
+import Logo from '../Components/Logo';
 const Container=styled.div`
     width: 100%;
     display: flex;
@@ -124,12 +125,12 @@ const Register=styled.div`
     flex-direction:column ;
     justify-content: space-between;
 `
-const Logo=styled.div`
-    left:0; 
-    font-weight:600;
-    width:100%;
-    text-align:left;
-    `
+// const Logo=styled.div`
+//     left:0; 
+//     font-weight:600;
+//     width:100%;
+//     text-align:left;
+//     `
 const Message=styled.span`
     width:100%;
     text-align:${props=>props.center?"center":"left"};
@@ -270,19 +271,23 @@ const Auth = () => {
   const passwordLoginRef= useRef();
   const {signup, signin, signInWithGoogle, signInWithFacebook, currentUser} = useAuth();
   const [error, setError]= useState(null);
-  const loading=useSelector(state=>state.loading)
+   const [load,setLoad]=useState(false)
   const dispatch=useDispatch();
     // dispatch(removeUser())
+
   async function handleSubmitLogin(e){
     e.preventDefault();
     try{
       setError('')
-      dispatch(startLoading());
-      const log = await signin(emailLoginRef.current.value,passwordLoginRef.current.value)
+        setLoad(true)
+        const log = await signin(emailLoginRef.current.value,passwordLoginRef.current.value)
+        setLoad(false)
       console.log(log)
-      dispatch(endLoading());
       if(log.status){
-        if(log.found)        navigate('/home');
+        if(log.found){
+            dispatch(addAlert('Welcome to Hideout'))
+            navigate('/home');
+        }        
         else        navigate('/create-profile');
         console.log("login successful")
       }
@@ -308,12 +313,10 @@ const Auth = () => {
     }
     try {
       setError(null)
-      dispatch(startLoading())
-    //   console.log(emailRef.current.value)
-    //   console.log(passwordRef.current.value)
+      setLoad(true)
       const log = await signup(emailRef.current.value,passwordRef.current.value)
+      setLoad(false)
       console.log(log)
-      dispatch(endLoading());
       if(log.status){
         navigate('/create-profile')
         console.log("signup successful")
@@ -331,12 +334,15 @@ const Auth = () => {
     e.preventDefault()
     setError('')
     try{
-        dispatch(startLoading());
+        setLoad(true)
         const log = await signInWithGoogle();
+        setLoad(true)
         console.log(log)
-        dispatch(endLoading());
       if(log.status){
-        if(log.found)        navigate('/home');
+        if(log.found){
+            dispatch(addAlert('Welcome To Hideout'))
+            navigate('/home');
+        }
         else navigate('/create-profile');
         console.log("login successful")
       }
@@ -378,7 +384,7 @@ const Auth = () => {
   },[])
   return (
     <>
-    {loading?<Loader/>:
+    {load?<Loader/>:
     <Container>
         {/* <Wrapper> */}
 
@@ -388,7 +394,8 @@ const Auth = () => {
             <Slides>
 
             <Login id="login">
-                <Logo>Hideout</Logo>
+                <Logo/>
+                {/* <Logo>Hideout</Logo> */}
                 <Message>
                     Welcome Back, Please login to your account
                 </Message>

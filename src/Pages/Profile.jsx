@@ -36,11 +36,11 @@ const Container=styled.div`
 `
 const Content=styled.div`
     width: 100%;
-    position: relative;
     top:3rem;
-    min-height: 100vh;
-    /* background-color: #e1f2f7; */
+    height:max-content;
     background-color: #fff;
+    display: flex;
+    flex-direction: column;
 `
 const Display=styled.div`
     width:75%;
@@ -144,8 +144,8 @@ const Option=styled.span`
   })}
 `
 const Wrapper=styled.div`
+
   padding:0 80px;
-  background-color: white;
   ${mobile({
     padding:'0 30px'
   })}
@@ -286,6 +286,7 @@ const Tab=styled.div`
   font-size:2rem;
   cursor:pointer;
   position: relative;
+  width:max-content;
   &::after{
     content:'';
     width:${props=>props.index===props.myIndex?'100%':'0%'};
@@ -303,17 +304,16 @@ const Tab=styled.div`
 `
 const ShowFriends=styled.div`
   display: flex;
-  /* flex-direction: column; */
-  /* max-height:80vh; */
   height:max-content;
   flex-wrap:wrap;
   width:100%;
   overflow:auto;
-  /* ${mobile({maxHeight:'50vh'})} */
 ` 
+const Bottom=styled.div`
+  position: relative;
+`
 const Show=styled.div`
   width: 50%;
-  /* background-color: blue; */
   margin:auto;
   display: flex;
   flex-direction:column;
@@ -524,9 +524,7 @@ useEffect(()=>{
         <>
          <Topbar handleOpen={handleOpen}/>
          <Content>
-         {/* <Sidebar/> */}
 
-         {/* <Display> */}
           <Head>
             <CoverImg src={profilebg}/>
             <ProfileImg src={details.photo}/>
@@ -559,11 +557,13 @@ useEffect(()=>{
             <a target="_blank" href={`${details.social_links.github}`}><span><i className="fa-brands fa-github"></i> Github</span></a>
             <a target="_blank" href={`${details.social_links.instagram}`}> <span><i className="fa-solid fa-pen-to-square"></i> Instagram</span></a>
             </Links>
-
+            </Wrapper>
+         </Content>
             <Tabs>
               <Tab index={index} myIndex={0} onClick={()=>setIndex(0)}>Posts</Tab>
               <Tab index={index} myIndex={1} onClick={()=>setIndex(1)}>Friends</Tab>
             </Tabs>
+            <Bottom>
             {index===0?
             <Show>
               {posts.map((p)=>(
@@ -576,9 +576,9 @@ useEffect(()=>{
                 <FriendCard friend={f} key={f._id}/>
               ))}
             </ShowFriends>}
-          </Wrapper>
-         {/* </Display> */}
-         </Content>
+            </Bottom>
+
+         yash adjo  
 
         </>:
         <Error>

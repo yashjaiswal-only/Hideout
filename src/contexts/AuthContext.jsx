@@ -5,7 +5,7 @@ const AuthContext = createContext();
 import axios from 'axios'
 import { checkUser, createUser } from '../ApiCalls/User';
 import { useDispatch, useSelector } from 'react-redux';
-import { addUser, setFirebaseUser } from '../Redux/UserRedux';
+import { addUser } from '../Redux/UserRedux';
 
 export const useAuth = () => {
     return useContext(AuthContext);

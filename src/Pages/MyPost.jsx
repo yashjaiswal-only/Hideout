@@ -17,6 +17,7 @@ import { getMyPosts } from '../ApiCalls/Post';
 import Post from '../Components/Post';
 import { Modal } from '@mui/material';
 import CreatePost from '../Components/CreatePost';
+import PageLoader from '../Components/PageLoader';
 const Container=styled.div`
     width: 100%;
     /* overflow-y:hidden;
@@ -55,20 +56,20 @@ const MyPost = ({handleOpen}) => {
 
   //get all my post
   const getPosts=async()=>{
-
+    setContentLoading(true)
     const res=await getMyPosts(token);
-    console.log(res)
+    setContentLoading(false)
+    console.log(res.response)
     if(res.status===200){   
         setPostList(res.data)
     }
-    // else if(res.response.status===404) dispatch(updateFails(true));
+    else if(res.response.status===404) dispatch(updateFails(true));
   }
   useEffect(()=>{
     console.log('my post me hu')
     window.scrollTo(0, 0);
-    // getPosts();
+    getPosts();
   },[])
-
 
   return (<>
     <Container>
@@ -77,10 +78,11 @@ const MyPost = ({handleOpen}) => {
         <Sidebar showList={showList}/>
         <Block list={list} showList={showList}/>
         <Right/>
-        
-        {/* <Display>
-        {postList.map(p=>(<Post key={p._id} post={p} />))}
-        </Display> */}
+        <Display>          
+         {contentLoading?<PageLoader/>:
+          postList.map(p=>(<Post key={p._id} post={p} />))
+        }
+        </Display>
     </Content>
   </Container>
   </>

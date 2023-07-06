@@ -6,6 +6,7 @@ import {mobile} from '../responsive'
 import { getAllPosts } from '../ApiCalls/Post'
 import { endLoading, startLoading, updateFails } from '../Redux/UserRedux'
 import { useDispatch, useSelector } from 'react-redux'
+import PageLoader from './PageLoader'
 
 const Container=styled.div`
     width: 100%;
@@ -20,10 +21,12 @@ const Container=styled.div`
 const Feed = ({handleOpen}) => {
   const [posts,setPosts]=useState([]);
   const token=useSelector(state=>state.token);
+  const [contentLoading,setContentLoading]=useState(true);
   const dispatch=useDispatch();
   const getAllPost=async()=>{
-    dispatch(startLoading());
+    setContentLoading(true);
     var res=await getAllPosts(token);  //put await here to stop further execution untill you get response
+    setContentLoading(false);
     console.log(res)
     if(res.status===200){
       setPosts(res.data)
@@ -31,7 +34,6 @@ const Feed = ({handleOpen}) => {
     else if(res.response.status===404){
       dispatch(updateFails(true))
     }
-    dispatch(endLoading());
   }
   useEffect(()=>{  
       getAllPost();
@@ -39,7 +41,7 @@ const Feed = ({handleOpen}) => {
   return (
     <Container>
       <Create handleOpen={handleOpen}/>
-        {posts.map(p=>(<Post key={p._id} post={p} />))}
+      {contentLoading?<PageLoader/>:posts.map(p=>(<Post key={p._id} post={p} />))}
     </Container>  
   )
 }

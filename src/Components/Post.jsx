@@ -214,8 +214,8 @@ const Post = ({post,fetchAllPosts}) => {
     const [load,setLoad]=useState(false);
     const [showComments,setShowComments]=useState(false);
     //count likes
-    const [countLikes,setCountLikes]=useState('###');
-    const [countComments,setCountComments]=useState('###');
+    const [countLikes,setCountLikes]=useState('#');
+    const [countComments,setCountComments]=useState('#');
     const [allComments,setAllComments]=useState([]);
     const count=async()=>{
       var res=await countLike(token,post._id,post.uid)
@@ -284,7 +284,6 @@ const Post = ({post,fetchAllPosts}) => {
       isLike();
       setdateofpost(convertDate(post.createdAt));
       setAllComments(post.comments);
-      // console.log('rendering post')
     },[])
    
   return (

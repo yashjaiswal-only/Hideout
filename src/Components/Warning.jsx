@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {Box, CircularProgress} from '@mui/material';
 import styled from 'styled-components';
 import mobile from '../responsive';
@@ -34,8 +34,7 @@ const Container=styled.section`
 const Warning = ({fails}) => {
     const dispatch=useDispatch()
     const navigate=useNavigate()
-    useState(()=>{
-        console.log(fails)
+    useEffect(()=>{
         if(fails){
             setTimeout(()=>{
                 dispatch(removeUser());

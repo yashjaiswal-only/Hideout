@@ -177,7 +177,10 @@ const Topbar = ({handleOpen}) => {
     }
     setLoad(false)
   }
-
+  const moveToHome=()=>{
+    if(location.pathname==='/home') window.scrollTo(0,0)
+    else navigate('/home')
+  }
   return (
     <Navbar>  
       <Logo><img src={hideout}/></Logo>
@@ -204,7 +207,7 @@ const Topbar = ({handleOpen}) => {
       </Popper>
 
       <Icons>
-      <IconItem onClick={()=>navigate('/home')}><HouseIcon/></IconItem>
+      <IconItem onClick={moveToHome}><HouseIcon/></IconItem>
       <IconItem onClick={()=>navigate('/news')}><NewspaperIcon/></IconItem>
       <IconItem><OndemandVideoIcon/></IconItem>
       <IconItem><WorkIcon/></IconItem>

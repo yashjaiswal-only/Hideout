@@ -1,4 +1,4 @@
-import { CircularProgress } from '@mui/material';
+import { CircularProgress, Skeleton } from '@mui/material';
 import React, { useEffect, useState } from 'react'
 import { getUserMinDetails } from '../ApiCalls/User';
 import styled from 'styled-components';
@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import { convertDate } from '../Service';
 import { seeNotification } from '../ApiCalls/Notification';
 import { useNavigate } from 'react-router-dom';
+import PageLoader from './PageLoader';
 
 const ListItem=styled.div`
     display: flex;
@@ -38,7 +39,7 @@ const Name=styled.span`
     font-weight:700;
 `
 const Notification = ({not}) => {
-    const [load,setLoad]=useState(false);
+    const [load,setLoad]=useState(1);
     const [dateof,setDateof]=useState();
     const [link,setLink]=useState('/home');
     const token=useSelector(state=>state.token)
@@ -47,7 +48,6 @@ const Notification = ({not}) => {
     const getDetails=async()=>{
         setLoad(true)
         const res=await getUserMinDetails(token,not.uid);
-        // console.log(res);
         if(res.status){
             setUser(res.data)
         }
@@ -63,9 +63,9 @@ const Notification = ({not}) => {
         
     }   
     useEffect(()=>{
-        getDetails();
-        setDateof(convertDate(not.createdAt))
-        getLink();
+        // getDetails();
+        // setDateof(convertDate(not.createdAt))
+        // getLink();
     },[])
     const click=async()=>{
         console.log('seen')
@@ -77,7 +77,12 @@ const Notification = ({not}) => {
         navigate(`${link}`);
     }
   return (
-    <>{load?<CircularProgress/>:
+    <>{load?<>
+        <div style={{display:'flex',justifyContent:'space-around'}}>
+        <Skeleton animation="wave" variant="circular" width={40} height={40} />
+        <Skeleton animation="wave" height={40} width="80%" style={{ marginBottom: 6 }}/>
+        </div>
+        </>:
         <ListItem seen={not.seen} onClick={click}>
             <Image src={user.photo}/>
             <Text>

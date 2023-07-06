@@ -5,6 +5,7 @@ import { CircularProgress } from '@mui/material';
 import { getNotificationsOfUser } from '../ApiCalls/Notification';
 import { useSelector } from 'react-redux';
 import Notification from './Notification';
+import PageLoader from './PageLoader';
 
 const Wrapper=styled.div`
     width:100%;
@@ -70,7 +71,7 @@ const NotificationList = () => {
         getNotification();
     },[])
   return (
-   <>{load?<CircularProgress/>:
+   <>{load?<PageLoader/>:
      <Wrapper>           
         {
             allNotifications.map((not)=>(

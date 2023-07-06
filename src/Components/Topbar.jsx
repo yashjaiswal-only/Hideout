@@ -36,6 +36,7 @@ import {removeUser } from '../Redux/UserRedux';
 import { searchUser } from '../ApiCalls/User';
 import { NoUser } from './FriendsList';
 import FriendTab from './FriendTab';
+import Logo from './Logo';
 const Navbar=styled.div`
     width: inherit;
     height:3rem;
@@ -73,18 +74,18 @@ const Right=styled.div`
    width:15%;
    display: flex; align-items: center; justify-content: center;
 `
-const Logo=styled.div`
-  flex-basis:15%;
-  height:100%;
-  display: flex; align-items: center; 
-  ${mobile({
-      display:'none'
-    })}
-  >img{
-    width:90%;
-    height:70%;
-  }
-`
+// const Logo=styled.div`
+//   flex-basis:15%;
+//   height:100%;
+//   display: flex; align-items: center; 
+//   ${mobile({
+//       display:'none'
+//     })}
+//   >img{
+//     width:90%;
+//     height:70%;
+//   }
+// `
 const Search=styled.input`
   width:10%;
   ${mobile({
@@ -183,7 +184,8 @@ const Topbar = ({handleOpen}) => {
   }
   return (
     <Navbar>  
-      <Logo><img src={hideout}/></Logo>
+      <Logo/>
+      {/* <Logo><img src={hideout}/></Logo> */}
       <Search type='text' placeholder='Search' onClick={handleClick2('bottom-start')} ref={searchRef} onChange={search}/>
       {/* friend list for search */}
       <Popper open={open2} anchorEl={anchorE2} close={()=>setOpen2(false)} placement={placement} transition>

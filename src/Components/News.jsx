@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import Spinner from './Spinner';
 import axios from 'axios'; 
 import PageLoader from './PageLoader';
+import mobile from '../responsive';
 const articles = [];
 const Container=styled.div`
   width:100%;
@@ -24,6 +25,9 @@ const NewsContainer=styled.div`
     background-color:  #0dcaf0;
     font-size:1.1rem;
     cursor: pointer;
+    ${mobile({
+        fontSize:'0.5rem'
+    })}
   }
 `
 
@@ -185,7 +189,7 @@ const News = ({category,query}) => {
   console.log(articles.length)
   useEffect(()=>{
     console.log(category+query)
-    // updateNews(1);
+    updateNews(1);
   },[category,query])
   return (
     <Container>

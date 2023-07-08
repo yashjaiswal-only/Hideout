@@ -25,10 +25,21 @@ const Options=styled.div`
   padding:0 2rem;
   h1{
     margin:0;
+    ${mobile({
+      fontSize:'1.4rem',
+      margin:'1rem'
+      })}
   }
+  >div{
+    display: flex;
+    justify-content: space-between;
+  }
+  ${mobile({
+    flexDirection:'column'
+  })}
 `
 const Input=styled.input`
-  width:30%;
+  width:50%;
   height:50px;
   border-radius:25px;
   border: 1px solid #4b5a53;
@@ -38,7 +49,9 @@ const Input=styled.input`
   font-size: xx-large;
   color:white;
   ${mobile({
-      minHeight:'1.5rem'
+      width:'40%',
+      height:'30px',
+      fontSize:'1rem'
   })}
 `
 const NewsPage = () => {
@@ -68,10 +81,7 @@ const NewsPage = () => {
     }
     else setCategory('General')
   }
-  const NEWS_BASE_URL=import.meta.env.VITE_NEWS_BASE_URL
-  useEffect(()=>{
-    console.log(NEWS_BASE_URL)
-  },[])
+
   return (
     <Container>
       <Topbar/>
@@ -80,6 +90,7 @@ const NewsPage = () => {
             Top Headings - {capitalize(category !== "" ?category:query)}
           </h1>
 
+          <div>
           <Input placeholder='Search here..' ref={searchRef}  onKeyUp={(e)=>(e.key==='Enter')?makeQuery(e):""}/>
 
           <FormControl sx={{ m: 1, minWidth: 120 }}>
@@ -100,6 +111,8 @@ const NewsPage = () => {
             </Select>
             <FormHelperText>Choose Category</FormHelperText>
           </FormControl>
+          </div>
+
       </Options>
       <News category={category} query={query}/>
     </Container>

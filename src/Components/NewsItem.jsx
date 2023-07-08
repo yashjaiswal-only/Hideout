@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import mobile, { tab } from '../responsive'
 const Container=styled.div`
     width:30%;
     margin:1rem;
@@ -7,6 +8,10 @@ const Container=styled.div`
     background-color: white;
     /* webkitBoxShadow:0px 0px 10px -10px rgba(0, 0, 0, 0.75); */
     box-shadow: 0px 0px 25px -10px rgba(0, 0, 0, 0.75);
+    ${tab({
+        width:'45%',
+        margin:'0.5rem'
+    })}
     img{
         width:100%;
     }
@@ -21,6 +26,9 @@ const Container=styled.div`
         font-size:0.8rem;
         border-radius:40px;
         transform: translate(-10%,-30%);
+        ${mobile({
+            fontSize:'0.4rem'
+        })}
     }
     >div{
         margin:0 1rem;
@@ -29,9 +37,15 @@ const Container=styled.div`
         >h5{
             font-size:1.2rem;
             margin:0.4rem 0;
+            ${mobile({
+                fontSize:'0.6rem'
+            })}
         }
         >p{
             margin:0;
+            ${mobile({
+                fontSize:'0.5rem'
+            })}
         }
         >a{
             background-color: #0dcaf0;
@@ -44,8 +58,12 @@ const Container=styled.div`
             margin: 0.5rem 0;
             font-weight: 600;
             border-radius:5px;
+            ${mobile({
+                fontSize:'0.5rem'
+            })}
         }
     }
+   
 `
 const NewsItem = ({tittle,description,imageUrl,url,author,date,source}) => {
     return (

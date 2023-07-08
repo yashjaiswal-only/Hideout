@@ -7,6 +7,7 @@ import {ChatContext} from '../contexts/ChatContext'
 import { doc, onSnapshot } from 'firebase/firestore'
 import { db } from '../config/firebase-config'
 import { updateChatList } from '../Redux/UserRedux'
+import { addChat } from '../Service'
 
 const Wrapper=styled.div`
     width:95%;
@@ -78,6 +79,7 @@ const ChatList = () => {
 
   const currentUser=useSelector(state=>state.details);
   const chatUsers=useSelector(state=>state.chatUsers);
+  const screensize=useSelector(state=>state.screensize);
   const dispatch=useDispatch();
 
   useEffect(() => {
@@ -96,36 +98,11 @@ const ChatList = () => {
   }, [currentUser.uid]);
 
   const handleSelect = (u) => {
-    if(screenSize.width>600){
-      if(chatUsers.filter(e=>e.uid==u.uid).length===0){
-        if(chatUsers.length<=3)      dispatch(updateChatList([...chatUsers,u]))
-        else dispatch(updateChatList([chatUsers[1],chatUsers[2],u]));
-      }
-    }
-    else{
-      dispatch(updateChatList([u]))
-    }
+    console.log(u)
+    addChat(u,screensize,chatUsers,dispatch);
   };
 
-  //to dimensions
-  const [screenSize, setScreenSize] = useState(getCurrentDimension());
-  function getCurrentDimension(){
-    return {
-        width: window.innerWidth,
-        height: window.innerHeight
-    }
-  }
-  useEffect(() => {
-      const updateDimension = () => {
-          setScreenSize(getCurrentDimension())
-      }
-      console.log(screenSize)
-      window.addEventListener('resize', updateDimension);
-      return(() => {
-          window.removeEventListener('resize', updateDimension);
-      })
-  }, [screenSize])
-  console.log(screenSize)
+
   const getDate=(param)=>{
     if(!param)  return ;
     var total_miliseconds=(param.seconds+(param.nanoseconds)*0.00000001)*1000

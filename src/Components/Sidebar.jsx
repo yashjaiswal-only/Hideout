@@ -11,7 +11,7 @@ const Container=styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    z-index:10;
+    z-index:110;
     ${mobile({
       width:'15%'
     })}

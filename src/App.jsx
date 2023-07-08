@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Routes, Route, BrowserRouter } from 'react-router-dom'
 import './App.css';
 import { Main,Auth} from './Pages';
@@ -11,11 +11,12 @@ import PostPage from './Pages/Post';
 import Alert from './Components/Alert';
 import NewsPage from './Pages/NewsPage';
 import Warning from './Components/Warning';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import CreatePost from './Components/CreatePost';
 import { Modal } from '@mui/material';
 import styled from 'styled-components';
 import ChatBox from './Components/ChatBox';
+import { updateChatList, updateScreenSize } from './Redux/UserRedux';
 const Chats=styled.div`
   background-color: black;
 `
@@ -27,7 +28,27 @@ function App() {
   const handleOpen = () => setOpen(true);
   const handleClose = () =>{
     setOpen(false);
-  } 
+  }
+
+  //to save screen size in redux
+  function getCurrentDimension(){
+    return {
+        width: window.innerWidth,
+        height: window.innerHeight
+    }
+  }
+  const screenSize=useSelector(state=>state.screensize)
+  const dispatch=useDispatch();
+  useEffect(() => {
+    const updateDimension = () => {
+        dispatch(updateScreenSize(getCurrentDimension()))
+      }
+      window.addEventListener('resize', updateDimension);
+      return(() => {
+          window.removeEventListener('resize', updateDimension);
+      })
+  }, [screenSize])
+  
   return (
     <BrowserRouter>
     <AuthProvider>
@@ -52,9 +73,9 @@ function App() {
               <Route path='/create-profile' element={<CreateProfile/>}/>
             </Routes>
             <Chats>
-              {chatUserList.map((chat,index)=>(
+              {chatUserList.length?chatUserList.map((chat,index)=>(
               <ChatBox count={index} chat={chat}/>
-              ))}
+              )):""}
             </Chats>
             <Alert/>
             <Warning fails={fails}/>

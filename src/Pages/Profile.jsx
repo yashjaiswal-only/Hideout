@@ -23,12 +23,13 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import noprofile from '../assets/Forgot password.gif'
 import Loader from '../Components/Loader'; 
-import { endLoading, startLoading, updateFails } from '../Redux/UserRedux';
+import { endLoading, startLoading, updateChatList, updateFails } from '../Redux/UserRedux';
 import { getUserDetails } from '../ApiCalls/User';
 import Post from '../Components/Post';
 import FriendCard from '../Components/FriendCard';
 import { getAllFriends, getAllRequest, makeRequest, removeFriend } from '../ApiCalls/Friend';
 import { getMyPosts } from '../ApiCalls/Post';
+import { addChat } from '../Service';
 
 const Container=styled.div`
     width: 100%;
@@ -435,6 +436,7 @@ const Profile = ({handleOpen}) => {
   const navigate=useNavigate()
   const location=useLocation();
   const token=useSelector(state=>state.token)
+  const screensize=useSelector(state=>state.screensize)
   const [loading,setLoading]=useState(false)
   const dispatch=useDispatch();
   const [profileFetched,setProfileFetched]=useState(0);
@@ -493,6 +495,7 @@ const Profile = ({handleOpen}) => {
   else{
     console.log('already exist')
     setDetails(mydetails);
+    setProfileFetched(1);
   }
   getFriends(profileUID)
   fetchAllPosts(profileUID);    //get all posts 
@@ -503,9 +506,17 @@ useEffect(()=>{
   console.log(profileUID)
     loadProfile(profileUID);
     window.scrollTo(0,0)
-    console.log('my profile')
  },[location])
 
+ const chatUsers=useSelector(state=>state.chatUsers)
+ const sendMessage=()=>{
+    const x={
+      uid:details.uid,
+      photoURL:details.photo,
+      displayName:details.name
+    }
+    addChat(x,screensize,chatUsers,dispatch);
+  }
   return (
    <>
    {
@@ -523,7 +534,7 @@ useEffect(()=>{
             <div>
               <MenuListComposition uid={details.uid}/>
               <Option><a href={`mailto:${details.email}`}><MailOutlineIcon/></a></Option>
-              <button onClick={()=>navigate('/home')}>
+              <button onClick={sendMessage}>
                 Message
               </button>
             </div>

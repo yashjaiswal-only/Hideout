@@ -137,7 +137,6 @@ const ImgPreview=styled.img`
     width:50%;
 `
 const ChatBox = ({count,chat}) => {
-  console.log(count)
     const [message,setMessage]=useState('')
     const [down,setDown]=useState(false)
     const [img, setImg] = useState(null);

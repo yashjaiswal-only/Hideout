@@ -36,7 +36,7 @@ const Feed = ({handleOpen}) => {
     }
   }
   useEffect(()=>{  
-      getAllPost();
+      // getAllPost();
   },[])
   return (
     <Container>

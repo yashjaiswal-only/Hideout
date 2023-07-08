@@ -11,8 +11,12 @@ const userSlice=createSlice({
         alert:null,
         fails:null,
         chatUsers:[],
+        screensize:null
     },
     reducers:{
+        updateScreenSize:(state,action)=>{
+            state.screensize=action.payload
+        },
         updateFails:(state,action)=>{
             state.fails=action.payload
         },
@@ -50,5 +54,5 @@ const userSlice=createSlice({
 });
 
 
-export const {updateFails,addUser,removeUser,startLoading,endLoading,addUserDetails,addAlert,deleteAlert,updateChatList}=userSlice.actions;
+export const {updateScreenSize,updateFails,addUser,removeUser,startLoading,endLoading,addUserDetails,addAlert,deleteAlert,updateChatList}=userSlice.actions;
 export default userSlice.reducer;

@@ -61,11 +61,11 @@ const Notification = ({not}) => {
         // else if(not.action===4 || not.action===5) setLink('/post/'+not.postUid+'/'+not.postid)
         // else if(not.action===4) setLink('/post/'+not.postUid+'/'+not.postid)
         
-    }   
+    }
     useEffect(()=>{
-        // getDetails();
-        // setDateof(convertDate(not.createdAt))
-        // getLink();
+        getDetails();
+        setDateof(convertDate(not.createdAt))
+        getLink();
     },[])
     const click=async()=>{
         console.log('seen')

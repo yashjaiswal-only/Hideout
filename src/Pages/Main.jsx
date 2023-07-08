@@ -89,6 +89,7 @@ const Main = ({handleOpen}) => {
     else{
       loadProfile();
     }
+    window.scrollTo(0,0)
   },[])
   useEffect(()=>{
     if(fetching===false && detailsFetched===false){

@@ -7,7 +7,7 @@ const Loader=styled.div`
     margin:auto;
     height:50vh;
     width:max-content;
-    z-index: 9999;
+    z-index: 99;
 `
 const PageLoader = () => {
   return (

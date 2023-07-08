@@ -12,7 +12,7 @@ const Component=styled.div`
     left:${props=>props.list!=''?'20%':'5%'};
     top:10%;
     position:fixed;
-    z-index:8;
+    z-index:100;
     border-radius:15px;
     display: flex;
     flex-direction: column;

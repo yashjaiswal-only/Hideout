@@ -5,6 +5,7 @@ import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import VerifiedIcon from '@mui/icons-material/Verified';
 import FmdGoodIcon from '@mui/icons-material/FmdGood';
 import Topbar from '../Components/Topbar'
 import Sidebar from '../Components/Sidebar'
@@ -27,9 +28,10 @@ import { endLoading, startLoading, updateChatList, updateFails } from '../Redux/
 import { getUserDetails } from '../ApiCalls/User';
 import Post from '../Components/Post';
 import FriendCard from '../Components/FriendCard';
-import { getAllFriends, getAllRequest, makeRequest, removeFriend } from '../ApiCalls/Friend';
+import { checkFriend, getAllFriends, getAllRequest, makeRequest, removeFriend } from '../ApiCalls/Friend';
 import { getMyPosts } from '../ApiCalls/Post';
 import { addChat } from '../Service';
+import { PeopleOutlineOutlined } from '@mui/icons-material';
 
 const Container=styled.div`
     width: 100%;
@@ -82,29 +84,7 @@ const Head=styled.div`
     })}
     
   }
-  button{
-    padding:0.3rem 0.6rem;
-    height:50px;
-    margin:1rem;
-    background-color: #3b5998 ;
-    color:white;
-    cursor: pointer;
-    font-size:1rem;
-    border:none;
-    border-radius:10px;
-    ${mobile({
-      margin:'0.5rem',
-      fontSize:'0.8rem',
-      padding:'0.1rem 0.4rem',
-      height:'40px'
-    })}
-    ${mobile({
-      margin:'0.5rem',
-      fontSize:'0.6rem',
-      padding:'0 0.3rem',
-      height:'30px'
-    })}
-  }
+  
 `
 const CoverImg=styled.img`
   width:100%;
@@ -149,15 +129,27 @@ const Wrapper=styled.div`
 
   padding:0 80px;
   ${mobile({
-    padding:'0 30px'
+    padding:'0 20px'
   })}
 `
 const Info=styled.div`
     >span{
-      font-size:1.5rem;
-      font-weight:700;
       display: flex;
       align-items: center;
+      font-size:2rem;
+      font-weight:900;
+      font-family: 'Trocchi', serif;
+      ${mobile({
+        fontSize:'1.5rem'
+      })}
+    }
+    >div{
+      font-size:1.2rem;
+      padding:1rem 0;
+      font-weight: 500;
+      ${mobile({
+        fontSize:'1rem'
+      })}
     }
     svg{
       margin:0 4px;
@@ -309,7 +301,7 @@ const ShowFriends=styled.div`
 const Bottom=styled.div`
   position: relative;
 `
-const Points=styled.div`
+const Points=styled.section`
   display: flex;
   ${tab({
     flexDirection:'column',
@@ -320,7 +312,7 @@ const Point=styled.span`
   display: flex;
   align-items: center;
   margin:1rem 0.5rem;
-  font-size:1rem;
+  font-size:1.2rem;
   color:#5f5d5d;
   font-weight: 500;
   cursor: pointer;
@@ -329,6 +321,9 @@ const Point=styled.span`
     color:inherit;
     text-decoration:none;
   }
+  ${mobile({
+    fontSize:'1rem'
+  })}
 `
 const Show=styled.div`
   width: 50%;
@@ -341,6 +336,64 @@ const Show=styled.div`
   })}
   ${mobile({
     width:'100%'
+  })}
+`
+const Button1=styled.button`
+  padding:0.3rem 0.6rem;
+  height:50px;
+  margin:1rem;
+  background-color: #3b5998 ;
+  color:white;
+  cursor: pointer;
+  font-size:1rem;
+  border:none;
+  border-radius:10px;
+  background: rgb(22,9,240);
+  background: linear-gradient(0deg, rgba(22,9,240,1) 0%, rgba(49,110,244,1) 100%);
+  color: #fff;
+  border: none;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  font-family: 'Lato', sans-serif;
+  ${tab({
+    margin:'0.5rem',
+    fontSize:'0.8rem',
+    padding:'0.1rem 0.4rem',
+    height:'40px'
+  })}
+  ${mobile({
+    margin:'0.5rem',
+    fontSize:'0.6rem',
+    padding:'0 0.3rem',
+    height:'30px'
+  })}
+`
+const Button2=styled.button`
+  padding:0.3rem 0.6rem;
+  height:50px;
+  margin:1rem;
+  background-color: #3b5998 ;
+  color:white;
+  cursor: pointer;
+  font-size:1rem;
+  font-family: 'Lato', sans-serif;
+  border:none;
+  border-radius:10px;
+  background-color: #89d8d3;
+  background-image: linear-gradient(315deg, #89d8d3 0%, #03c8a8 74%);
+  border: none;
+  z-index: 1;
+  ${tab({
+    margin:'0.5rem',
+    fontSize:'0.8rem',
+    padding:'0.1rem 0.4rem',
+    height:'40px'
+  })}
+  ${mobile({
+    margin:'0.5rem',
+    fontSize:'0.6rem',
+    padding:'0 0.3rem',
+    height:'30px'
   })}
 `
 const style={
@@ -537,6 +590,10 @@ useEffect(()=>{
     addChat(x,screensize,chatUsers,dispatch);
   }
   const friendCheck=async(id)=>{
+    if(id==mydetails.uid){
+      setIsFriend(-1);
+      return ;
+    }
     const res= await checkFriend(token,id);
     if(res.status===200){
       setIsFriend(res.data);
@@ -557,21 +614,21 @@ useEffect(()=>{
           <Head>
             <CoverImg src={profilebg}/>
             <ProfileImg src={details.photo}/>
-            <div>
+            {isFriend!==-1?<div>
               {/* <MenuListComposition uid={details.uid}/> */}
-              <button onClick={sendMessage}>
+              <Button1 onClick={sendMessage}>
                 Message
-              </button>
-              <button >
-                Add Friend
-              </button>
-            </div>
+              </Button1>
+              {!isFriend?<Button2>Add Friend</Button2>:''}
+            </div>:''}
           </Head>
 
           <Wrapper>
             <Info>
-              <span>{`${details.name}`}<CheckCircleIcon sx={{color:'blue'}}/></span>
-              <div style={{padding:'1rem 0',fontSize:'1.2rem',fontWeight:'500'}}>{details.about}</div>
+              <span>{`${details.name}`}
+              <VerifiedIcon sx={{color:'blue'}}/>
+              </span>
+              <div>{details.about}</div>
               <Points >
                 <Point>
                   <FmdGoodIcon />{details.address.city} &bull; {details.address.state} &bull; {details.address.country} &emsp;
@@ -584,11 +641,11 @@ useEffect(()=>{
                 </Point>
               </Points>
               <p>
-                <span>{friends.length}</span> Friends &bull; 
+                <span>{friends.length}</span> Friends <PeopleOutlineOutlined/> 
                 {/* <span> 45</span> Mutual Friends */}
               </p>
             </Info>
-
+     
             <Links>
             <a target="_blank" href={`${details.social_links.linkedIn}`}><span><i className="fa-brands fa-linkedin-in"></i>LinkedIn</span></a>
             <a target="_blank" href={`${details.social_links.github}`}><span><i className="fa-brands fa-github"></i> Github</span></a>

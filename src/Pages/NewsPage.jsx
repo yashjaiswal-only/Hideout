@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import Topbar from '../Components/Topbar'
 import styled from 'styled-components'
 import { useDispatch } from 'react-redux'
@@ -9,6 +9,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormHelperText from '@mui/material/FormHelperText';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import mobile from '../responsive'
 const Container=styled.div`
   width:100%;
   background-color: #e1f2f7;
@@ -26,6 +27,19 @@ const Options=styled.div`
     margin:0;
   }
 `
+const Input=styled.input`
+  width:30%;
+  height:50px;
+  border-radius:25px;
+  border: 1px solid #4b5a53;
+  margin:0.4rem 0;
+  padding:0.4rem 1rem;
+  background: #82ddd3;
+  font-size: xx-large;
+  ${mobile({
+      minHeight:'1.5rem'
+  })}
+`
 const NewsPage = () => {
   const dispatch=useDispatch()
   useEffect(()=>{
@@ -36,12 +50,25 @@ const NewsPage = () => {
   const [category, setCategory] = React.useState("General");
   const handleChange = (event) => {
     setCategory(event.target.value);
+    setQuery("")
     console.log(category+'changed')
   };
   const capitalize=(s) =>{
     if(s=="") return ;
     return s.slice(0,1).toUpperCase() + s.slice(1);
   }
+  const searchRef=useRef();
+  const makeQuery=(e)=>{
+    if(e.target.value){
+      setQuery(e.target.value);
+      setCategory("")
+    }
+    else setCategory('General')
+  }
+  const NEWS_BASE_URL=import.meta.env.VITE_NEWS_BASE_URL
+  useEffect(()=>{
+    console.log(NEWS_BASE_URL)
+  },[])
   return (
     <Container>
       <Topbar/>
@@ -49,6 +76,9 @@ const NewsPage = () => {
           <h1>
             Top Headings - {capitalize(category !== "" ?category:query)}
           </h1>
+
+          <Input placeholder='Search here..' ref={searchRef}  onKeyUp={(e)=>(e.key==='Enter')?makeQuery(e):""}/>
+
           <FormControl sx={{ m: 1, minWidth: 120 }}>
             <InputLabel id="demo-simple-select-helper-label">Category</InputLabel>
             <Select

@@ -12,7 +12,6 @@ export const convertDate=(ios)=>{
       return d;
 }
 export const  addChat=(u,screenSize,chatUsers,dispatch)=>{
-  console.log(u)
   var res=[];
   if(screenSize.width>600){
     if(chatUsers.filter(e=>e.uid==u.uid).length===0){
@@ -22,5 +21,4 @@ export const  addChat=(u,screenSize,chatUsers,dispatch)=>{
   }
   else  res=u;    
   dispatch(updateChatList(res))
-  console.log(res)
 }

@@ -17,6 +17,7 @@ const Container=styled.div`
   margin:0.5rem;
   border-radius:10%;
   position: relative;
+  cursor: pointer;  
   img{
     object-fit:cover;
     border-radius:5%;

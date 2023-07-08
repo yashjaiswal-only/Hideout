@@ -80,6 +80,7 @@ const Head=styled.div`
     ${mobile({
       width:'100%'
     })}
+    
   }
   button{
     padding:0.3rem 0.6rem;
@@ -157,11 +158,6 @@ const Info=styled.div`
       font-weight:700;
       display: flex;
       align-items: center;
-    }
-    div{
-      display: flex;align-items: center;
-      font-size:1.2rem;
-      font-weight:500;
     }
     svg{
       margin:0 4px;
@@ -313,6 +309,27 @@ const ShowFriends=styled.div`
 const Bottom=styled.div`
   position: relative;
 `
+const Points=styled.div`
+  display: flex;
+  ${tab({
+    flexDirection:'column',
+    alignItems:'flex-start'
+  })}
+`
+const Point=styled.span`
+  display: flex;
+  align-items: center;
+  margin:1rem 0.5rem;
+  font-size:1rem;
+  color:#5f5d5d;
+  font-weight: 500;
+  cursor: pointer;
+  a{
+    display: flex;
+    color:inherit;
+    text-decoration:none;
+  }
+`
 const Show=styled.div`
   width: 50%;
   margin:auto;
@@ -441,6 +458,7 @@ const Profile = ({handleOpen}) => {
   const dispatch=useDispatch();
   const [profileFetched,setProfileFetched]=useState(0);
   const [friends,setFriends]=useState([]);
+  const [isFriend,setIsFriend]=useState(false);
   const [posts,setPosts]=useState([]);
   const [details,setDetails]=useState(null);
   const mydetails=useSelector(state=>state.details)
@@ -505,6 +523,7 @@ useEffect(()=>{
   const profileUID=location.pathname.slice(9);
   console.log(profileUID)
     loadProfile(profileUID);
+    friendCheck(profileUID);
     window.scrollTo(0,0)
  },[location])
 
@@ -516,6 +535,13 @@ useEffect(()=>{
       displayName:details.name
     }
     addChat(x,screensize,chatUsers,dispatch);
+  }
+  const friendCheck=async(id)=>{
+    const res= await checkFriend(token,id);
+    if(res.status===200){
+      setIsFriend(res.data);
+    }
+    else if(res.response.status===404) dispatch(updateFails(true));
   }
   return (
    <>
@@ -532,23 +558,31 @@ useEffect(()=>{
             <CoverImg src={profilebg}/>
             <ProfileImg src={details.photo}/>
             <div>
-              <MenuListComposition uid={details.uid}/>
-              <Option><a href={`mailto:${details.email}`}><MailOutlineIcon/></a></Option>
+              {/* <MenuListComposition uid={details.uid}/> */}
               <button onClick={sendMessage}>
                 Message
+              </button>
+              <button >
+                Add Friend
               </button>
             </div>
           </Head>
 
           <Wrapper>
             <Info>
-              
               <span>{`${details.name}`}<CheckCircleIcon sx={{color:'blue'}}/></span>
-              <div style={{padding:'1rem 0',}}>{details.about}</div>
-              <div style={{fontSize:'1rem',color:'#5f5d5d'}}>
-              {/* <FmdGoodIcon />{details.address.city} &bull; {details.address.state} &bull; {details.address.country} &emsp; */}
-              <CalendarMonthIcon /> Joined {details.createdAt.slice(0,10)}
-              </div>
+              <div style={{padding:'1rem 0',fontSize:'1.2rem',fontWeight:'500'}}>{details.about}</div>
+              <Points >
+                <Point>
+                  <FmdGoodIcon />{details.address.city} &bull; {details.address.state} &bull; {details.address.country} &emsp;
+                </Point>
+                <Point>
+                   <CalendarMonthIcon /> Joined {details.createdAt.slice(0,10)} 
+                </Point>
+                <Point>
+                <a href={`mailto:${details.email}`}><MailOutlineIcon/> {details.email}</a>
+                </Point>
+              </Points>
               <p>
                 <span>{friends.length}</span> Friends &bull; 
                 {/* <span> 45</span> Mutual Friends */}

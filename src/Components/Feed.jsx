@@ -21,7 +21,7 @@ const Container=styled.div`
 const Feed = ({handleOpen}) => {
   const [posts,setPosts]=useState([]);
   const token=useSelector(state=>state.token);
-  const [contentLoading,setContentLoading]=useState(true);
+  const [contentLoading,setContentLoading]=useState(false);
   const dispatch=useDispatch();
   const getAllPost=async()=>{
     setContentLoading(true);

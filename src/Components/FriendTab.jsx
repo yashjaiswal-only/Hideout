@@ -5,8 +5,9 @@ import mobile, { tab } from '../responsive'
 import { Check, Clear } from '@mui/icons-material'
 import { useNavigate } from 'react-router-dom'
 import { getUserMinDetails } from '../ApiCalls/User'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { acceptRequest, checkFriend, makeRequest, rejectRequest } from '../ApiCalls/Friend'
+import { addChat } from '../Service'
 
 const Container=styled.div`
     width:100%;
@@ -14,6 +15,7 @@ const Container=styled.div`
     display: flex;
     justify-content: space-between;
     margin:1rem;
+    /* z-index:100; */
     border-bottom:1px solid gray;  
     /* transform:translateX(0%); */
     transform:${props=>props.done?'translateX(110%)':''};
@@ -116,13 +118,22 @@ const FriendTab = ({myfriend,request,user,getRequests,getPossibleFriends}) => {
     // console.log(user.uid);
   }
   const token=useSelector(state=>state.token);
+  const screensize=useSelector(state=>state.screensize);
+  const chatUsers=useSelector(state=>state.chatUsers);
+  const dispatch=useDispatch();
   //button click
   const buttonClick=async()=>{
-    if(myfriend) navigate('/home');
-    else{
-      //sending request
+    if(myfriend){   //sending message
+      const x={
+        uid:user.uid,
+        photoURL:user.photo,
+        displayName:user.name
+      }
+      addChat(x,screensize,chatUsers,dispatch);
+    }
+    else{   //sending request
       const res= await makeRequest(token,user.uid);
-      console.log(res);
+      // console.log(res);
       if(res.status===200){
         setDone(true);
         setTimeout(() => {
@@ -155,7 +166,6 @@ const FriendTab = ({myfriend,request,user,getRequests,getPossibleFriends}) => {
   }
   const friendCheck=async()=>{
     const res= await checkFriend(token,user.uid);
-    console.log(res)
     if(res.status===200){
       setIsFriend(res.data);
     }

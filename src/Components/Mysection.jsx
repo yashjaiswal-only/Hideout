@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getFriendsCount } from '../ApiCalls/Friend';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { CircularProgress } from '@mui/material';
+import { updateFails } from '../Redux/UserRedux';
 const Container=styled.div`
   width:90%;
   min-height:20vh;
@@ -76,12 +77,12 @@ const Mysection = () => {
   const navigate=useNavigate();
   const dispatch=useDispatch();
   const [count,setCount]=useState(0);
+  const getCount=async()=>{ //get friends count
+    const res=await getFriendsCount(token)
+    if(res.status===200)      setCount(res.data)
+    else if(res.response.status===404)    dispatch(updateFails(true))
+  }
   useEffect(()=>{
-    const getCount=async()=>{ //get friends count
-      const res=await getFriendsCount(token)
-      if(res.status===200)      setCount(res.data)
-      else if(res.response.status===404)      dispatch(updateFails(true))
-    }
     getCount();
   },[])
   return (

@@ -80,7 +80,7 @@ const Notification = ({not}) => {
     <>{load?<>
         <div style={{display:'flex',justifyContent:'space-around'}}>
         <Skeleton animation="wave" variant="circular" width={40} height={40} />
-        <Skeleton animation="wave" height={40} width="80%" style={{ marginBottom: 6 }}/>
+        <Skeleton animation="wave" height={50} width="80%" style={{ marginBottom: 6 }}/>
         </div>
         </>:
         <ListItem seen={not.seen} onClick={click}>

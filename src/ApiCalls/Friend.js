@@ -244,11 +244,11 @@ export const getFriendsCount=async(token)=>{
             returnval=res;
         })
         .catch(err=>{
-            returnval={error:'Error at finding  count'};
+            returnval=err;
         })
         
     } catch (error) {
-        returnval={error:'Error at finding friends'};
+        returnval=error;
     }
     return returnval;
 }

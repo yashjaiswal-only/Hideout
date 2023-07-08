@@ -26,7 +26,7 @@ import Button from '@mui/material/Button';
 import Fade from '@mui/material/Fade';
 import Paper from '@mui/material/Paper';
 import AddBoxIcon from '@mui/icons-material/AddBox';
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components';
 import hideout from '../Data/hideout.png'
 import {mobile, tab} from '../responsive'
@@ -169,14 +169,18 @@ const Topbar = ({handleOpen}) => {
   };
   const searchRef=useRef();
   const search=async()=>{ 
-    setLoad(true)
-    console.log(searchRef.current.value);
-    const res=await searchUser(token,searchRef.current.value)
-    console.log(res)
-    if(res.status===200){
-      setUsers(res.data)
+    if(searchRef.current.value){
+      console.log(searchRef.current.value)
+      setLoad(true)
+      console.log(searchRef.current.value);
+      const res=await searchUser(token,searchRef.current.value)
+      console.log(res)
+      if(res.status===200){
+        setUsers(res.data)
+      }
+      setLoad(false)
     }
-    setLoad(false)
+    else setOpen2(false)
   }
   const moveToHome=()=>{
     if(location.pathname==='/home') window.scrollTo(0,0)
@@ -191,18 +195,17 @@ const Topbar = ({handleOpen}) => {
       <Popper open={open2} anchorEl={anchorE2} close={()=>setOpen2(false)} placement={placement} transition>
         {({ TransitionProps }) => (
           <Fade {...TransitionProps} timeout={350}>
-            <PAPER >
+            <PAPER style={{zIndex:'100'}} >
             {load?
-              <div style={{height:'40vh',width:'100%',display:'flex',justifyContent:'center',alignItems:'center'}}><CircularProgress/></div>
+              <div style={{height:'40vh',zIndex:'100',width:'100%',display:'flex',justifyContent:'center',alignItems:'center'}}><CircularProgress/></div>
               :<List>
                 {users.length?users.map(f=>(
                     <FriendTab user={f} key={f._id} />
-                    // <Typography sx={{ p: 2 }}>The content of the Popper.</Typography>
-                  )): <NoUser/>
+                  )):
+                  <NoUser/>
                 }
               </List>
             }
-            {/* YASH */}
             </PAPER>
           </Fade>
         )}

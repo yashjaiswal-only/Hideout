@@ -36,6 +36,7 @@ const Input=styled.input`
   padding:0.4rem 1rem;
   background: #82ddd3;
   font-size: xx-large;
+  color:white;
   ${mobile({
       minHeight:'1.5rem'
   })}
@@ -51,6 +52,8 @@ const NewsPage = () => {
   const handleChange = (event) => {
     setCategory(event.target.value);
     setQuery("")
+    console.log(searchRef)
+    searchRef.current.value="";
     console.log(category+'changed')
   };
   const capitalize=(s) =>{
@@ -89,7 +92,7 @@ const NewsPage = () => {
               onChange={handleChange}
             >
               <MenuItem value={'General'}>General</MenuItem>
-              <MenuItem value={'Bussiness'}>Bussiness</MenuItem>
+              {/* <MenuItem value={'Bussiness'}>Bussiness</MenuItem> */}
               <MenuItem value={'Entertainment'}>Entertainment</MenuItem>
               <MenuItem value={'Health'}>Health</MenuItem>
               <MenuItem value={'Science'}>Science</MenuItem>

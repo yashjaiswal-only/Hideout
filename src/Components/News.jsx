@@ -3,6 +3,7 @@ import NewsItem from './NewsItem';
 import styled from 'styled-components';
 import Spinner from './Spinner';
 import axios from 'axios'; 
+import PageLoader from './PageLoader';
 const articles = [];
 const Container=styled.div`
   width:100%;
@@ -157,10 +158,10 @@ const News = ({category,query}) => {
     let url;
     if (category === "") {
       //when there is query
-      url = `http://localhost:5000/api?q=${query}&apiKey=${apikey}&page=${pg}&pageSize=${pageS}`;
+      url = `https://news-ride-api.vercel.app/api?q=${query}&apiKey=${apikey}&page=${pg}&pageSize=${pageS}`;
     } else {
       //when there is category
-      url = `http://localhost:5000/api?country=in&category=${category}&apiKey=${apikey}&page=${pg}&pageSize=${pageS}`;
+      url = `https://news-ride-api.vercel.app/api?country=in&category=${category}&apiKey=${apikey}&page=${pg}&pageSize=${pageS}`;
     }
     setLoading(true)
 
@@ -181,15 +182,16 @@ const News = ({category,query}) => {
     updateNews(pgno-1);
     setPgno(pgno - 1);
   };
-
+  console.log(articles.length)
   useEffect(()=>{
     console.log(category+query)
-    updateNews(1);
+    // updateNews(1);
   },[category,query])
   return (
     <Container>
          <NewsContainer >
-            {loading?<Spinner/>:articles.map((element) => {
+            {loading?<PageLoader/>:
+                articles.length?articles.map((element) => {
                 return (
                     <NewsItem
                     tittle={element.title}
@@ -201,7 +203,12 @@ const News = ({category,query}) => {
                     source={element.source.name}
                     />
                     );
-                })}
+                }):
+                <div style={{display:'flex',flexDirection:'column',alignItems:'center',fontSize:'2rem'}}>
+                'Nothing to show'
+                <PageLoader/>
+                </div>
+              }
          </NewsContainer> 
             
             <NewsContainer>

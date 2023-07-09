@@ -36,13 +36,13 @@ const Feed = ({handleOpen}) => {
     }
   }
   useEffect(()=>{  
-      // getAllPost();
+      getAllPost();
   },[])
   return (
     <Container>
       <Create handleOpen={handleOpen}/>
       {contentLoading?<PageLoader/>:posts.map(p=>(<Post key={p._id} post={p} />))}
-    </Container>  
+    </Container>
   )
 }
 

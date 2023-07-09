@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { addAlert, removeUser } from '../Redux/UserRedux';
 import { getApost, getMyPosts } from '../ApiCalls/Post';
+import PageLoader from './../Components/PageLoader.jsx'
 import Post from '../Components/Post';
 const Container=styled.div`
     width: 100%;
@@ -46,28 +47,39 @@ const Display=styled.div`
 const PostPage = ({handleOpen}) => {
   const [list,setList]=useState('');
   const [post,setPost]=useState(null);
+  const [loading,setLoading]=useState(null);
   const token=useSelector(state=>state.token)
   const showList=(val)=>setList(val);
   const location=useLocation();
   const dispatch=useDispatch();
+  const navigate=useNavigate();
 
-  useEffect(async()=>{
+  const fetchPost=async(location)=>{
+    setLoading(true)
     window.scrollTo(0, 0);
     var x=location.pathname.split('/');
     var userid=x[2],postid=x[3];
     console.log(userid+postid)
     const res=await getApost(token,postid,userid);
-    console.log(res.response)
     if(res.status===200 ){
-      if(res.data.length){
+      console.log(res.data)
+      if(res.data.uid){
         setPost(res.data);
-      } 
+      }
       else{
+        navigate('/profile/'+userid)
         dispatch(addAlert('Post Unavailable'))
-      } 
+      }
     }
-    // else if(res.response.status===404) dispatch(updateFails(true));
-  },[])
+    else if(res.response.status===404) dispatch(updateFails(true));
+    setLoading(false)
+  }
+  const extraFunction=async()=>{
+    await fetchPost(location);  //we can not make function of async type in useeffect
+  }
+  useEffect(()=>{
+    extraFunction();
+  },[location])
   return (<>
     <Container>
     <Topbar handleOpen={handleOpen}/>
@@ -76,7 +88,8 @@ const PostPage = ({handleOpen}) => {
          <Block list={list} showList={showList}/>
           <Right/>
         <Display>
-          {post&&post!={}?<Post post={post}/>:""}
+          {loading?<PageLoader/>:
+           post&&post!={}?<Post post={post}/>:""} 
         </Display>
     </Content>
   </Container>

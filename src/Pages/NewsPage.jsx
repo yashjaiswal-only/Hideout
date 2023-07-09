@@ -45,7 +45,7 @@ const Input=styled.input`
   border: 1px solid #4b5a53;
   margin:0.4rem 0;
   padding:0.4rem 1rem;
-  background: #82ddd3;
+  background: #c2eee9;
   font-size: xx-large;
   color:white;
   ${mobile({
@@ -103,7 +103,7 @@ const NewsPage = () => {
               onChange={handleChange}
             >
               <MenuItem value={'General'}>General</MenuItem>
-              {/* <MenuItem value={'Bussiness'}>Bussiness</MenuItem> */}
+              <MenuItem value={'Business'}>Business</MenuItem>
               <MenuItem value={'Entertainment'}>Entertainment</MenuItem>
               <MenuItem value={'Health'}>Health</MenuItem>
               <MenuItem value={'Science'}>Science</MenuItem>

@@ -225,6 +225,7 @@ const Post = ({post,fetchAllPosts,getPosts}) => {
       if(res.status===200)  setCountComments(res.data)
     }
     const likesPost=async()=>{
+      setLike(true)
       console.log('liking a post')
       const res=await addLike(token,post._id,post.uid)
       console.log(res)
@@ -234,6 +235,7 @@ const Post = ({post,fetchAllPosts,getPosts}) => {
       }
     }
     const dislikesPost=async()=>{
+      setLike(false)
       console.log('unliking a post')
       const res=await removeLike(token,post._id,post.uid)
       console.log(res)

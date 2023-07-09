@@ -9,7 +9,7 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import mobile, { tab } from '../responsive'
 import { addLikeInComment, addReply, checkLikeInComment, countLikeInComment, deleteComment, deleteLikeInComment, deleteReply, getAllCommentsOfPost, getRepliesOfComment } from '../ApiCalls/Post'
-import { MoreHoriz } from '@mui/icons-material'
+import { MoreHoriz, RemoveCircleOutline, RemoveCircleOutlined } from '@mui/icons-material'
 
 const Container=styled.div`
     display: flex;  
@@ -162,7 +162,8 @@ const SingleReply=({r,postId,replyDelete})=>{
             <section>
                 <div>{user.name}
                 {(postId===myDetails.uid || r.uid===myDetails.uid)?<Tooltip title="Delete Reply">
-                <MoreHoriz onClick={()=>replyDelete(r._id)} sx={{cursor:'pointer'}} />
+                    <RemoveCircleOutline onClick={()=>replyDelete(r._id)} 
+                    sx={{cursor:'pointer',fontWeight:'300',color:'#921010'}}/>
                 </Tooltip>:""}
                 </div>
                 <p>{r.reply} 
@@ -222,12 +223,14 @@ const Comment = ({comment,posterId,postId,setAllComments,count,allComments}) => 
     }
     const likeComment=async()=>{
         console.log('liking comment')
+        setLike(true)
         const res=await addLikeInComment(token,postId,comment._id);
         if(res.status===200){
             countLikes();
         }
     }
     const dislikeComment=async()=>{
+        setLike(true)
         console.log('disliking comment')
         const res=await deleteLikeInComment(token,postId,comment._id);
         if(res.status===200){
@@ -237,7 +240,7 @@ const Comment = ({comment,posterId,postId,setAllComments,count,allComments}) => 
     const countLikes=async()=>{
         const res=await countLikeInComment(token,postId,comment._id);
         if(res.status===200){
-            checkLike();
+            // checkLike();
             setLikeCount(res.data)
         }
     }
@@ -261,6 +264,7 @@ const Comment = ({comment,posterId,postId,setAllComments,count,allComments}) => 
         setAllReply(comment.replies);
         setDateOf(convertDate(comment.createdAt));
         countLikes()
+        checkLike();
     },[])
 
   
@@ -275,7 +279,7 @@ const Comment = ({comment,posterId,postId,setAllComments,count,allComments}) => 
         <section>
             <div>{user.name} 
                 {(postId===myDetails.uid || comment.uid===myDetails.uid)?<Tooltip title="Delete Comment">
-                <MoreHoriz onClick={commentDelete} sx={{cursor:'pointer'}} />
+                <RemoveCircleOutline onClick={commentDelete} sx={{cursor:'pointer',fontWeight:'300',color:'#921010'}} />
                 </Tooltip>:""}
             </div>
             <p>{comment.comment} {like?<FavoriteIcon sx={{color:'red'}} onClick={dislikeComment}/>

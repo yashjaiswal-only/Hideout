@@ -20,5 +20,5 @@ export const  addChat=(u,screenSize,chatUsers,dispatch)=>{
     }
   }
   else  res=u;    
-  dispatch(updateChatList(res))
+  dispatch(updateChatList([res]))
 }

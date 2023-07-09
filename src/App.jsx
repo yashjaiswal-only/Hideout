@@ -48,8 +48,7 @@ function App() {
           window.removeEventListener('resize', updateDimension);
       })
   }, [screenSize])
-  console.log(chatUserList)
-  return (
+    return (
     <BrowserRouter>
     <AuthProvider>
       <div className="App">

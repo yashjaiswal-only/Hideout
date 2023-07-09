@@ -98,7 +98,6 @@ const ChatList = () => {
   }, [currentUser.uid]);
 
   const handleSelect = (u) => {
-    console.log(u)
     addChat(u,screensize,chatUsers,dispatch);
   };
 

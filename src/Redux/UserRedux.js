@@ -39,6 +39,7 @@ const userSlice=createSlice({
             state.email="";
             state.token=null;
             state.details=null;
+            state.chatUsers=[]
         },
         startLoading:(state)=>{
             state.loading=true;

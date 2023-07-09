@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { makePost } from '../ApiCalls/Post';
 import { CircularProgress } from '@mui/material';
 import { addAlert, endLoading, startLoading } from '../Redux/UserRedux';
+import mobile, { tab } from '../responsive';
 
 const Container=styled.div`
     position: absolute;
@@ -28,13 +29,20 @@ const Container=styled.div`
     padding:1rem;
     display: flex;
     flex-direction: column;
-    >input{
+    ${mobile({
+      width:'90%'
+    })}
+    ${tab({
+      width:'80%'
+    })}
+
+    /* >input{
         padding:0.5rem;
         width:90%;
         outline:none;
         border:1px solid gray;
         border-radius:0.5rem;
-    }
+    } */
     >h2{
         font-size:2rem;
     }
@@ -72,6 +80,9 @@ const TextArea=styled.textarea`
   -ms-transition: height 0.2s ease;
   -o-transition: height 0.2s ease;
   transition: height 0.2s ease;
+  ${mobile({
+    fontSize:'20px'
+  })}
 `
 const CreatePost = ({handleClose}) => {
   const [fileList, setFileList] = useState([]);

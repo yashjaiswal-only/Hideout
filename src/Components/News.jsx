@@ -33,6 +33,7 @@ const NewsContainer=styled.div`
 
 const News = ({category,query}) => {
   const apikey=import.meta.env.VITE_NEWS_API;
+  console.log(apikey)
   const [loading,setLoading]=useState(false);
   const [articles,setArticles]=useState( [
     {

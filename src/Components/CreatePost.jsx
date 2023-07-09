@@ -90,12 +90,14 @@ const CreatePost = ({handleClose}) => {
   const token=useSelector(state=>state.token);
   // const loading=useSelector(state=>state.loading);
   const [loading,setLoading]=useState(false);
+  const [sending,setSending]=useState(0);
   const dispatch=useDispatch();
   const captionRef=useRef();
 
   //submit the post
   const handleSubmit=async()=>{
-    // setLoading(true)
+    setLoading(true)
+    console.log('click')
     if(!fileList.length){
       const data={
       caption:captionRef.current.value,
@@ -186,7 +188,7 @@ const CreatePost = ({handleClose}) => {
         <h2>New Post</h2>
         <TextArea id="TextArea" ng-model="loremIpsum" ref={captionRef}  onKeyUp={autoExpand} placeholder="Write something here..."/>
         <FileUpload fileList={fileList} setFileList={setFileList}/>
-        <Button onClick={handleSubmit}>Create</Button>
+        <Button onClick={handleSubmit} disabled={sending} >{sending?<CircularProgress/>:'Create'}</Button>
       </>
     }
     </Container>

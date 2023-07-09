@@ -9,7 +9,7 @@ import {mobile, tab} from '../responsive'
 import { makePost } from '../ApiCalls/Post';
 import { endLoading, startLoading, updateFails } from '../Redux/UserRedux';
 import { useDispatch, useSelector } from 'react-redux';
-import { CircularProgress } from '@mui/material';
+import { CircularProgress, Tooltip } from '@mui/material';
 
 const Container=styled.div`
     width:90%;
@@ -173,9 +173,9 @@ const Create = ({handleOpen}) => {
         {loading?<CircularProgress/>:<SendIcon sx={{color:'#6464d8',cursor:'pointer'}} onClick={()=>handleSubmit()}/>}
       </InputBox>
       <Options>
-        <Option><VideoCameraFrontIcon />GoLive</Option>
+        <Tooltip title="Go Live- upcoming feature"><Option><VideoCameraFrontIcon />GoLive</Option></Tooltip>
         <Option onClick={handleOpen}><PermMediaIcon />Image/Video</Option>
-        <Option><PollIcon />Poll/Activity</Option>
+        <Tooltip title="Live Poll - upcoming feature"><Option><PollIcon />Poll/Activity</Option></Tooltip>
       </Options>
       
     </Container>

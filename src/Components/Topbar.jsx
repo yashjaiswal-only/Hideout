@@ -214,8 +214,12 @@ const Topbar = ({handleOpen}) => {
       <Icons>
       <IconItem onClick={moveToHome}><HouseIcon/></IconItem>
       <IconItem onClick={()=>navigate('/news')}><NewspaperIcon/></IconItem>
-      <IconItem><OndemandVideoIcon/></IconItem>
+      <Tooltip title="Entertainment - upcoming feature">
+        <IconItem><OndemandVideoIcon/></IconItem>
+        </Tooltip> 
+      <Tooltip title="Job portal - upcoming feature">
       <IconItem><WorkIcon/></IconItem>
+      </Tooltip>
       <IconItem onClick={()=>handleOpen()}> <AddBoxIcon/> </IconItem>
       </Icons>
 

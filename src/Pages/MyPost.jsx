@@ -80,7 +80,7 @@ const MyPost = ({handleOpen}) => {
         <Right/>
         <Display>          
          {contentLoading?<PageLoader/>:
-          postList.map(p=>(<Post key={p._id} post={p} />))
+          postList.map(p=>(<Post key={p._id} post={p} getPosts={getPosts}/>))
         }
         </Display>
     </Content>

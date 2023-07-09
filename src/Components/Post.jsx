@@ -11,7 +11,7 @@ import picture from '../Data/pexels-maria-loznevaya-15237253.jpg'
 import { mobile,tab } from '../responsive';
 import { useDispatch, useSelector } from 'react-redux';
 import { addComment, addLike, checkLike, countComment, countLike, deletePost, getAllCommentsOfPost, removeLike } from '../ApiCalls/Post';
-import { CircularProgress, Tooltip } from '@mui/material';
+import { Button, CircularProgress, Menu, MenuItem, Tooltip } from '@mui/material';
 import Comment from './Comment';
 import {convertDate}  from '../Service.js'
 import { MoreHoriz } from '@mui/icons-material';
@@ -194,8 +194,7 @@ const CommentBox=styled.div`
 `
 
 
-const Post = ({post,fetchAllPosts}) => {
-    let width = window.innerWidth;
+const Post = ({post,fetchAllPosts,getPosts}) => {
     const cap=post.caption;
     const [wholeCap,setWholeCap]=useState(false);
     const [like,setLike]=useState(false);
@@ -214,8 +213,8 @@ const Post = ({post,fetchAllPosts}) => {
     const [load,setLoad]=useState(false);
     const [showComments,setShowComments]=useState(false);
     //count likes
-    const [countLikes,setCountLikes]=useState('#');
-    const [countComments,setCountComments]=useState('#');
+    const [countLikes,setCountLikes]=useState('');
+    const [countComments,setCountComments]=useState('');
     const [allComments,setAllComments]=useState([]);
     const count=async()=>{
       var res=await countLike(token,post._id,post.uid)
@@ -271,13 +270,27 @@ const Post = ({post,fetchAllPosts}) => {
       }
     }
     const postDelete=async()=>{
+      console.log(post._id)
       const res=await deletePost(token,post._id);
       console.log(res)
       if(res.status===200){
-        fetchAllPosts();
+        // fetchAllPosts();
+        getPosts();
         dispatch(addAlert('Post Deleted Successfully'));
       }
-  }
+    }
+
+    //delete menu
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const open = Boolean(anchorEl);
+    const handleClick = (event) => {
+      setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+      setAnchorEl(null);
+    };
+  
+
     useEffect(()=>{
       console.log(post+"post")
       count();
@@ -285,7 +298,7 @@ const Post = ({post,fetchAllPosts}) => {
       setdateofpost(convertDate(post.createdAt));
       setAllComments(post.comments);
     },[])
-   
+    
   return (
     <Container>
       <Details>
@@ -294,10 +307,34 @@ const Post = ({post,fetchAllPosts}) => {
             <Name>{post.name}</Name>
             <Date>{dateofpost}</Date>
         </Entry>
-        {post.uid===myDetails.uid?<Tooltip title="Delete Post">
-                <MoreHoriz onClick={postDelete} sx={{cursor:'pointer',position:'absolute',right:'0'}} />
-          </Tooltip>:""}
+        {post.uid===myDetails.uid?
+        <div style={{position:'absolute',right:'0'}}>
+          <Button
+            id="basic-button"
+            aria-controls={open ? 'basic-menu' : undefined}
+            aria-haspopup="true"
+            aria-expanded={open ? 'true' : undefined}
+            onClick={handleClick}
+          >
+            <MoreHoriz/>
+          </Button>
+          <Menu
+            sx={{padding:'0rem'}}
+            id="basic-menu"
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+            MenuListProps={{
+              'aria-labelledby': 'basic-button',
+            }}
+          >
+            <MenuItem sx={{padding:'0.5rem'}} onClick={postDelete}>Delete Post</MenuItem>
+          </Menu>
+        </div>:''}
+
       </Details>
+
+
       {post.caption?<Caption noImage={post.images.length===0}>
         {(wholeCap||cap.length<150)?cap:cap.slice(0,150)}
         {cap.length>150 && 

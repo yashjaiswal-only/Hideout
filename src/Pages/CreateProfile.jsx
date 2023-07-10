@@ -82,7 +82,7 @@ const CreateProfile = () => {
   const navigate=useNavigate();
   const dispatch=useDispatch();
   const [inputs,setInputs]=useState([]);
-  const [image,setImage]=useState("");
+  const [image,setImage]=useState("https://cdn-icons-png.flaticon.com/512/1053/1053244.png");
   const [file,setFile]=useState([]);
   const [error,setError]=useState(null);
   //uploading file to firebase

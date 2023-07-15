@@ -125,12 +125,7 @@ const Register=styled.div`
     flex-direction:column ;
     justify-content: space-between;
 `
-// const Logo=styled.div`
-//     left:0; 
-//     font-weight:600;
-//     width:100%;
-//     text-align:left;
-//     `
+
 const Message=styled.span`
     width:100%;
     text-align:${props=>props.center?"center":"left"};
@@ -160,7 +155,6 @@ const Button=styled.button`
     ${mobile({
         margin:'0.5rem 0',
         fontSize:'1rem',
-        // padding:'1rem',
         justifyContent:'space-around',
         width:'60%'
     })}
@@ -395,7 +389,6 @@ const Auth = () => {
 
             <Login id="login">
                 <Logo/>
-                {/* <Logo>Hideout</Logo> */}
                 <Message>
                     Welcome Back, Please login to your account
                 </Message>

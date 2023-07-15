@@ -2,3 +2,5 @@ process.env.REACT_APP_SOME_VALUE changes to import.meta.env.VITE_SOME_VALUE
 require is not work in vite use import
 
 jo post delete hua toh uske regarding saari notifications bhi delete honi chahiye
+
+check request sent is not working

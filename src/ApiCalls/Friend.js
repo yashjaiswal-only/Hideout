@@ -118,6 +118,27 @@ export const removeFriend=async(token,uid)=>{
     }
     return returnval;
 }
+export const checkRequestSent=async(token,uid)=>{
+    const config={
+        headers:{
+            'Authorization': `Bearer ${token}`
+        },
+    }
+    let returnval;
+    try {
+        await axiosInstance.get("/friend/checkSentReq?id="+uid,config)
+        .then(res=>{
+            returnval=res;
+        })
+        .catch(err=>{
+            console.log(err)
+            returnval=err;
+        })
+    } catch (error) {
+        returnval=err;
+    }
+    return returnval;
+}
 export const checkFriend=async(token,uid)=>{
     const config={
         headers:{
@@ -132,11 +153,11 @@ export const checkFriend=async(token,uid)=>{
             returnval=res;
         })
         .catch(err=>{
-            returnval={error:'Error at checking friends'};
+            returnval=err;
         })
         
     } catch (error) {
-        returnval={error:'Error at checking friends'};
+        returnval=error;
     }
     return returnval;
 }
@@ -273,4 +294,6 @@ export const findFriends=async(token)=>{
     }
     return returnval;
 }
+
+
 

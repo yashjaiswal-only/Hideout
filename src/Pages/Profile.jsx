@@ -28,7 +28,7 @@ import { endLoading, startLoading, updateChatList, updateFails } from '../Redux/
 import { getUserDetails } from '../ApiCalls/User';
 import Post from '../Components/Post';
 import FriendCard from '../Components/FriendCard';
-import { checkFriend, getAllFriends, getAllRequest, makeRequest, removeFriend } from '../ApiCalls/Friend';
+import { checkFriend, checkRequestSent, getAllFriends, getAllRequest, makeRequest, removeFriend } from '../ApiCalls/Friend';
 import { getMyPosts } from '../ApiCalls/Post';
 import { addChat, defaultPost1, defaultPost2, defaultPost3 } from '../Service';
 import { PeopleOutlineOutlined } from '@mui/icons-material';
@@ -512,9 +512,10 @@ const Profile = ({handleOpen}) => {
   const [profileFetched,setProfileFetched]=useState(0);
   const [friends,setFriends]=useState([]);
   const [isFriend,setIsFriend]=useState(false);
+  const [isRequestSent,setIsRequestSent]=useState(false);
   const [posts,setPosts]=useState([]);
   const [details,setDetails]=useState(null);
-  const mydetails=useSelector(state=>state.details)
+  const mydetails=useSelector(state=>state.details);
 
   const fetchAllPosts=async(profileUID)=>{
     //get posts
@@ -577,6 +578,7 @@ useEffect(()=>{
   console.log(profileUID)
     loadProfile(profileUID);
     friendCheck(profileUID);
+    requestCheck(profileUID)
     window.scrollTo(0,0)
  },[location])
 
@@ -599,6 +601,19 @@ useEffect(()=>{
       setIsFriend(res.data);
     }
     else if(res.response.status===404) dispatch(updateFails(true));
+  }
+  const requestCheck=async(id)=>{
+    if(id==mydetails.uid){
+      setIsRequestSent(-1);
+      return ;
+    }
+    console.log('checking request')
+    const res= await checkRequestSent(token,id);
+    console.log(res)
+    if(res.status===200){
+      setIsRequestSent(res.data);
+    }
+    // else if(res.response.status===404) dispatch(updateFails(true));
   }
   return (
    <>
@@ -662,7 +677,13 @@ useEffect(()=>{
             <Show>
               {posts.length?posts.map((p)=>(
                 <Post post={p}  key={p._id} fetchAllPosts={fetchAllPosts}/>
-              )): <Post post={defaultPost1}/>
+              )): 
+                (mydetails.uid===details.uid?
+                <Post post={defaultPost1}/>:
+                <div style={{fontSize:'2rem',fontWeight:'600'}}>
+                No Posts to Show
+                </div>
+                )
               }
             </Show>:
               (
@@ -672,9 +693,13 @@ useEffect(()=>{
                     <FriendCard friend={f} key={f._id}/>
                   ))}
                 </ShowFriends>:
-                <Show>
+                (mydetails.uid===details.uid?<Show>
                   <Post post={defaultPost3}/>
-                </Show>
+                </Show>:
+                <div style={{fontSize:'2rem',fontWeight:'600'}}>
+                No Friends to Show
+                </div>
+                )
               )
             }
             </Bottom>

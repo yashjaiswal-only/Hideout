@@ -25,3 +25,20 @@ export const  addChat=(u,screenSize,chatUsers,dispatch)=>{
   console.log(res)
   dispatch(updateChatList(res))
 }
+
+export const defaultPost1={
+  _id:"000000000000000",
+  uid:'0',
+  caption:'No Posts to display , Create posts and get HIDEOUT !'
+}
+
+export const defaultPost2={
+  _id:"000000000000000",
+  uid:'0',
+  caption:'No Posts to display , Create posts & Make Friends and get HIDEOUT !'
+}
+export const defaultPost3={
+  _id:"000000000000000",
+  uid:'0',
+  caption:'No Friends to display , Make Friends and get HIDEOUT !'
+}

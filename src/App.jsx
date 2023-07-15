@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { Routes, Route, BrowserRouter } from 'react-router-dom'
 import './App.css';
-import { Main,Auth} from './Pages';
 import { AuthProvider } from './contexts/AuthContext';
 import Profile from './Pages/Profile';
 import Friends from './Pages/Friends';
@@ -17,6 +16,8 @@ import { Modal } from '@mui/material';
 import styled from 'styled-components';
 import ChatBox from './Components/ChatBox';
 import { updateChatList, updateScreenSize } from './Redux/UserRedux';
+import Main from './Pages/Main';
+import Auth from './Pages/Auth';
 const Chats=styled.div`
   background-color: black;
 `

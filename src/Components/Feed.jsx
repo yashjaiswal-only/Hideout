@@ -7,6 +7,7 @@ import { getAllPosts } from '../ApiCalls/Post'
 import { endLoading, startLoading, updateFails } from '../Redux/UserRedux'
 import { useDispatch, useSelector } from 'react-redux'
 import PageLoader from './PageLoader'
+import { defaultPost2 } from '../Service'
 
 const Container=styled.div`
     width: 100%;
@@ -41,7 +42,10 @@ const Feed = ({handleOpen}) => {
   return (
     <Container>
       <Create handleOpen={handleOpen}/>
-      {contentLoading?<PageLoader/>:posts.map(p=>(<Post key={p._id} post={p} />))}
+      {contentLoading?<PageLoader/>:
+      (posts.length?posts.map(p=>(<Post key={p._id} post={p} />)):
+      <Post post={defaultPost2}/>)
+      }
     </Container>
   )
 }

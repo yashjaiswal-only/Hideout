@@ -30,7 +30,7 @@ import Post from '../Components/Post';
 import FriendCard from '../Components/FriendCard';
 import { checkFriend, getAllFriends, getAllRequest, makeRequest, removeFriend } from '../ApiCalls/Friend';
 import { getMyPosts } from '../ApiCalls/Post';
-import { addChat } from '../Service';
+import { addChat, defaultPost1, defaultPost2, defaultPost3 } from '../Service';
 import { PeopleOutlineOutlined } from '@mui/icons-material';
 
 const Container=styled.div`
@@ -660,26 +660,23 @@ useEffect(()=>{
             <Bottom>
             {index===0?
             <Show>
-              {
-                posts.length==0?<div style={{margin: '2rem',fontSize: 'xx-large',fontWeight: '600'}}>
-                  No Post to display 
-                </div>:''
-              }
-              {posts.map((p)=>(
+              {posts.length?posts.map((p)=>(
                 <Post post={p}  key={p._id} fetchAllPosts={fetchAllPosts}/>
-              ))
+              )): <Post post={defaultPost1}/>
               }
             </Show>:
-            <ShowFriends> 
-              {
-                friends.length==0?<div style={{margin: '2rem',fontSize: 'xx-large',fontWeight: '600'}}>
-                  No friends to display 
-                </div>:''
-              }
-              {friends.map(f=>(
-                <FriendCard friend={f} key={f._id}/>
-              ))}
-            </ShowFriends>}
+              (
+                  friends.length?
+                  <ShowFriends> 
+                  {friends.map(f=>(
+                    <FriendCard friend={f} key={f._id}/>
+                  ))}
+                </ShowFriends>:
+                <Show>
+                  <Post post={defaultPost3}/>
+                </Show>
+              )
+            }
             </Bottom>
         </>:
         <Error>

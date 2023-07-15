@@ -18,6 +18,7 @@ import Post from '../Components/Post';
 import { Modal } from '@mui/material';
 import CreatePost from '../Components/CreatePost';
 import PageLoader from '../Components/PageLoader';
+import {  defaultPost1 } from '../Service';
 const Container=styled.div`
     width: 100%;
     /* overflow-y:hidden;
@@ -58,15 +59,14 @@ const MyPost = ({handleOpen}) => {
   const getPosts=async()=>{
     setContentLoading(true)
     const res=await getMyPosts(token);
-    setContentLoading(false)
-    console.log(res.response)
+    console.log(res)
     if(res.status===200){   
-        setPostList(res.data)
+      setPostList(res.data)
     }
     else if(res.response.status===404) dispatch(updateFails(true));
+    setContentLoading(false)
   }
   useEffect(()=>{
-    console.log('my post me hu')
     window.scrollTo(0, 0);
     getPosts();
   },[])
@@ -80,7 +80,10 @@ const MyPost = ({handleOpen}) => {
         <Right/>
         <Display>          
          {contentLoading?<PageLoader/>:
-          postList.map(p=>(<Post key={p._id} post={p} getPosts={getPosts}/>))
+          (
+            postList.length!==0? postList.map(p=>(<Post key={p._id} post={p} getPosts={getPosts}/>)):
+            <Post post={defaultPost1}/>
+          )
         }
         </Display>
     </Content>

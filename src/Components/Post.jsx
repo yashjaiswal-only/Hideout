@@ -16,6 +16,7 @@ import Comment from './Comment';
 import {convertDate}  from '../Service.js'
 import { MoreHoriz } from '@mui/icons-material';
 import { addAlert } from '../Redux/UserRedux';
+import hideout from '../assets/hideout.png'
 const Container=styled.div`
     width:90%;
     margin:0.5rem 0rem;
@@ -97,7 +98,6 @@ const Picture=styled.img`
     max-height:40rem;
     margin: 0.5rem 0;
     object-fit:fill;
-    /* border-radius:15px; */
     ${tab({
       height:'20rem'
     })}
@@ -216,6 +216,7 @@ const Post = ({post,fetchAllPosts,getPosts}) => {
     const [countLikes,setCountLikes]=useState('');
     const [countComments,setCountComments]=useState('');
     const [allComments,setAllComments]=useState([]);
+
     const count=async()=>{
       var res=await countLike(token,post._id,post.uid)
       if(res.status===200){
@@ -294,15 +295,18 @@ const Post = ({post,fetchAllPosts,getPosts}) => {
   
 
     useEffect(()=>{
-      console.log(post+"post")
-      count();
-      isLike();
-      setdateofpost(convertDate(post.createdAt));
-      setAllComments(post.comments);
+      if(post.uid!=='0'){
+        console.log(post+"post")
+        count();
+        isLike();
+        setdateofpost(convertDate(post.createdAt));
+        setAllComments(post.comments);
+      }
     },[])
     
   return (
-    <Container>
+    <>
+    {post.uid!=='0'?<Container>
       <Details>
         <Avatar src={post.photo} />
         <Entry>
@@ -365,6 +369,23 @@ const Post = ({post,fetchAllPosts,getPosts}) => {
         {allComments.map(com=>(<Comment comment={com} postId={post._id} posterId={post.uid} setAllComments={setAllComments} count={count} allComments={allComments}/>))}
       </CommentBox>
     </Container>
+    :
+    <Container>
+      <Details>
+        <Avatar src={myDetails.photo} />
+        <Entry>
+            <Name>Hideout</Name>
+            <Date>Today</Date>
+        </Entry>
+      </Details>
+      {post.caption?
+      <Caption noImage={1}>
+        {post.caption}
+      </Caption>:""}
+      <Picture src={hideout}/>
+    </Container>
+    }
+  </>
   )
 }
 

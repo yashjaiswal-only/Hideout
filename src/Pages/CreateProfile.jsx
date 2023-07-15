@@ -18,24 +18,33 @@ import { endLoading, startLoading } from '../Redux/UserRedux';
 import { useNavigate } from 'react-router-dom';
 import FileUpload from '../Components/FileUpload';
 import { collection, doc, getDocs, query, setDoc, where } from 'firebase/firestore';
+import mobile from '../responsive';
+import Logo from '../Components/Logo';
 
 const Container=styled.div`
     width:100%;
     display: flex;
-    /* flex-direction: column; */
     justify-content: space-around;
     align-items: flex-start;
-    /* min-height:100vh; */
+    ${mobile({
+      flexDirection:'column'
+    })}
 `
 const Section=styled.div`
     width:90%;
     margin:1rem 0;
     background-color: #cae8ef;
+    border-radius:1rem;
     >section{
+        border-top-right-radius:1rem;
+        border-top-left-radius:1rem;
         background-color: #2782aa;
         padding:0.5rem;
         font-size:1.5rem;
         color:white;
+        ${mobile({
+          fontSize:'1rem'
+        })}
     }
     >div{
         padding:0.5rem;
@@ -44,15 +53,24 @@ const Section=styled.div`
         align-items: center;
         /* justify-content: space-between; */
     }
+    -webkit-box-shadow: 0px 0px 5px 3px rgba(214,214,214,1);
+    -moz-box-shadow: 0px 0px 5px 3px rgba(214,214,214,1);
+    box-shadow: 0px 0px 5px 3px rgba(214,214,214,1);
 `
 const Left=styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   width:70%;
+  ${mobile({
+    width:'100%'
+  })}
 `
 const Right=styled.div`
   width:30%;
+  ${mobile({
+    width:'100%'
+  })}
 `
 const Submit=styled.div`
   text-align:center;
@@ -167,6 +185,7 @@ const CreateProfile = () => {
         //create empty user chats on firestore
         await setDoc(doc(db, "userChats", usercheck.data.uid), {});
       }
+      else navigate('/');
 
       navigate('/home');
 
@@ -183,6 +202,7 @@ const CreateProfile = () => {
       <div style={{position:'fixed',top:'0',width:'100%'}}>
         {loading && <LinearProgress sx={{width:'100%'}}/>}
       </div>
+      <Logo/>
       <h2 style={{textAlign:'center'}}>Complete Your Profile</h2>
     <Container>
       <Left>

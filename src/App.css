@@ -19,7 +19,7 @@ input[type="file"] {
 
 .logo {
     margin:1rem;
-    font-size: 2vw;
+    font-size: 2rem;
     text-transform: uppercase;
     text-align: center;
     line-height: 1;
@@ -35,10 +35,5 @@ input[type="file"] {
       color: transparent;
       -webkit-background-clip: text;
       background-clip: text;
-    }
-  }
-  @media screen and (max-width: 800px) {
-    .logo{
-        display:none;
     }
   }

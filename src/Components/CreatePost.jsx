@@ -96,8 +96,7 @@ const CreatePost = ({handleClose}) => {
 
   //submit the post
   const handleSubmit=async()=>{
-    setLoading(true)
-    console.log('click')
+    // setLoading(true)
     if(!fileList.length){
       const data={
       caption:captionRef.current.value,
@@ -109,11 +108,11 @@ const CreatePost = ({handleClose}) => {
       setLoading(false)
       console.log(res)
       if(res.status===200){
-        handleClose();  
-        dispatch(addAlert('Post Created Successfully'));
+          handleClose();  
+          dispatch(addAlert('Post Created Successfully'));
+        }
+        else if(res.response.status===404)       dispatch(updateFails(true))
       }
-      else if(res.response.status===404)       dispatch(updateFails(true))
-    }
     else{
       var Images=[];
       fileList.forEach(file=>{
@@ -124,46 +123,33 @@ const CreatePost = ({handleClose}) => {
         uploadTask.on(
           "state_changed",
           (snapshot) => {
-            // Observe state change events such as progress, pause, and resume
-            // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-            // const progress =
-            //   (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            // console.log("Upload is " + progress + "% done");
-            // switch (snapshot.state) {
-            //   case "paused":
-            //     console.log("Upload is paused");
-            //     break;
-            //   case "running":
-            //     console.log("Upload is running");
-            //     break;
-            //   default:
-            // }
           },
           (error) => {
             // Handle unsuccessful uploads
             console.log('error at image upload')
           },
           async() => {
-            // Handle successful uploads on complete
             await getDownloadURL(uploadTask.snapshot.ref).then(async(downloadURL) => {
               Images.push(downloadURL);
               console.log(downloadURL);
               if(countUploaded===fileList.length-1){  //on last file upload
+                console.log(captionRef)
                 const data={
                   caption:captionRef.current.value,
                   images:Images ,
                   likes:[],
                   comments:[],
                 }
-                console.log(data)
+                console.log(data);
                 const res=await makePost(token,data);
-                setLoading(false)
+                setLoading(false);
                 console.log(res);
                 if(res.status===200){
                   handleClose();
                   dispatch(addAlert('Post Created Successfully'));
                 }
                 else if(res.response.status===404)       dispatch(updateFails(true))
+
                 setCountUploaded(0);
               }
               setCountUploaded(countUploaded+1);
@@ -172,6 +158,7 @@ const CreatePost = ({handleClose}) => {
         );
       })
     }
+
   }
   
   //for auto expand input
